@@ -19,8 +19,10 @@ class MovementBar extends FlxSprite
         this.movementUI = movementUI;
         
         loadGraphic('assets/images/night/movementBar' + ((movementType == UP || movementType == DOWN) ? 'Horizontal' : '') + '.png');
-        screenCenter();
-        
+		setGraphicSize(Std.int(width * .7));
+		updateHitbox();
+		screenCenter();
+                
         alpha = .4;
         
         switch(movementType){

@@ -13,10 +13,15 @@ class PlayState extends FlxState
 	var camTransition:FlxCamera;
 	var camUI:FlxCamera;
 	
+	var camTargetX:Float = 0;
+	var camTargetY:Float = 0;
+	var camFollowType:CamFollowType = MOUSE;
+	
 	override public function create()
 	{
 		camGame = new FlxCamera();
 		camGame.bgColor = FlxColor.WHITE;
+		camGame.zoom = 1.05;
 		FlxG.cameras.add(camGame);
 
 		camTransition = new FlxCamera();
@@ -48,7 +53,54 @@ class PlayState extends FlxState
 
 	override public function update(elapsed:Float)
 	{
+		updateCameraPositions(elapsed);
+		
 		super.update(elapsed);
+	}
+	
+	function updateCameraPositions(elapsed:Float):Void
+	{
+		switch (camFollowType)
+		{
+			case MOUSE:
+				camTargetX = -(Constants.CAM_MOVEMENT_SENSITIVITY / 2) + (Constants.CAM_MOVEMENT_SENSITIVITY * (FlxG.mouse.x / FlxG.width));
+				camTargetY = -(Constants.CAM_MOVEMENT_SENSITIVITY / 2) + (Constants.CAM_MOVEMENT_SENSITIVITY * (FlxG.mouse.y / FlxG.height));
+			case CUSTOM:
+				//
+		}
+
+		camGame.scroll.x = Utilities.lerpThing(camGame.scroll.x, camTargetX, elapsed, Constants.CAM_MOVEMENT_SPEED);
+		camGame.scroll.y = Utilities.lerpThing(camGame.scroll.y, camTargetY, elapsed, Constants.CAM_MOVEMENT_SPEED);
+	}
+
+	function snapCameraPosition():Void
+	{
+		camGame.scroll.x = camTargetX;
+		camGame.scroll.y = camTargetY;
+	}
+
+	function moveCameraToDirection(curDirection:MovementTypes, snap:Bool = false):Void
+	{
+		switch (curDirection)
+		{
+			case LEFT:
+				camTargetX = -Constants.CAM_MOVEMENT_SENSITIVITY;
+				camTargetY = 0;
+			case RIGHT:
+				camTargetX = Constants.CAM_MOVEMENT_SENSITIVITY;
+				camTargetY = 0;
+			case DOWN:
+				camTargetY = Constants.CAM_MOVEMENT_SENSITIVITY;
+				camTargetX = 0;
+			case UP:
+				camTargetY = -Constants.CAM_MOVEMENT_SENSITIVITY;
+				camTargetX = 0;
+		}
+
+		if (snap)
+		{
+			snapCameraPosition();
+		}
 	}
 	
 	function addRoom(name:String):Void{
@@ -68,10 +120,28 @@ class PlayState extends FlxState
 	
 	function changeRoom(newRoom:String):Void
 	{
+		var curDirection:MovementTypes = LEFT;
+
+		var room:Room = rooms.get(curRoom);
+
+		for (direction in [MovementTypes.LEFT, MovementTypes.DOWN, MovementTypes.UP, MovementTypes.RIGHT])
+		{
+			if (room.possibleMovements.exists(direction) && room.possibleMovements.get(direction) == newRoom)
+			{
+				curDirection = direction;
+				break;
+			}
+		}
+
+		camFollowType = CUSTOM;
+		moveCameraToDirection(curDirection);
+		
 		movementUI.hide();
 		var timeToTransition:Float = .6;
 		doRoomTransitionAnim(timeToTransition, function():Void
 		{
+			moveCameraToDirection(getOppositeDirection(curDirection), true);
+			camFollowType = MOUSE;
 			curRoom = newRoom;
 			updateActiveRooms();	
 			new FlxTimer().start(timeToTransition / 2, function(f):Void
@@ -110,6 +180,20 @@ class PlayState extends FlxState
 				rooms.get(i).roomActive = false;
 			}
 			rooms.get(i).toggleRoomVisibility();
+		}
+	}
+	function getOppositeDirection(movementType:MovementTypes):MovementTypes
+	{
+		switch (movementType)
+		{
+			case LEFT:
+				return RIGHT;
+			case RIGHT:
+				return LEFT;
+			case UP:
+				return DOWN;
+			case DOWN:
+				return UP;
 		}
 	}
 }
