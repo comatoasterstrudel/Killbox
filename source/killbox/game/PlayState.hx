@@ -7,8 +7,26 @@ class PlayState extends FlxState
 	var curRoom:String = '';
 	var roomGroup:FlxTypedGroup<Room>;
 	
+	var movementUI:MovementUI;
+
+	var camGame:FlxCamera;
+	var camTransition:FlxCamera;
+	var camUI:FlxCamera;
+	
 	override public function create()
 	{
+		camGame = new FlxCamera();
+		camGame.bgColor = FlxColor.WHITE;
+		FlxG.cameras.add(camGame);
+
+		camTransition = new FlxCamera();
+		camTransition.bgColor = 0x00000000;
+		FlxG.cameras.add(camTransition, false);
+
+		camUI = new FlxCamera();
+		camUI.bgColor = 0x00000000;
+		FlxG.cameras.add(camUI, false);
+		
 		roomGroup = new FlxTypedGroup<Room>();
 		add(roomGroup);
 		
@@ -17,8 +35,14 @@ class PlayState extends FlxState
 		addRoom('right');
 		addRoom('ceiling');
 		
-		changeRoom('main');
-		
+		movementUI = new MovementUI(changeRoom);
+		movementUI.camera = camUI;
+		add(movementUI);
+
+		curRoom = 'main';
+		updateActiveRooms();
+		movementUI.updateActiveButtons(rooms.get(curRoom).possibleMovements);
+
 		super.create();
 	}
 
@@ -42,9 +66,40 @@ class PlayState extends FlxState
 		updateActiveRooms();
 	}
 	
-	function changeRoom(newRoom:String):Void{
-		curRoom = newRoom;
-		updateActiveRooms();	
+	function changeRoom(newRoom:String):Void
+	{
+		movementUI.hide();
+		var timeToTransition:Float = .6;
+		doRoomTransitionAnim(timeToTransition, function():Void
+		{
+			curRoom = newRoom;
+			updateActiveRooms();	
+			new FlxTimer().start(timeToTransition / 2, function(f):Void
+			{
+				movementUI.updateActiveButtons(rooms.get(curRoom).possibleMovements);
+			});
+		});
+	}
+
+	function doRoomTransitionAnim(time:Float, after:Void->Void):Void
+	{
+		var tranSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+		tranSprite.camera = camTransition;
+		tranSprite.alpha = 0;
+		add(tranSprite);
+
+		FlxTween.tween(tranSprite, {alpha: 1}, time / 2, {
+			onComplete: function(f):Void
+			{
+				after();
+				FlxTween.tween(tranSprite, {alpha: 0}, time / 2, {
+					onComplete: function(f):Void
+					{
+						tranSprite.destroy();
+					}
+				});
+			}
+		});
 	}
 	
 	function updateActiveRooms():Void{
@@ -54,6 +109,7 @@ class PlayState extends FlxState
 			} else {
 				rooms.get(i).roomActive = false;
 			}
+			rooms.get(i).toggleRoomVisibility();
 		}
 	}
 }

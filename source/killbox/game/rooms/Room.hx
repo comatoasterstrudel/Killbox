@@ -6,7 +6,7 @@ class Room extends FlxSpriteGroup
     
     public var roomActive:Bool = false;
     
-    public var possibleMovements:Map<RoomMovementTypes, String> = [];
+	public var possibleMovements:Map<MovementTypes, String> = [];
     
     public function new(playState:PlayState){
         super();
@@ -34,4 +34,8 @@ class Room extends FlxSpriteGroup
                 return new Room(playState);
         }
     }
+	public function toggleRoomVisibility():Void
+	{
+		visible = roomActive;
+	}
 }
