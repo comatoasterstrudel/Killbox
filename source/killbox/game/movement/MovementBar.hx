@@ -18,7 +18,7 @@ class MovementBar extends FlxSprite
         this.movementType = movementType;
         this.movementUI = movementUI;
         
-        loadGraphic('assets/images/night/movementBar' + ((movementType == UP || movementType == DOWN) ? 'Horizontal' : '') + '.png');
+		loadGraphic('assets/images/night/movement.png');
 		setGraphicSize(Std.int(width * .7));
 		updateHitbox();
 		screenCenter();
@@ -27,10 +27,10 @@ class MovementBar extends FlxSprite
         
         switch(movementType){
             case LEFT:
-                angle = 180;
+				angle = 90;
                 x -= ((FlxG.width / 2) - buttonSpacing);
             case RIGHT:
-                angle = 0;
+				angle = 270;
                 x += ((FlxG.width / 2) - buttonSpacing); 
             case UP:
                 angle = 180;
@@ -50,14 +50,17 @@ class MovementBar extends FlxSprite
     override function update(elapsed:Float) {
         super.update(elapsed);
      
-        if(buttonActive && FlxG.mouse.overlaps(this)){
+		if (buttonActive && Cursor.mouseIsTouching(this))
+		{
             if(cooldown){
                 alpha = .1;
             } else {
                 movementUI.changeRoom(movementUI.possibleMovements.get(movementType));   
                 cooldown = true;             
             }
-        } else if(cooldown && buttonActive && !FlxG.mouse.overlaps(this)){
+		}
+		else if (cooldown && buttonActive && !Cursor.mouseIsTouching(this, false))
+		{
             cooldown = false;
             alpha = .4;
         }
