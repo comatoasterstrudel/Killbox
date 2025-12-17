@@ -17,6 +17,9 @@ class PlayState extends FlxState
 	var camTargetY:Float = 0;
 	var camFollowType:CamFollowType = MOUSE;
 	
+	var flashlightActive:Bool = false;
+	var flashlightSprite:FlxSprite;
+	
 	override public function create()
 	{
 		camGame = new FlxCamera();
@@ -48,6 +51,14 @@ class PlayState extends FlxState
 		updateActiveRooms();
 		movementUI.updateActiveButtons(rooms.get(curRoom).possibleMovements);
 
+		flashlightSprite = new FlxSprite().loadGraphic('assets/images/night/flashlight.png');
+		flashlightSprite.blend = SCREEN;
+		flashlightSprite.alpha = .5;
+		flashlightSprite.camera = camGame;
+		add(flashlightSprite);
+
+		updateFlashlight();
+		
 		super.create();
 	}
 
@@ -55,7 +66,17 @@ class PlayState extends FlxState
 	{
 		updateCameraPositions(elapsed);
 		
+		flashlightActive = FlxG.mouse.pressedRight;
+		updateFlashlight();
+		
 		super.update(elapsed);
+	}
+	
+	function updateFlashlight():Void
+	{
+		flashlightSprite.visible = flashlightActive;
+		flashlightSprite.x = FlxG.mouse.x - flashlightSprite.width / 2;
+		flashlightSprite.y = FlxG.mouse.y - flashlightSprite.height / 2;
 	}
 	
 	function updateCameraPositions(elapsed:Float):Void
