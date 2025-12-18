@@ -1,0 +1,12 @@
+package killbox.game.boxes;
+
+enum BoxStatus
+{
+    MAIN_FALLING;
+    MAIN_CONVEYOR;
+    
+    LEFT_CONVEYOR;
+    LEFT_SLIDING;
+    LEFT_WAITING;
+    LEFT_PRESSED;
+}

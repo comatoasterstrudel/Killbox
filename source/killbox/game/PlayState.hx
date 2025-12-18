@@ -20,6 +20,9 @@ class PlayState extends FlxState
 	var flashlightActive:Bool = false;
 	var flashlightSprite:FlxSprite;
 	
+	public var boxes:Array<Box> = [];
+	public var boxIdAssignment:Int = 0;
+	
 	override public function create()
 	{
 		camGame = new FlxCamera();
@@ -158,7 +161,7 @@ class PlayState extends FlxState
 		moveCameraToDirection(curDirection);
 		
 		movementUI.hide();
-		var timeToTransition:Float = .6;
+		var timeToTransition:Float = GameValues.getMovementSpeed();
 		doRoomTransitionAnim(timeToTransition, function():Void
 		{
 			moveCameraToDirection(getOppositeDirection(curDirection), true);
@@ -215,6 +218,29 @@ class PlayState extends FlxState
 				return DOWN;
 			case DOWN:
 				return UP;
+		}
+	}
+	public function getBoxID():Int
+	{
+		boxIdAssignment++;
+		return boxIdAssignment;
+	}
+
+	public function getBoxByID(id:Int):Box
+	{
+		for (i in boxes)
+		{
+			if (i.ID == id)
+				return (i);
+		}
+		return null;
+	}
+
+	public function sendBox(id:Int, boxSendType:BoxSendType):Void
+	{
+		for (i in rooms)
+		{
+			i.sendBox(id, boxSendType);
 		}
 	}
 }
