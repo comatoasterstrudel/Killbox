@@ -9,9 +9,9 @@ class PlayState extends FlxState
 	
 	var movementUI:MovementUI;
 
-	var camGame:FlxCamera;
-	var camTransition:FlxCamera;
-	var camUI:FlxCamera;
+	public var camGame:FlxCamera;
+	public var camTransition:FlxCamera;
+	public var camUI:FlxCamera;
 	
 	var camTargetX:Float = 0;
 	var camTargetY:Float = 0;

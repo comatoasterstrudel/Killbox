@@ -5,4 +5,13 @@ class Utilities{
 	{
 		return FlxMath.lerp(target, initialnum, FlxMath.bound(1 - (elapsed * speed), 0, 1));
 	}
+	public static function getAverage(data:Array<Float>):Float
+	{
+		var sum:Float = 0;
+		for (value in data)
+		{
+			sum += value;
+		}
+		return (sum / data.length);
+	}
 }

@@ -21,6 +21,8 @@ class LeftRoom extends Room
 	var pressTop:FlxSprite;
 	var pressBottom:FlxSprite;
 	
+	var boxCounterFront:BoxCounter;
+	
     override function setupRoom():Void{        
 		bgBack = new FlxSprite().loadGraphic('assets/images/night/roomLeft/leftRoomBack.png');
 		bgBack.screenCenter();
@@ -47,6 +49,10 @@ class LeftRoom extends Room
 		add(pressHandle);
 	
 		updatePressPosition();
+		
+		boxCounterFront = new BoxCounter(this, boxFrontConveyorSprites);
+		boxCounterFront.camera = playState.camUI;
+		add(boxCounterFront);
 		
         possibleMovements = [
             RIGHT => 'main'

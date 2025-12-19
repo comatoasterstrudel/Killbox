@@ -8,6 +8,8 @@ class MainRoom extends Room
 
 	var addBoxButton:FlxSprite;
 	
+	var boxCounter:BoxCounter;
+	
 	override function setupRoom():Void
 	{     
 		bgBack = new FlxSprite().loadGraphic('assets/images/night/roomMain/mainRoomPlaceholderBack.png');
@@ -24,6 +26,10 @@ class MainRoom extends Room
 
 		addBoxButton = new FlxSprite(240, 290).makeGraphic(100, 30, FlxColor.WHITE);
 		add(addBoxButton);
+		
+		boxCounter = new BoxCounter(this, boxSprites);
+		boxCounter.camera = playState.camUI;
+		add(boxCounter);
 		
         possibleMovements = [
             LEFT => 'left',
