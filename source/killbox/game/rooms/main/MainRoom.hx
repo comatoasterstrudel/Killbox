@@ -1,4 +1,4 @@
-package killbox.game.rooms;
+package killbox.game.rooms.main;
 
 class MainRoom extends Room
 {
@@ -104,7 +104,6 @@ class MainRoom extends Room
 	{
 		var box = new Box(playState.getBoxID());
 		playState.boxes.push(box);
-		trace(box.ID);
 
 		var boxSprite = new FlxSprite(400, 0).makeGraphic(50, 50, 0xFF424242);
 		boxSprite.ID = box.ID;

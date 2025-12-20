@@ -1,4 +1,4 @@
-package killbox.game.rooms;
+package killbox.game.rooms.right;
 
 class RightRoom extends Room
 {

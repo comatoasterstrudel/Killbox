@@ -1,4 +1,4 @@
-package killbox.game.rooms;
+package killbox.game.camera;
 
 enum CamFollowType
 {

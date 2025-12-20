@@ -1,4 +1,4 @@
-package killbox.game.rooms;
+package killbox.game.rooms.ceiling;
 
 class MainRoomCeiling extends Room
 {
