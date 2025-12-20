@@ -6,10 +6,17 @@ class BoxPress extends FlxSpriteGroup
 	public var pressBottom:FlxSprite;
     
     public var pressing:Bool = false;
-    
-    public function new():Void{
+
+	public var blockBoxes:Bool = false;
+
+	var pressBoxes:Void->Void;
+
+	public function new(pressBoxes:Void->Void):Void
+	{
         super();
-        
+
+		this.pressBoxes = pressBoxes;
+
         pressTop = new FlxSprite().makeGraphic(215, 500, 0xFF1D1D1D);
 		add(pressTop);
 		
@@ -32,10 +39,22 @@ class BoxPress extends FlxSpriteGroup
     }
     
     public function startBoxPress():Void{
+		var pressSpeed = GameValues.getPressSpeed();
+        
         pressing = true;
-		FlxTween.tween(pressBottom, {y: 60 + 260}, GameValues.getPressSpeed() / 6, {ease: FlxEase.quartOut, onComplete: function(f):Void{
-			FlxTween.tween(pressBottom, {y: 60}, GameValues.getPressSpeed() / 6, {startDelay: (GameValues.getPressSpeed() / 6) * 5, ease: FlxEase.quartOut, onComplete: function(f):Void{
-				pressing = false;
+		FlxTween.tween(pressBottom, {y: 60 + 260}, pressSpeed / 6, {
+			ease: FlxEase.quartOut,
+			onComplete: function(f):Void
+			{
+				pressBoxes();
+
+				FlxTween.tween(pressBottom, {y: 60}, pressSpeed / 6, {
+					startDelay: (pressSpeed / 6) * 5,
+					ease: FlxEase.quartOut,
+					onComplete: function(f):Void
+					{
+						pressing = false;
+						blockBoxes = false;
 			}});
 		}});
 	}

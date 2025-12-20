@@ -26,7 +26,7 @@ class LeftRoom extends Room
 		boxFrontConveyorSprites = new FlxSpriteGroup();
 		add(boxFrontConveyorSprites);
 		
-		boxPress = new BoxPress();
+		boxPress = new BoxPress(pressBoxes);
 		add(boxPress);
 		
 		chainPulley = new ChainPulley(boxPress.startBoxPress);
@@ -36,7 +36,7 @@ class LeftRoom extends Room
 		boxCounterFront.camera = playState.camUI;
 		add(boxCounterFront);
 		
-        possibleMovements = [
+		possibleMovements = [ 
             RIGHT => 'main'
         ];
     }
@@ -49,6 +49,26 @@ class LeftRoom extends Room
 		handleFrontConveyor();		
 	}
 
+	function pressBoxes():Void
+	{
+		for (box in boxFrontConveyorSprites)
+		{
+			if ((box.x) < (boxPress.pressBottom.x + boxPress.pressBottom.width)
+				&& (playState.getBoxByID(box.ID).status == LEFT_CONVEYOR
+					|| playState.getBoxByID(box.ID).status == LEFT_SLIDING
+					|| playState.getBoxByID(box.ID).status == LEFT_WAITING))
+			{ // press that shit boy!
+				box.scale.y = .5;
+				box.updateHitbox();
+				box.y += box.height;
+				FlxTween.cancelTweensOf(box);
+				box.x = 150;
+				box.velocity.x = 0;
+				playState.getBoxByID(box.ID).status = LEFT_PRESSED;
+			}
+		}
+	}
+	
 	function handleFrontConveyor():Void{
 		for(box in boxFrontConveyorSprites){
 			var boxData = playState.getBoxByID(box.ID);
@@ -60,6 +80,13 @@ class LeftRoom extends Room
 					FlxTween.tween(box, {x: 150}, 1, {ease: FlxEase.quartOut, onComplete: function(f):Void{
 						boxData.status = LEFT_WAITING;
 					}});
+				}
+			}
+			if (boxData.status != LEFT_PRESSED && boxPress.blockBoxes) // dont let boxes go through the conveyor while its down lol
+			{
+				if ((box.x) < (boxPress.pressBottom.x + boxPress.pressBottom.width))
+				{
+					box.x = boxPress.pressBottom.x + boxPress.pressBottom.width;
 				}
 			}
 		}	
