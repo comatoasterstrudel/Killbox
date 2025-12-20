@@ -25,7 +25,7 @@ class Cursor extends FlxSprite
     }
     
     public static function mouseIsTouching(sprite:FlxSprite, pixelPerfect:Bool = true):Bool{
-        var thecursor = Main.cursor;
+		var thecursor = InitState.cursor;
         
         thecursor.updateCursorPosition();
         

@@ -1,6 +1,20 @@
 package killbox.util;
 
 class Constants{
+	#if debug
+	/**
+	 * The state to load when loading a debug build of the game
+	 */
+	public static final INITIAL_STATE_DEBUG:FlxState = new PlayState();
+	#end
+
+	#if release
+	/**
+	 * The state to load when loading a release build of the game
+	 */
+	public static final INITIAL_STATE_RELEASE:FlxState = new PlayState();
+	#end 
+	
 	/**
 	 * How much the cameras will move along with the mouse
 	 */

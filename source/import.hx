@@ -12,6 +12,7 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
+import killbox.*;
 import killbox.game.*;
 import killbox.game.boxes.*;
 import killbox.game.camera.*;
