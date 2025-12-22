@@ -1,4 +1,4 @@
-package killbox.game.ui;
+package killbox.game.rooms.main;
 
 class MaterialMeter extends FlxTypedSpriteGroup<MaterialMeterLight>
 {
