@@ -15,9 +15,11 @@ class GameValues
 	{
 		return 3;
 	}
-
 	public static function getMaterialRefillTime():Int
 	{
 		return 6;
+	}
+	public static function getMaxFlashlightBattery():Int {
+		return 5;
 	}
 }

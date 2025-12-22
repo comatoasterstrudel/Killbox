@@ -27,11 +27,14 @@ class PlayState extends FlxState
 	public var availableMaterials:Int = GameValues.getMaxMaterials();
 	public var timeUntilNextMaterial:Float = 0;
 	
+	public var flashlightBattery:Float = GameValues.getMaxFlashlightBattery();
+	
 	override public function create()
 	{		
 		#if debug
 		FlxG.watch.add(this, "availableMaterials");
 		FlxG.watch.add(this, "timeUntilNextMaterial");
+		FlxG.watch.add(this, "flashlightBattery");
 		#end
 		
 		camGame = new FlxCamera();
@@ -69,7 +72,7 @@ class PlayState extends FlxState
 		flashlightSprite.camera = camGame;
 		add(flashlightSprite);
 
-		updateFlashlight();
+		updateFlashlight(FlxG.elapsed);
 		
 		super.create();
 	}
@@ -77,9 +80,8 @@ class PlayState extends FlxState
 	override public function update(elapsed:Float)
 	{
 		updateCameraPositions(elapsed);
-		
-		flashlightActive = FlxG.mouse.pressedRight;
-		updateFlashlight();
+
+		updateFlashlight(elapsed);
 		
 		updateMaterialTimer(elapsed);
 		
@@ -109,11 +111,27 @@ class PlayState extends FlxState
 		//
 	}
 	
-	function updateFlashlight():Void
+	function updateFlashlight(elapsed:Float):Void
 	{
+		var flashlightInCharger:Bool = Reflect.field(Reflect.getProperty(rooms.get('main'), 'flashlightHolder'), 'holdingLight');
+
+		flashlightActive = (FlxG.mouse.pressedRight && (flashlightBattery > 0) && !flashlightInCharger);
+
 		flashlightSprite.visible = flashlightActive;
 		flashlightSprite.x = FlxG.mouse.x - flashlightSprite.width / 2;
 		flashlightSprite.y = FlxG.mouse.y - flashlightSprite.height / 2;
+		if (flashlightActive) {
+			flashlightBattery -= elapsed;
+			if (flashlightBattery < 0)
+				flashlightBattery = 0;
+		}
+
+		if (flashlightInCharger) {
+			flashlightBattery += elapsed;
+			if (flashlightBattery > GameValues.getMaxFlashlightBattery()) {
+				flashlightBattery = GameValues.getMaxFlashlightBattery();
+			}
+		}
 	}
 	
 	function updateCameraPositions(elapsed:Float):Void

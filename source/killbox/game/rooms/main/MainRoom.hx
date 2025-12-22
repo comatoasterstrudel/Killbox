@@ -12,6 +12,8 @@ class MainRoom extends Room
 	
 	var materialMeter:MaterialMeter;
 
+	public var flashlightHolder:FlashlightHolder;
+	
 	override function setupRoom():Void
 	{     
 		bgBack = new FlxSprite().loadGraphic('assets/images/night/roomMain/mainRoomPlaceholderBack.png');
@@ -34,6 +36,8 @@ class MainRoom extends Room
 		
 		materialMeter = new MaterialMeter(addBoxButton);
 		add(materialMeter);
+		flashlightHolder = new FlashlightHolder();
+		add(flashlightHolder);
 
         possibleMovements = [
             LEFT => 'left',
