@@ -44,13 +44,26 @@ class BoxPress extends FlxSpriteGroup
         pressing = true;
 		FlxTween.tween(pressBottom, {y: 60 + 260}, pressSpeed / 6, {
 			ease: FlxEase.quartOut,
+			onUpdate: (function(f):Void
+			{
+				if (f.percent >= .5 && !blockBoxes)
+				{
+					blockBoxes = true;
+					pressBoxes();
+				}
+			}),
 			onComplete: function(f):Void
 			{
-				pressBoxes();
-
 				FlxTween.tween(pressBottom, {y: 60}, pressSpeed / 6, {
 					startDelay: (pressSpeed / 6) * 5,
 					ease: FlxEase.quartOut,
+					onUpdate: (function(f):Void
+					{
+						if (f.percent <= .8 && blockBoxes)
+						{
+							blockBoxes = false;
+						}
+					}),
 					onComplete: function(f):Void
 					{
 						pressing = false;

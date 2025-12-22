@@ -7,9 +7,10 @@
 		}
 	},
 	"sameLine": {
-		"ifElse": "next",
+		"ifElse": "keep",
 		"doWhile": "next",
 		"tryBody": "next",
-		"tryCatch": "next"
+		"tryCatch": "next",
+		"anonFunctionBody": "keep"
 	}
 }

@@ -53,7 +53,7 @@ class LeftRoom extends Room
 	{
 		for (box in boxFrontConveyorSprites)
 		{
-			if ((box.x) < (boxPress.pressBottom.x + boxPress.pressBottom.width)
+			if ((box.x + 5) < (boxPress.pressBottom.x + boxPress.pressBottom.width)
 				&& (playState.getBoxByID(box.ID).status == LEFT_CONVEYOR
 					|| playState.getBoxByID(box.ID).status == LEFT_SLIDING
 					|| playState.getBoxByID(box.ID).status == LEFT_WAITING))
@@ -73,6 +73,8 @@ class LeftRoom extends Room
 		for(box in boxFrontConveyorSprites){
 			var boxData = playState.getBoxByID(box.ID);
 
+			var removeThese:Array<FlxSprite> = [];
+			
 			if(boxData.status == LEFT_CONVEYOR){
 				if(box.x < 200){
 					box.velocity.x = 0;
@@ -82,12 +84,32 @@ class LeftRoom extends Room
 					}});
 				}
 			}
-			if (boxData.status != LEFT_PRESSED && boxPress.blockBoxes) // dont let boxes go through the conveyor while its down lol
+			if (boxData.status != LEFT_PRESSED
+				&& boxData.status != LEFT_PRESSED_SLIDING
+				&& boxPress.blockBoxes) // dont let boxes go through the conveyor while its down lol
 			{
-				if ((box.x) < (boxPress.pressBottom.x + boxPress.pressBottom.width))
+				if ((box.x) <= (boxPress.pressBottom.x + boxPress.pressBottom.width))
 				{
 					box.x = boxPress.pressBottom.x + boxPress.pressBottom.width;
 				}
+			}
+			if (boxData.status == LEFT_PRESSED && !boxPress.pressing)
+			{
+				playState.getBoxByID(box.ID).status = LEFT_PRESSED_SLIDING;
+				box.velocity.x = -GameValues.getConveyorSpeed();
+			}
+			if (boxData.status == LEFT_PRESSED_SLIDING && ((box.x + box.width) < 0))
+			{
+				box.velocity.x = 0;
+				playState.sendBox(box.ID, LEFT_TO_LEFT_BACK);
+				box.kill();
+				removeThese.push(box);
+			}
+
+			for (i in removeThese)
+			{
+				boxFrontConveyorSprites.remove(i, true);
+				i.destroy();
 			}
 		}	
 	}

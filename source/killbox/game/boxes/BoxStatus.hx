@@ -9,4 +9,5 @@ enum BoxStatus
     LEFT_SLIDING;
     LEFT_WAITING;
     LEFT_PRESSED;
+	LEFT_PRESSED_SLIDING;
 }

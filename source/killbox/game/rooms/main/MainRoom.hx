@@ -81,15 +81,12 @@ class MainRoom extends Room
 					box.velocity.x = -GameValues.getConveyorSpeed();
 				}
 			}
-			else if (boxData.status == MAIN_CONVEYOR)
+			else if (boxData.status == MAIN_CONVEYOR && box.x < 100)
 			{
-				if (box.x < 100)
-				{
-					box.velocity.x = 0;
-					playState.sendBox(box.ID, MAIN_TO_LEFT);
-					box.kill();
-					removeThese.push(box);
-				}
+				box.velocity.x = 0;
+				playState.sendBox(box.ID, MAIN_TO_LEFT);
+				box.kill();
+				removeThese.push(box);
 			}
 		}
 
