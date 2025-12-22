@@ -14,4 +14,36 @@ class Utilities{
 		}
 		return (sum / data.length);
 	}
+	public static function centerGroup(array:Array<FlxSprite>, spacing:Float, ?xpos:Float):Void {
+		if (xpos == null) {
+			xpos = FlxG.width / 2;
+		}
+
+		var centerX:Float = xpos;
+
+		var members:Array<Dynamic> = array;
+
+		var count:Int = members.length;
+		if (count == 0)
+			return;
+
+		// Calculate the total width of all sprites including spacing
+		var totalWidth:Float = 0;
+
+		for (i in members) {
+			totalWidth += i.width;
+			totalWidth += spacing;
+		}
+		// Start positioning from the leftmost point
+		var startX:Float = centerX - totalWidth / 2;
+
+		var thex = startX;
+
+		for (i in 0...count) {
+			var sprite = members[i];
+			sprite.x = (thex + (spacing)) - sprite.width / 3;
+			thex = sprite.x + sprite.width;
+		}
+	}
+
 }

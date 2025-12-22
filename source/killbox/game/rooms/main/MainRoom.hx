@@ -29,10 +29,10 @@ class MainRoom extends Room
 		bgFront.screenCenter();
 		add(bgFront);  
 
-		addBoxButton = new FlxSprite(240, 290).makeGraphic(100, 30, FlxColor.WHITE);
+		addBoxButton = new FlxSprite(270, 295).makeGraphic(100, 30, FlxColor.WHITE);
 		add(addBoxButton);
 		
-		materialMeter = new MaterialMeter();
+		materialMeter = new MaterialMeter(addBoxButton);
 		add(materialMeter);
 
         possibleMovements = [

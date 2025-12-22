@@ -6,19 +6,18 @@ class MaterialMeterLight extends FlxSpriteGroup
     
     var status:MaterialMeterLightStatus = ON;
     
-    var lightSprite:FlxSprite;
-    var whiteOverlay:FlxSprite;
+	public var lightSprite:FlxSprite;
+	public var whiteOverlay:FlxSprite;
     
     public function new(ID:Int):Void{
         super();
         this.ID = ID;
         
         lightSprite = new FlxSprite().makeGraphic(25, 25, FlxColor.LIME);
-        lightSprite.setPosition((200 + (50 * (ID - 1))), 400);
+		lightSprite.setPosition((200 + (50 * (ID - 1))), 250);
         add(lightSprite);
         
-        whiteOverlay = new FlxSprite().makeGraphic(25, 25, FlxColor.WHITE);
-        whiteOverlay.setPosition(lightSprite.x, lightSprite.y);
+		whiteOverlay = new FlxSprite().makeGraphic(25, 25, FlxColor.WHITE);
         whiteOverlay.alpha = 0;
         add(whiteOverlay);
     }
@@ -41,6 +40,7 @@ class MaterialMeterLight extends FlxSpriteGroup
             if(status != ON) flashTimer = .7;
             status = ON;
             whiteOverlay.alpha = flashTimer;
+			whiteOverlay.setPosition(lightSprite.x, lightSprite.y);
         } else if(ID == availableMaterials + 1){ //this one is charging
             lightSprite.color = FlxColor.GREEN.getDarkened((.8) * 1 - (timeUntilNextMaterial / GameValues.getMaterialRefillTime()));
             status = CHARGING;
