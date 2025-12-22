@@ -14,17 +14,14 @@ class BoxCounter extends FlxTypedSpriteGroup<BoxCounterLabel>
         this.boxGroup = boxGroup;
 		this.yOffset = yOffset;
 
-		this.camera = boxGroup.camera;
-		this.scrollFactor.set(boxGroup.scrollFactor.x, boxGroup.scrollFactor.y);
-        
         new FlxTimer().start(.5, function(tmr):Void{
             tmr.reset();
             updateGroups();
         });
     }
 
-    function updateGroups():Void{
-         for(i in members){
+	function updateGroups():Void {
+		for (i in members) {
             i.kill();
         }
         if(room.roomActive){            
