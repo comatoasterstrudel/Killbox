@@ -84,7 +84,7 @@ class LeftRoom extends Room
 			var removeThese:Array<FlxSprite> = [];
 			
 			if(boxData.status == LEFT_CONVEYOR){
-				if(box.x < 200){
+				if (box.x < 175) {
 					box.velocity.x = 0;
 					boxData.status = LEFT_SLIDING;
 					FlxTween.tween(box, {x: 150}, 1, {ease: FlxEase.quartOut, onComplete: function(f):Void{
@@ -123,7 +123,29 @@ class LeftRoom extends Room
 	}
 
 	function handleBackConveyor():Void {
-		//
+		for (box in boxBackConveyorSprites) {
+			var boxData = playState.getBoxByID(box.ID);
+
+			var removeThese:Array<FlxSprite> = [];
+
+			if (boxData.status == LEFT_BACK_CONVEYOR) {
+				if (box.x > 750) {
+					box.velocity.x = 0;
+					boxData.status = LEFT_SLIDING;
+					FlxTween.tween(box, {x: 775}, 1, {
+						ease: FlxEase.quartOut,
+						onComplete: function(f):Void {
+							boxData.status = LEFT_BACK_WAITING;
+						}
+					});
+				}
+			}
+
+			for (i in removeThese) {
+				boxBackConveyorSprites.remove(i, true);
+				i.destroy();
+			}
+		}	
 	}
 
 	override function sendBox(id:Int, boxSendType:BoxSendType):Void
