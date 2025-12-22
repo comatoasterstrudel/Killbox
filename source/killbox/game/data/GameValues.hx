@@ -18,6 +18,6 @@ class GameValues
 
 	public static function getMaterialRefillTime():Int
 	{
-		return 4;
+		return 6;
 	}
 }
