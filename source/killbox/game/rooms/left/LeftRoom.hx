@@ -10,7 +10,9 @@ class LeftRoom extends Room
 	var chainPulley:ChainPulley;
 	
 	var boxFrontConveyorSprites:FlxSpriteGroup;
-	
+	var boxBackConveyorSprites:FlxSpriteGroup;
+
+	var boxCounterBack:BoxCounter;
 	var boxCounterFront:BoxCounter;
 	
     override function setupRoom():Void{        
@@ -19,6 +21,12 @@ class LeftRoom extends Room
 		bgBack.scrollFactor.set(0, 0);
 		add(bgBack);  
         
+		boxBackConveyorSprites = new FlxSpriteGroup();
+		add(boxBackConveyorSprites);
+
+		boxCounterBack = new BoxCounter(this, boxBackConveyorSprites, 50);
+		add(boxCounterBack);
+		
 		bgFront = new FlxSprite().loadGraphic('assets/images/night/roomLeft/leftRoomPlaceholder.png');
 		bgFront.screenCenter();
 		add(bgFront);  
@@ -26,16 +34,15 @@ class LeftRoom extends Room
 		boxFrontConveyorSprites = new FlxSpriteGroup();
 		add(boxFrontConveyorSprites);
 		
+		boxCounterFront = new BoxCounter(this, boxFrontConveyorSprites);
+		add(boxCounterFront);
+		
 		boxPress = new BoxPress(pressBoxes);
 		add(boxPress);
 		
 		chainPulley = new ChainPulley(boxPress.startBoxPress);
 		add(chainPulley);
-				
-		boxCounterFront = new BoxCounter(this, boxFrontConveyorSprites);
-		boxCounterFront.camera = playState.camUI;
-		add(boxCounterFront);
-		
+
 		possibleMovements = [ 
             RIGHT => 'main'
         ];
@@ -45,8 +52,9 @@ class LeftRoom extends Room
 		super.update(elapsed);
 
 		bgBack.scrollFactor.set(0.65, 0.65);
-		
-		handleFrontConveyor();		
+		boxBackConveyorSprites.scrollFactor.set(.65, .65);
+		handleFrontConveyor();	
+		handleBackConveyor();	
 	}
 
 	function pressBoxes():Void
@@ -85,7 +93,7 @@ class LeftRoom extends Room
 				}
 			}
 			if (boxData.status != LEFT_PRESSED
-				&& boxData.status != LEFT_PRESSED_SLIDING
+				&& boxData.status != LEFT_PRESSED_CONVEYOR
 				&& boxPress.blockBoxes) // dont let boxes go through the conveyor while its down lol
 			{
 				if ((box.x) <= (boxPress.pressBottom.x + boxPress.pressBottom.width))
@@ -95,10 +103,10 @@ class LeftRoom extends Room
 			}
 			if (boxData.status == LEFT_PRESSED && !boxPress.pressing)
 			{
-				playState.getBoxByID(box.ID).status = LEFT_PRESSED_SLIDING;
+				playState.getBoxByID(box.ID).status = LEFT_PRESSED_CONVEYOR;
 				box.velocity.x = -GameValues.getConveyorSpeed();
 			}
-			if (boxData.status == LEFT_PRESSED_SLIDING && ((box.x + box.width) < 0))
+			if (boxData.status == LEFT_PRESSED_CONVEYOR && ((box.x + box.width) < 0))
 			{
 				box.velocity.x = 0;
 				playState.sendBox(box.ID, LEFT_TO_LEFT_BACK);
@@ -114,11 +122,18 @@ class LeftRoom extends Room
 		}	
 	}
 
+	function handleBackConveyor():Void {
+		//
+	}
+
 	override function sendBox(id:Int, boxSendType:BoxSendType):Void
 	{
 		if (boxSendType == MAIN_TO_LEFT)
 		{
 			addBoxToFront(id);
+		}
+		if (boxSendType == LEFT_TO_LEFT_BACK) {
+			addBoxToBack(id);
 		}
 	}
 
@@ -130,5 +145,13 @@ class LeftRoom extends Room
 		boxFrontConveyorSprites.add(box);
 
 		playState.getBoxByID(id).status = LEFT_CONVEYOR;
+	}
+	function addBoxToBack(id:Int):Void {
+		var box = new FlxSprite(-100, 220).makeGraphic(50, 25, 0xFF323232);
+		box.ID = id;
+		box.velocity.x = GameValues.getConveyorSpeed();
+		boxBackConveyorSprites.add(box);
+
+		playState.getBoxByID(id).status = LEFT_BACK_CONVEYOR;
 	}
 } 

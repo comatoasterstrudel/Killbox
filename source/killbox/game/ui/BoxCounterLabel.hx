@@ -7,9 +7,11 @@ class BoxCounterLabel extends FlxSpriteGroup
     var text:FlxText;
     var bg:FlxSprite;
     
-    public function new(members:Array<FlxSprite>):Void{
+	var yOffset:Float = 100;
+
+	public function new(boxes:Array<FlxSprite>, yOffset:Float = 100):Void {
         super();
-        
+
         visible = false;
         
         bg = new FlxSprite().loadGraphic('assets/images/night/boxCounterBg.png');
@@ -18,8 +20,9 @@ class BoxCounterLabel extends FlxSpriteGroup
         text = new FlxText(0,0,0,'', 25);
         add(text);
         
-        this.boxes = members;
-        
+		this.boxes = boxes;
+		this.yOffset = yOffset;
+
         updateLabel();
     }
     
@@ -39,7 +42,7 @@ class BoxCounterLabel extends FlxSpriteGroup
                 xPos.push(i.x + i.width / 2);
                 yPos.push(i.y + i.height / 2);
             }
-            text.setPosition(Utilities.getAverage(xPos) - text.width / 2, (Utilities.getAverage(yPos) - text.height / 2) - 100);
+			text.setPosition(Utilities.getAverage(xPos) - text.width / 2, (Utilities.getAverage(yPos) - text.height / 2) - yOffset);
             bg.setPosition(text.x + text.width / 2 - bg.width / 2, text.y + text.height / 2 - bg.height / 2);
             text.y -= 10;
         } else {

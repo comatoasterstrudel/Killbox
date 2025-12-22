@@ -1,17 +1,21 @@
 package killbox.game.ui;
 
 class BoxCounter extends FlxTypedSpriteGroup<BoxCounterLabel>
-{
-    final DISTANCE:Float = 10;
-    
+{    
     var room:Room;
     var boxGroup:FlxSpriteGroup;
     
-    public function new (room:Room, boxGroup:FlxSpriteGroup):Void{
+	var yOffset:Float = 100;
+
+	public function new(room:Room, boxGroup:FlxSpriteGroup, yOffset:Float = 100):Void {
         super();
         
         this.room = room;
         this.boxGroup = boxGroup;
+		this.yOffset = yOffset;
+
+		this.camera = boxGroup.camera;
+		this.scrollFactor.set(boxGroup.scrollFactor.x, boxGroup.scrollFactor.y);
         
         new FlxTimer().start(.5, function(tmr):Void{
             tmr.reset();
@@ -52,7 +56,7 @@ class BoxCounter extends FlxTypedSpriteGroup<BoxCounterLabel>
             
             for(i in 0...groupedBoxes.length){
                 if(members.length - 1 < i){ //there isnt a label for this group, so make one
-                    var label = new BoxCounterLabel(groupedBoxes[i]);
+					var label = new BoxCounterLabel(groupedBoxes[i], yOffset);
                     add(label);
                 } else {
                     var label = members[i];

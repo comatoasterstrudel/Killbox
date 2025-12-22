@@ -22,6 +22,9 @@ class MainRoom extends Room
 		boxSprites = new FlxSpriteGroup();
 		add(boxSprites);
 		
+		boxCounter = new BoxCounter(this, boxSprites, 70);
+		add(boxCounter);
+		
 		bgFront = new FlxSprite().loadGraphic('assets/images/night/roomMain/mainRoomPlaceholder.png');
 		bgFront.screenCenter();
 		add(bgFront);  
@@ -31,11 +34,7 @@ class MainRoom extends Room
 		
 		materialMeter = new MaterialMeter();
 		add(materialMeter);
-		
-		boxCounter = new BoxCounter(this, boxSprites);
-		boxCounter.camera = playState.camUI;
-		add(boxCounter);
-		
+
         possibleMovements = [
             LEFT => 'left',
 		UP => 'top',
