@@ -45,7 +45,10 @@ class MainRoom extends Room
 	{
 		super.update(elapsed);
 
-		bgBack.scrollFactor.set(0.6, 0.6);
+		for (sprite in [bgBack, boxSprites, boxCounter]) {
+			sprite.scrollFactor.set(0.6, 0.6);
+		}
+		
 		handleBoxButton();
 		handleBoxPhysics();
 		materialMeter.updateMaterialMeter(playState.availableMaterials, playState.timeUntilNextMaterial);

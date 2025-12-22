@@ -51,9 +51,10 @@ class LeftRoom extends Room
 	{
 		super.update(elapsed);
 
-		bgBack.scrollFactor.set(0.65, 0.65);
-		boxBackConveyorSprites.scrollFactor.set(.65, .65);
-		boxCounterBack.scrollFactor.set(.65, .65);
+		for (sprite in [bgBack, boxBackConveyorSprites, boxCounterBack]) {
+			sprite.scrollFactor.set(0.65, 0.65);
+		}
+		
 		handleFrontConveyor();	
 		handleBackConveyor();	
 	}
