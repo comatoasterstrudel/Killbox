@@ -22,10 +22,15 @@ class FlashlightHolder extends FlxSpriteGroup
     override function update(elapsed:Float):Void{
         super.update(elapsed);
         
-        if(Cursor.mouseIsTouching(holderBack) && FlxG.mouse.justReleased){
-            holdingLight = !holdingLight;
-            updateHolderSprite();
-        }        
+		if (Cursor.mouseIsTouching(holderBack)) {
+			holderBack.color = 0xFF424242;
+			if (FlxG.mouse.justReleased) {
+				holdingLight = !holdingLight;
+				updateHolderSprite();
+			}
+		} else {
+			holderBack.color = 0xFF353535;
+		}    
     }
     
     function updateHolderSprite():Void{
