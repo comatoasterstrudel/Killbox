@@ -38,7 +38,7 @@ class MainRoom extends Room
 		
         possibleMovements = [
             LEFT => 'left',
-            UP => 'ceiling',
+		UP => 'top',
             RIGHT => 'right',
         ];
     }

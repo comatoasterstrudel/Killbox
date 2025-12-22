@@ -53,7 +53,7 @@ class PlayState extends FlxState
 		addRoom('main');
 		addRoom('left');
 		addRoom('right');
-		addRoom('ceiling');
+		addRoom('top');
 		
 		movementUI = new MovementUI(changeRoom);
 		movementUI.camera = camUI;

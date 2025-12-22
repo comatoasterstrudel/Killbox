@@ -33,8 +33,8 @@ class Room extends FlxSpriteGroup
                 return new LeftRoom(playState);
             case 'right':
                 return new RightRoom(playState);
-            case 'ceiling':
-                return new MainRoomCeiling(playState);
+			case 'top':
+				return new TopRoom(playState);
             default: 
                 return new Room(playState);
         }
