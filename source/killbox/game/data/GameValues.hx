@@ -11,4 +11,13 @@ class GameValues
     public static function getPressSpeed():Float{
         return 2.5;
     }
+	public static function getMaxMaterials():Int
+	{
+		return 3;
+	}
+
+	public static function getMaterialRefillTime():Int
+	{
+		return 4;
+	}
 }

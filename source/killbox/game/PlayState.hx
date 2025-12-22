@@ -23,8 +23,17 @@ class PlayState extends FlxState
 	public var boxes:Array<Box> = [];
 	public var boxIdAssignment:Int = 0;
 	
+	// GAME STUFF
+	public var availableMaterials:Int = GameValues.getMaxMaterials();
+	public var timeUntilNextMaterial:Float = 0;
+	
 	override public function create()
-	{
+	{		
+		#if debug
+		FlxG.watch.add(this, "availableMaterials");
+		FlxG.watch.add(this, "timeUntilNextMaterial");
+		#end
+		
 		camGame = new FlxCamera();
 		camGame.bgColor = FlxColor.WHITE;
 		camGame.zoom = 1.05;
@@ -72,7 +81,32 @@ class PlayState extends FlxState
 		flashlightActive = FlxG.mouse.pressedRight;
 		updateFlashlight();
 		
+		updateMaterialTimer(elapsed);
+		
 		super.update(elapsed);
+	}
+	
+	function updateMaterialTimer(elapsed:Float):Void
+	{
+		if (availableMaterials > GameValues.getMaxMaterials())
+		{
+			availableMaterials = GameValues.getMaxMaterials();
+		}
+		if (availableMaterials < GameValues.getMaxMaterials())
+		{
+			timeUntilNextMaterial += elapsed;
+
+			if (timeUntilNextMaterial >= GameValues.getMaterialRefillTime())
+			{
+				timeUntilNextMaterial = 0;
+				availableMaterials++;
+			}
+		} else
+		{
+			timeUntilNextMaterial = 0;
+		}
+
+		//
 	}
 	
 	function updateFlashlight():Void
