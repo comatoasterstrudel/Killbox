@@ -59,9 +59,14 @@ class BoxCounter extends FlxTypedSpriteGroup<BoxCounterLabel>
                     var label = members[i];
                     label.revive();
                     label.boxes = groupedBoxes[i];
-                    label.updateLabel();
+					label.updateLabel(FlxG.elapsed);
                 }
             }
+            
+			for (i in members) {
+				if (!i.alive)
+					i.alpha = 0;
+			}
             
             groupedBoxes = [];            
         }

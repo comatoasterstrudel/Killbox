@@ -22,7 +22,7 @@ class MainRoom extends Room
 		boxSprites = new FlxSpriteGroup();
 		add(boxSprites);
 		
-		boxCounter = new BoxCounter(this, boxSprites, 70);
+		boxCounter = new BoxCounter(this, boxSprites, 40);
 		add(boxCounter);
 		
 		bgFront = new FlxSprite().loadGraphic('assets/images/night/roomMain/mainRoomPlaceholder.png');

@@ -23,16 +23,18 @@ class BoxCounterLabel extends FlxSpriteGroup
 		this.boxes = boxes;
 		this.yOffset = yOffset;
 
-        updateLabel();
+		alpha = 0;
+
+		updateLabel(FlxG.elapsed);
     }
     
     override function update(elapsed:Float):Void{
         super.update(elapsed);
         
-        updateLabel();
+		updateLabel(elapsed);
     }
     
-    public function updateLabel():Void{
+	public function updateLabel(elapsed:Float):Void {
         if(boxes.length > 1){
             visible = true;
             text.text = Std.string(boxes.length);
@@ -42,11 +44,14 @@ class BoxCounterLabel extends FlxSpriteGroup
                 xPos.push(i.x + i.width / 2);
                 yPos.push(i.y + i.height / 2);
             }
-			text.setPosition(Utilities.getAverage(xPos) - text.width / 2, (Utilities.getAverage(yPos) - text.height / 2) - yOffset);
+			var targetPosition = new FlxPoint(Utilities.getAverage(xPos) - text.width / 2, (Utilities.getAverage(yPos) - text.height / 2) - yOffset);
+			text.setPosition(Utilities.lerpThing(text.x, targetPosition.x, elapsed, 15), Utilities.lerpThing(text.y, targetPosition.y, elapsed, 15));
+			alpha = Utilities.lerpThing(alpha, 1, elapsed, 5);
             bg.setPosition(text.x + text.width / 2 - bg.width / 2, text.y + text.height / 2 - bg.height / 2);
             text.y -= 10;
         } else {
             visible = false;
+			alpha = 0;
         }
     }
 }
