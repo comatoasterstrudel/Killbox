@@ -6,6 +6,11 @@
       "version": "5.8.0"
     },
     {
+      "name": "flixel-addons",
+      "type": "haxelib",
+      "version": null
+    },
+    {
       "name": "hscript",
       "type": "haxelib",
       "version": null

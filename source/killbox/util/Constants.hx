@@ -32,4 +32,8 @@ class Constants{
 	 * How far the chain on the chain pulley will move down
 	 */
 	public static final CHAIN_PULLEY_PRESS_DOWN_POSITION_ADDITIVE:Float = 200;
+	/**
+	 * How long it will take for the flashlight charge bar to disappear
+	 */
+	public static final FLASHLIGHT_CHARGE_BAR_INACTIVITY_TIME:Float = 0.8;
 }

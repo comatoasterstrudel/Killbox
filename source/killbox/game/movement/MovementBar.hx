@@ -18,7 +18,7 @@ class MovementBar extends FlxSprite
         this.movementType = movementType;
         this.movementUI = movementUI;
         
-		loadGraphic('assets/images/night/movement.png');
+		loadGraphic('assets/images/night/ui/movement.png');
 		setGraphicSize(Std.int(width * .7));
 		updateHitbox();
 		screenCenter();
@@ -29,9 +29,11 @@ class MovementBar extends FlxSprite
             case LEFT:
 				angle = 90;
                 x -= ((FlxG.width / 2) - buttonSpacing);
+				y -= 80;
             case RIGHT:
 				angle = 270;
                 x += ((FlxG.width / 2) - buttonSpacing); 
+				y -= 80;
             case UP:
                 angle = 180;
                 y -= ((FlxG.height / 2) - buttonSpacing); 

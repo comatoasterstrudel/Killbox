@@ -20,6 +20,8 @@ class PlayState extends FlxState
 	var flashlightActive:Bool = false;
 	var flashlightSprite:FlxSprite;
 	
+	var flashlightChargeBar:FlashlightChargeBar;
+	
 	public var boxes:Array<Box> = [];
 	public var boxIdAssignment:Int = 0;
 	
@@ -60,7 +62,6 @@ class PlayState extends FlxState
 		
 		movementUI = new MovementUI(changeRoom);
 		movementUI.camera = camUI;
-		add(movementUI);
 
 		curRoom = 'main';
 		updateActiveRooms();
@@ -71,6 +72,12 @@ class PlayState extends FlxState
 		flashlightSprite.alpha = .5;
 		flashlightSprite.camera = camGame;
 		add(flashlightSprite);
+
+		flashlightChargeBar = new FlashlightChargeBar();
+		flashlightChargeBar.camera = camUI;
+		add(flashlightChargeBar);
+
+		add(movementUI);
 
 		updateFlashlight(FlxG.elapsed);
 		
@@ -132,6 +139,7 @@ class PlayState extends FlxState
 				flashlightBattery = GameValues.getMaxFlashlightBattery();
 			}
 		}
+		flashlightChargeBar.updateBar(flashlightBattery, GameValues.getMaxFlashlightBattery(), elapsed, !flashlightInCharger);
 	}
 	
 	function updateCameraPositions(elapsed:Float):Void

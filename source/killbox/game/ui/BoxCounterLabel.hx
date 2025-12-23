@@ -14,7 +14,7 @@ class BoxCounterLabel extends FlxSpriteGroup
 
         visible = false;
         
-        bg = new FlxSprite().loadGraphic('assets/images/night/boxCounterBg.png');
+		bg = new FlxSprite().loadGraphic('assets/images/night/ui/boxCounterBg.png');
         add(bg);
         
         text = new FlxText(0,0,0,'', 25);
