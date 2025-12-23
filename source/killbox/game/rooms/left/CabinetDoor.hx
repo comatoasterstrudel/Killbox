@@ -19,19 +19,21 @@ class CabinetDoor extends FlxSprite
         maskShader.update();
     }
     
-    public function openDoor(onComplete:Void->Void):Void{
+	public function openDoor(onComplete:Void->Void = null):Void {
         FlxTween.cancelTweensOf(this);
         y = 0;
         FlxTween.tween(this, {y: -500}, GameValues.getCabinetDoorOpenTime(), {ease: FlxEase.quartOut, onComplete: function(F):Void{
-            onComplete();
+				if (onComplete != null)
+					onComplete();
         }});
     }
     
-    public function closeDoor(onComplete:Void->Void):Void{
+	public function closeDoor(onComplete:Void->Void = null):Void {
         FlxTween.cancelTweensOf(this);
         y = -500;
         FlxTween.tween(this, {y: 0}, GameValues.getCabinetDoorOpenTime(), {ease: FlxEase.quartOut, onComplete: function(F):Void{
-            onComplete();
+				if (onComplete != null)
+					onComplete();
         }});
     }
 }

@@ -25,12 +25,10 @@ class GameValues
 	public static function getCabinetDoorOpenTime():Float {
 		return .7;
 	}
-
 	public static function getInsideCabinetHitMarkerSpeed():Float {
 		return 400;
 	}
-
-	public static function getCabinetLauncherCooldown():Float {
+	public static function getSpringTime():Float {
 		return 5;
 	}
 }

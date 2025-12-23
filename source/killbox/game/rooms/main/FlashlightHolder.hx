@@ -24,7 +24,7 @@ class FlashlightHolder extends FlxSpriteGroup
         
 		if (Cursor.mouseIsTouching(holderBack)) {
 			holderBack.color = 0xFF424242;
-			if (FlxG.mouse.justReleased) {
+			if (FlxG.mouse.justPressed) {
 				holdingLight = !holdingLight;
 				updateHolderSprite();
 			}

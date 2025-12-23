@@ -26,7 +26,7 @@ class InsideCabinet extends FlxSpriteGroup
         cabinetBack.color = 0xFF070707;
         add(cabinetBack);
         
-        hitLine = new FlxSprite(440, 580).makeGraphic(550, 30, FlxColor.GRAY);
+		hitLine = new FlxSprite(440, 600).makeGraphic(550, 30, FlxColor.GRAY);
         add(hitLine);
         
         hitTarget = new FlxSprite(700, 560).makeGraphic(40, 40, FlxColor.CYAN);

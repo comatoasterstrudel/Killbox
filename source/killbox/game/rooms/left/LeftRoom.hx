@@ -4,10 +4,13 @@ class LeftRoom extends Room
 {
 	var bgBack:FlxSprite;
 	var bgFront:FlxSprite;
-    
+	var bgTube:FlxSprite;
+
 	var boxPress:BoxPress;
 	
 	var chainPulley:ChainPulley;
+	
+	var boxSpring:BoxSpring;
 	
 	var boxFrontConveyorSprites:FlxSpriteGroup;
 	var boxBackConveyorSprites:FlxSpriteGroup;
@@ -28,11 +31,19 @@ class LeftRoom extends Room
 		bgBack.scrollFactor.set(0, 0);
 		add(bgBack);  
         
+		boxSpring = new BoxSpring();
+		add(boxSpring);
+		
 		boxBackConveyorSprites = new FlxSpriteGroup();
 		add(boxBackConveyorSprites);
 
 		boxCounterBack = new BoxCounter(this, boxBackConveyorSprites, 30);
 		add(boxCounterBack);
+		
+		bgTube = new FlxSprite().loadGraphic('assets/images/night/rooms/left/leftRoomTube.png');
+		bgTube.screenCenter();
+		bgTube.scrollFactor.set(0, 0);
+		add(bgTube);  
 		
 		insideCabinet = new InsideCabinet(onCabinetGameFinished);
 		add(insideCabinet);
@@ -44,7 +55,7 @@ class LeftRoom extends Room
 		bgCabinet.screenCenter();
 		add(bgCabinet);
 
-		cabinetButton = new FlxSprite(480, 480).makeGraphic(100, 30, 0xFF9EBDAF);
+		cabinetButton = new FlxSprite(480, 495).makeGraphic(100, 25, 0xFF9EBDAF);
 		add(cabinetButton);
 		
 		bgFront = new FlxSprite().loadGraphic('assets/images/night/rooms/left/leftRoomPlaceholder.png');
@@ -71,15 +82,17 @@ class LeftRoom extends Room
 	{
 		super.update(elapsed);
 
-		for (sprite in [bgBack, boxBackConveyorSprites, boxCounterBack]) {
+		for (sprite in [bgBack, boxBackConveyorSprites, boxCounterBack, boxSpring]) {
 			sprite.scrollFactor.set(0.6, 0.6);
 		}
 		
 		for (sprite in [bgCabinet, cabinetButton, cabinetDoor]) {
-			sprite.scrollFactor.set(0.73, 0.73);
+			sprite.scrollFactor.set(0.85, 0.85);
 		}
 
-		insideCabinet.scrollFactor.set(.7, .7);
+		insideCabinet.scrollFactor.set(.82, .82);
+
+		bgTube.scrollFactor.set(.8, .8);
 		
 		handleFrontConveyor();	
 		handleBackConveyor();	
@@ -160,13 +173,23 @@ class LeftRoom extends Room
 			if (boxData.status == LEFT_BACK_CONVEYOR) {
 				if (box.x > 750) {
 					box.velocity.x = 0;
-					boxData.status = LEFT_SLIDING;
+					boxData.status = LEFT_BACK_SLIDING;
 					FlxTween.tween(box, {x: 775}, 1, {
 						ease: FlxEase.quartOut,
 						onComplete: function(f):Void {
 							boxData.status = LEFT_BACK_WAITING;
 						}
 					});
+				}
+			} else if (boxData.status == LEFT_BACK_SPRINGING_BACKWARDS) {
+				if (box.y > 220) {
+					box.y = 220;
+					box.velocity.y = 0;
+					box.velocity.x = GameValues.getConveyorSpeed();
+					boxData.status = LEFT_BACK_CONVEYOR;
+					box.angularAcceleration = 0;
+					box.angularVelocity = 0;
+					box.angle = 0;
 				}
 			}
 
@@ -187,7 +210,7 @@ class LeftRoom extends Room
 					cabinetButton.color = 0xFF7A9A8B;
 			}
 
-			if (FlxG.mouse.justReleased) {
+			if (FlxG.mouse.justPressed) {
 				if (cabinetStatus == CLOSED) {
 					cabinetStatus = OPENING;
 					insideCabinet.prepGame();
@@ -210,16 +233,45 @@ class LeftRoom extends Room
 	}
 
 	function onCabinetGameFinished(result:InsideCabinetStatus):Void {
-		cabinetDoor.closeDoor(function():Void {
-			if (result == LOSS) {
-				//
-			} else if (result == WIN) {
-				//
+		cabinetDoor.closeDoor();
+
+		var springThese:Array<FlxSprite> = [];
+
+		for (box in boxBackConveyorSprites) {
+			if ((box.x + 5) > (boxSpring.springTop.x)
+				&& (playState.getBoxByID(box.ID).status == LEFT_BACK_CONVEYOR
+					|| playState.getBoxByID(box.ID).status == LEFT_BACK_SLIDING
+					|| playState.getBoxByID(box.ID).status == LEFT_BACK_WAITING)) { // press that shit boy!
+				springThese.push(box);
+				FlxTween.cancelTweensOf(box);
 			}
-			cabinetStatus = RECHARGING;
-			new FlxTimer().start(GameValues.getCabinetLauncherCooldown(), function(f):Void {
-				cabinetStatus = CLOSED;
-			});
+		}
+
+		if (result == LOSS) {
+			for (box in springThese) {
+				playState.getBoxByID(box.ID).status = LEFT_BACK_SPRINGING_BACKWARDS;
+				box.velocity.y = FlxG.random.float(-200, -260);
+				box.velocity.x = FlxG.random.float(-100, -200);
+				box.angularAcceleration = FlxG.random.float(-300, -10);
+				FlxTween.tween(box.velocity, {y: 200}, FlxG.random.float(2, 4));
+			}
+		} else if (result == WIN) {
+			for (box in springThese) {
+				playState.getBoxByID(box.ID).status = LEFT_BACK_SPRINGING_CORRECT;
+				FlxTween.tween(box, {y: -box.height, angularVelocity: FlxG.random.float(-200, 200)}, FlxG.random.float(.4, .7), {
+					ease: FlxEase.quartOut,
+					onComplete: function(f):Void {
+						playState.sendBox(box.ID, LEFT_BACK_TO_RIGHT);
+						boxBackConveyorSprites.remove(box, true);
+						box.destroy();
+					}
+				});
+			}
+		}
+		boxSpring.springUp();
+		cabinetStatus = RECHARGING;
+		new FlxTimer().start(GameValues.getSpringTime(), function(f):Void {
+			cabinetStatus = CLOSED;
 		});
 	}
 
