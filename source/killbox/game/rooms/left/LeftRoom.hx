@@ -184,6 +184,7 @@ class LeftRoom extends Room
 			} else if (boxData.status == LEFT_BACK_SPRINGING_BACKWARDS) {
 				if (box.y > 220) {
 					box.y = 220;
+					FlxTween.cancelTweensOf(box);
 					box.velocity.y = 0;
 					box.velocity.x = GameValues.getConveyorSpeed();
 					boxData.status = LEFT_BACK_CONVEYOR;
