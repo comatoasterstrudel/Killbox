@@ -15,6 +15,13 @@ class LeftRoom extends Room
 	var boxCounterBack:BoxCounter;
 	var boxCounterFront:BoxCounter;
 	
+	var bgCabinet:FlxSprite;
+	var insideCabinet:InsideCabinet;
+	var cabinetDoor:CabinetDoor;
+	var cabinetButton:FlxSprite;
+
+	var cabinetStatus:CabinetStatus = CLOSED;
+	
     override function setupRoom():Void{        
 		bgBack = new FlxSprite().loadGraphic('assets/images/night/rooms/left/leftRoomBack.png');
 		bgBack.screenCenter();
@@ -26,6 +33,19 @@ class LeftRoom extends Room
 
 		boxCounterBack = new BoxCounter(this, boxBackConveyorSprites, 30);
 		add(boxCounterBack);
+		
+		insideCabinet = new InsideCabinet(onCabinetGameFinished);
+		add(insideCabinet);
+
+		cabinetDoor = new CabinetDoor();
+		add(cabinetDoor);
+
+		bgCabinet = new FlxSprite().loadGraphic('assets/images/night/rooms/left/leftRoomCabinet.png');
+		bgCabinet.screenCenter();
+		add(bgCabinet);
+
+		cabinetButton = new FlxSprite(480, 480).makeGraphic(100, 30, 0xFF9EBDAF);
+		add(cabinetButton);
 		
 		bgFront = new FlxSprite().loadGraphic('assets/images/night/rooms/left/leftRoomPlaceholder.png');
 		bgFront.screenCenter();
@@ -55,8 +75,15 @@ class LeftRoom extends Room
 			sprite.scrollFactor.set(0.6, 0.6);
 		}
 		
+		for (sprite in [bgCabinet, cabinetButton, cabinetDoor]) {
+			sprite.scrollFactor.set(0.73, 0.73);
+		}
+
+		insideCabinet.scrollFactor.set(.7, .7);
+		
 		handleFrontConveyor();	
 		handleBackConveyor();	
+		handleCabinet();
 	}
 
 	function pressBoxes():Void
@@ -148,6 +175,52 @@ class LeftRoom extends Room
 				i.destroy();
 			}
 		}	
+	}
+	function handleCabinet():Void {
+		if (Cursor.mouseIsTouching(cabinetButton)) {
+			switch (cabinetStatus) {
+				case CLOSED | PLAYING:
+					cabinetButton.color = 0xFFD1F5E4;
+				case RECHARGING:
+					cabinetButton.color = 0xFF283C33;
+				default:
+					cabinetButton.color = 0xFF7A9A8B;
+			}
+
+			if (FlxG.mouse.justReleased) {
+				if (cabinetStatus == CLOSED) {
+					cabinetStatus = OPENING;
+					insideCabinet.prepGame();
+					cabinetDoor.openDoor(function():Void {
+						cabinetStatus = PLAYING;
+						insideCabinet.startGame();
+					});
+				} else if (cabinetStatus == PLAYING) {
+					insideCabinet.submitAttempt();
+				}
+			}
+		} else {
+			switch (cabinetStatus) {
+				case RECHARGING:
+					cabinetButton.color = 0xFF283C33;
+				default:
+					cabinetButton.color = 0xFF9EBDAF;
+			}
+		}
+	}
+
+	function onCabinetGameFinished(result:InsideCabinetStatus):Void {
+		cabinetDoor.closeDoor(function():Void {
+			if (result == LOSS) {
+				//
+			} else if (result == WIN) {
+				//
+			}
+			cabinetStatus = RECHARGING;
+			new FlxTimer().start(GameValues.getCabinetLauncherCooldown(), function(f):Void {
+				cabinetStatus = CLOSED;
+			});
+		});
 	}
 
 	override function sendBox(id:Int, boxSendType:BoxSendType):Void
