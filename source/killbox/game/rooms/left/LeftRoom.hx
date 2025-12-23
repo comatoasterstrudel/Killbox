@@ -16,7 +16,7 @@ class LeftRoom extends Room
 	var boxCounterFront:BoxCounter;
 	
     override function setupRoom():Void{        
-		bgBack = new FlxSprite().loadGraphic('assets/images/night/roomLeft/leftRoomBack.png');
+		bgBack = new FlxSprite().loadGraphic('assets/images/night/rooms/left/leftRoomBack.png');
 		bgBack.screenCenter();
 		bgBack.scrollFactor.set(0, 0);
 		add(bgBack);  
@@ -27,7 +27,7 @@ class LeftRoom extends Room
 		boxCounterBack = new BoxCounter(this, boxBackConveyorSprites, 30);
 		add(boxCounterBack);
 		
-		bgFront = new FlxSprite().loadGraphic('assets/images/night/roomLeft/leftRoomPlaceholder.png');
+		bgFront = new FlxSprite().loadGraphic('assets/images/night/rooms/left/leftRoomPlaceholder.png');
 		bgFront.screenCenter();
 		add(bgFront);  
 

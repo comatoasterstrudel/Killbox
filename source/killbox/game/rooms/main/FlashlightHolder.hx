@@ -35,9 +35,9 @@ class FlashlightHolder extends FlxSpriteGroup
     
     function updateHolderSprite():Void{
         if(holdingLight){
-            holderFront.loadGraphic('assets/images/night/roomMain/flashHolderFull.png');
+			holderFront.loadGraphic('assets/images/night/rooms/main/flashHolderFull.png');
         } else {
-            holderFront.loadGraphic('assets/images/night/roomMain/flashHolderEmpty.png');
+			holderFront.loadGraphic('assets/images/night/rooms/main/flashHolderEmpty.png');
         }
     }
 }

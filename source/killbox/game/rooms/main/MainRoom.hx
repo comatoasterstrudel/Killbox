@@ -16,7 +16,7 @@ class MainRoom extends Room
 	
 	override function setupRoom():Void
 	{     
-		bgBack = new FlxSprite().loadGraphic('assets/images/night/roomMain/mainRoomPlaceholderBack.png');
+		bgBack = new FlxSprite().loadGraphic('assets/images/night/rooms/main/mainRoomPlaceholderBack.png');
 		bgBack.screenCenter();
 		bgBack.scrollFactor.set(0, 0);
 		add(bgBack);  
@@ -27,7 +27,7 @@ class MainRoom extends Room
 		boxCounter = new BoxCounter(this, boxSprites, 40);
 		add(boxCounter);
 		
-		bgFront = new FlxSprite().loadGraphic('assets/images/night/roomMain/mainRoomPlaceholder.png');
+		bgFront = new FlxSprite().loadGraphic('assets/images/night/rooms/main/mainRoomPlaceholder.png');
 		bgFront.screenCenter();
 		add(bgFront);  
 
