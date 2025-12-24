@@ -4,7 +4,7 @@ class PlayState extends FlxState
 {
 	var rooms:Map<String, Room> = [];
 	var roomList:Array<String> = [];
-	var curRoom:String = '';
+	public static var curRoom:String = '';
 	var roomGroup:FlxTypedGroup<Room>;
 	
 	var movementUI:MovementUI;

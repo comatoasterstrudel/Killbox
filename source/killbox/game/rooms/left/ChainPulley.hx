@@ -38,7 +38,7 @@ class ChainPulley extends FlxSpriteGroup
 				pressHandleWindingBack = false;
 			}
 		} else {
-			if(Cursor.mouseIsTouching(pressHandle) || pressHandlePressed){
+			if (Cursor.mouseIsTouching(pressHandle) && PlayState.curRoom == 'left' || pressHandlePressed && PlayState.curRoom == 'left') {
 				pressHandle.color = 0xFF806666;
 				
 				if(FlxG.mouse.pressed && !pressHandlePressed){
@@ -48,9 +48,10 @@ class ChainPulley extends FlxSpriteGroup
 			} else {
 				pressHandle.color = 0xFFD5C5C5;
 			}
+
 		
 			if(pressHandlePressed){
-				if(!FlxG.mouse.pressed){
+				if (!FlxG.mouse.pressed || PlayState.curRoom != 'left') {
 					pressHandlePressed = false;
 				} else {
 					pressHandle.y = Utilities.lerpThing(pressHandle.y, Constants.CHAIN_PULLEY_BASE_PRESS_HANDLE_POSITION + (Constants.CHAIN_PULLEY_PRESS_DOWN_POSITION_ADDITIVE * FlxMath.bound((FlxG.mouse.y - pressHandlePressedY) / (FlxG.height / 2.5), 0, 1)), elapsed, 5);

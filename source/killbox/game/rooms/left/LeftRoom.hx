@@ -213,7 +213,7 @@ class LeftRoom extends Room
 		}	
 	}
 	function handleCabinet():Void {
-		if (Cursor.mouseIsTouching(cabinetButton)) {
+		if (Cursor.mouseIsTouching(cabinetButton) && PlayState.curRoom == 'left') {
 			switch (cabinetStatus) {
 				case CLOSED | PLAYING:
 					cabinetButton.color = 0xFFD1F5E4;

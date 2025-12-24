@@ -13,8 +13,6 @@ class TopRoom extends Room
 	var computerMonitor:ComputerMonitor;
 	var monitorFront:FlxSprite;
 
-	var interactable:Bool = false;
-    
     override function setupRoom():Void{        
 		bgBack = new FlxSprite().loadGraphic('assets/images/night/rooms/top/topRoomBack.png');
 		bgBack.screenCenter();
@@ -56,14 +54,10 @@ class TopRoom extends Room
 	}
 
 	override function enterRoom():Void {
-		interactable = false;
-
 		computerMonitor.tranIn();
 	}
 
 	override function leaveRoom():Void {
-		interactable = false;
-
 		computerMonitor.tranOut();
 	}
 }
