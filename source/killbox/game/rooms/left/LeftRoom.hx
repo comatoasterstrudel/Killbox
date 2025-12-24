@@ -101,6 +101,8 @@ class LeftRoom extends Room
 
 	function pressBoxes():Void
 	{
+		var boxesPressed:Int = 0;
+		
 		for (box in boxFrontConveyorSprites)
 		{
 			if ((box.x + 5) < (boxPress.pressBottom.x + boxPress.pressBottom.width)
@@ -108,13 +110,18 @@ class LeftRoom extends Room
 					|| playState.getBoxByID(box.ID).status == LEFT_SLIDING
 					|| playState.getBoxByID(box.ID).status == LEFT_WAITING))
 			{ // press that shit boy!
-				box.scale.y = .5;
-				box.updateHitbox();
-				box.y += box.height;
-				FlxTween.cancelTweensOf(box);
-				box.x = 150;
-				box.velocity.x = 0;
-				playState.getBoxByID(box.ID).status = LEFT_PRESSED;
+				if (boxesPressed >= GameValues.getMaxWorkload()) {
+					box.alpha = .5;
+				} else {
+					box.scale.y = .5;
+					box.updateHitbox();
+					box.y += box.height;
+					FlxTween.cancelTweensOf(box);
+					box.x = 150;
+					box.velocity.x = 0;
+					playState.getBoxByID(box.ID).status = LEFT_PRESSED;
+				}
+				boxesPressed++;
 			}
 		}
 	}
@@ -136,7 +143,8 @@ class LeftRoom extends Room
 			}
 			if (boxData.status != LEFT_PRESSED
 				&& boxData.status != LEFT_PRESSED_CONVEYOR
-				&& boxPress.blockBoxes) // dont let boxes go through the conveyor while its down lol
+				&& boxPress.blockBoxes
+				&& box.alpha == 1) // dont let boxes go through the conveyor while its down lol
 			{
 				if ((box.x) <= (boxPress.pressBottom.x + boxPress.pressBottom.width))
 				{
@@ -156,6 +164,10 @@ class LeftRoom extends Room
 				removeThese.push(box);
 			}
 
+			if (box.alpha == .5 && !chainPulley.pressHandleDown && !chainPulley.pressHandleWindingBack) {
+				box.alpha = 1;
+			}
+			
 			for (i in removeThese)
 			{
 				boxFrontConveyorSprites.remove(i, true);
@@ -215,7 +227,9 @@ class LeftRoom extends Room
 				if (cabinetStatus == CLOSED) {
 					cabinetStatus = OPENING;
 					insideCabinet.prepGame();
-					cabinetDoor.openDoor(function():Void {
+					cabinetDoor.openDoor();
+
+					new FlxTimer().start(GameValues.getCabinetDoorOpenTime() / 2, function(F):Void {
 						cabinetStatus = PLAYING;
 						insideCabinet.startGame();
 					});
@@ -242,37 +256,57 @@ class LeftRoom extends Room
 			if ((box.x + 5) > (boxSpring.springTop.x)
 				&& (playState.getBoxByID(box.ID).status == LEFT_BACK_CONVEYOR
 					|| playState.getBoxByID(box.ID).status == LEFT_BACK_SLIDING
-					|| playState.getBoxByID(box.ID).status == LEFT_BACK_WAITING)) { // press that shit boy!
+					|| playState.getBoxByID(box.ID).status == LEFT_BACK_WAITING)) { // fling that shit boy!
 				springThese.push(box);
 				FlxTween.cancelTweensOf(box);
 			}
 		}
 
 		if (result == LOSS) {
+			var boxesFlung:Int = 0;
+
 			for (box in springThese) {
-				playState.getBoxByID(box.ID).status = LEFT_BACK_SPRINGING_BACKWARDS;
-				box.velocity.y = FlxG.random.float(-200, -260);
-				box.velocity.x = FlxG.random.float(-100, -200);
-				box.angularAcceleration = FlxG.random.float(-300, -10);
-				FlxTween.tween(box.velocity, {y: 200}, FlxG.random.float(2, 4));
+				if (boxesFlung >= GameValues.getMaxWorkload()) {
+					box.alpha = .5;
+				} else {
+					playState.getBoxByID(box.ID).status = LEFT_BACK_SPRINGING_BACKWARDS;
+					box.velocity.y = FlxG.random.float(-200, -260);
+					box.velocity.x = FlxG.random.float(-100, -200);
+					box.angularAcceleration = FlxG.random.float(-300, -10);
+					FlxTween.tween(box.velocity, {y: 200}, FlxG.random.float(2, 4));	
+				}
+
+				boxesFlung++;
 			}
 		} else if (result == WIN) {
+			var boxesFlung:Int = 0;
+
 			for (box in springThese) {
-				playState.getBoxByID(box.ID).status = LEFT_BACK_SPRINGING_CORRECT;
-				FlxTween.tween(box, {y: -box.height, angularVelocity: FlxG.random.float(-200, 200)}, FlxG.random.float(.4, .7), {
-					ease: FlxEase.quartOut,
-					onComplete: function(f):Void {
-						playState.sendBox(box.ID, LEFT_BACK_TO_RIGHT);
-						boxBackConveyorSprites.remove(box, true);
-						box.destroy();
-					}
-				});
+				if (boxesFlung >= GameValues.getMaxWorkload()) {
+					box.alpha = .5;
+				} else {
+					playState.getBoxByID(box.ID).status = LEFT_BACK_SPRINGING_CORRECT;
+					FlxTween.tween(box, {y: -box.height, angularVelocity: FlxG.random.float(-200, 200)}, FlxG.random.float(.4, .7), {
+						ease: FlxEase.quartOut,
+						onComplete: function(f):Void {
+							playState.sendBox(box.ID, LEFT_BACK_TO_RIGHT);
+							boxBackConveyorSprites.remove(box, true);
+							box.destroy();
+						}
+					});
+				}
+
+				boxesFlung++;
 			}
 		}
 		boxSpring.springUp();
 		cabinetStatus = RECHARGING;
 		new FlxTimer().start(GameValues.getSpringTime(), function(f):Void {
 			cabinetStatus = CLOSED;
+			for (box in springThese) {
+				if (box.alpha == .5)
+					box.alpha = 1;
+			}
 		});
 	}
 

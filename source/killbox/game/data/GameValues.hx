@@ -2,6 +2,9 @@ package killbox.game.data;
 
 class GameValues
 {
+	public static function getMaxWorkload():Int {
+		return 3;
+	}
     public static function getMovementSpeed():Float{
         return 0.6;
     }
@@ -23,7 +26,7 @@ class GameValues
 		return 5;
 	}
 	public static function getCabinetDoorOpenTime():Float {
-		return .7;
+		return .4;
 	}
 	public static function getInsideCabinetHitMarkerSpeed():Float {
 		return 400;

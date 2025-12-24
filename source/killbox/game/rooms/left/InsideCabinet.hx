@@ -26,13 +26,13 @@ class InsideCabinet extends FlxSpriteGroup
         cabinetBack.color = 0xFF070707;
         add(cabinetBack);
         
-		hitLine = new FlxSprite(440, 600).makeGraphic(550, 30, FlxColor.GRAY);
+		hitLine = new FlxSprite(430, 600).makeGraphic(560, 30, FlxColor.GRAY);
         add(hitLine);
         
         hitTarget = new FlxSprite(700, 560).makeGraphic(40, 40, FlxColor.CYAN);
         add(hitTarget);
         
-        hitMarker = new FlxSprite().makeGraphic(10, 60, FlxColor.BLUE);
+		hitMarker = new FlxSprite().makeGraphic(20, 80, FlxColor.BLUE);
         add(hitMarker);
         
         cabinetOverlay = new FlxSprite().loadGraphic('assets/images/night/rooms/left/cabinetBack.png');
@@ -100,7 +100,7 @@ class InsideCabinet extends FlxSpriteGroup
         FlxTween.tween(cabinetResult, {alpha: 1}, .5, {ease: FlxEase.quartOut});
         FlxTween.tween(cabinetResult.scale, {x: 1, y: 1}, .5, {ease: FlxEase.quartOut});
 
-        new FlxTimer().start(1.5, function(f):Void{
+		new FlxTimer().start(1, function(f):Void {
             onCabinetGameFinished(status);
             status = INACTIVE; 
         });

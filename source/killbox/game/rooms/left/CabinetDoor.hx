@@ -22,7 +22,9 @@ class CabinetDoor extends FlxSprite
 	public function openDoor(onComplete:Void->Void = null):Void {
         FlxTween.cancelTweensOf(this);
         y = 0;
-        FlxTween.tween(this, {y: -500}, GameValues.getCabinetDoorOpenTime(), {ease: FlxEase.quartOut, onComplete: function(F):Void{
+		FlxTween.tween(this, {y: -300}, GameValues.getCabinetDoorOpenTime(), {
+			ease: FlxEase.quartOut,
+			onComplete: function(F):Void {
 				if (onComplete != null)
 					onComplete();
         }});
@@ -30,7 +32,7 @@ class CabinetDoor extends FlxSprite
     
 	public function closeDoor(onComplete:Void->Void = null):Void {
         FlxTween.cancelTweensOf(this);
-        y = -500;
+		y = -300;
         FlxTween.tween(this, {y: 0}, GameValues.getCabinetDoorOpenTime(), {ease: FlxEase.quartOut, onComplete: function(F):Void{
 				if (onComplete != null)
 					onComplete();
