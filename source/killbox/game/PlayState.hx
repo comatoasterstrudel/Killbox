@@ -208,6 +208,8 @@ class PlayState extends FlxState
 
 		var room:Room = rooms.get(curRoom);
 
+		room.leaveRoom();
+		
 		for (direction in [MovementTypes.LEFT, MovementTypes.DOWN, MovementTypes.UP, MovementTypes.RIGHT])
 		{
 			if (room.possibleMovements.exists(direction) && room.possibleMovements.get(direction) == newRoom)
@@ -258,12 +260,16 @@ class PlayState extends FlxState
 	
 	function updateActiveRooms():Void{
 		for(i in roomList){
+			var previousStatus = rooms.get(i).roomActive;
+			
 			if(i == curRoom){
 				rooms.get(i).roomActive = true;
 			} else {
 				rooms.get(i).roomActive = false;
 			}
 			rooms.get(i).toggleRoomVisibility();
+			if (rooms.get(i).roomActive && !previousStatus)
+				rooms.get(i).enterRoom();
 		}
 	}
 	function getOppositeDirection(movementType:MovementTypes):MovementTypes

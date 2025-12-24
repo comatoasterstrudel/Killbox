@@ -24,6 +24,14 @@ class Room extends FlxSpriteGroup
 		//
 	}
     
+	public function enterRoom():Void {
+		//
+	}
+
+	public function leaveRoom():Void {
+		//
+	}
+    
     public static function getRoomFromName(room:String, playState:PlayState):Room
     {
         switch(room){

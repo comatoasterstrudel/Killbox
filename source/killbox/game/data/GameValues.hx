@@ -34,4 +34,7 @@ class GameValues
 	public static function getSpringTime():Float {
 		return 5;
 	}
+	public static function getComputerSpeed():Int {
+		return 1;
+	}
 }
