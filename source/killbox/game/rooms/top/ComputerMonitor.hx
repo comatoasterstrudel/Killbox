@@ -21,7 +21,7 @@ class ComputerMonitor extends FlxSpriteGroup
         
 		screen = new FlxSprite(145, 83).makeGraphic(390, 200, FlxColor.LIME);
         add(screen);
-		textTopLeft = new FlxText(screen.x + 10, screen.y + 5, 0, '(c) BOXATORY_INDUSTRIES');
+		textTopLeft = new FlxText(screen.x + 10, screen.y + 5, 0, '(c) COMPANY_NAME');
 		textTopLeft.setFormat(15, FlxColor.GREEN);
 		add(textTopLeft);
 
