@@ -37,4 +37,7 @@ class GameValues
 	public static function getComputerSpeed():Int {
 		return 1;
 	}
+	public static function roomTravelTime():Float {
+		return 1.5;
+	}
 }

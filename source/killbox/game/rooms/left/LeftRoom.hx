@@ -330,10 +330,14 @@ class LeftRoom extends Room
 	{
 		if (boxSendType == MAIN_TO_LEFT)
 		{
-			addBoxToFront(id);
+			new FlxTimer().start(GameValues.roomTravelTime(), function(f):Void {
+				addBoxToFront(id);
+			});
 		}
 		if (boxSendType == LEFT_TO_LEFT_BACK) {
-			addBoxToBack(id);
+			new FlxTimer().start(GameValues.roomTravelTime(), function(f):Void {
+				addBoxToBack(id);
+			});
 		}
 	}
 

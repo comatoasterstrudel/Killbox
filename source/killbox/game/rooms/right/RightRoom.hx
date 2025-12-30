@@ -15,6 +15,8 @@ class RightRoom extends Room
 
 	var boxCounter:BoxCounter;
 	
+	var confirmationKeypad:ConfirmationKeypad;
+	
     override function setupRoom():Void{        
 		bgBack = new FlxSprite().loadGraphic('assets/images/night/rooms/right/rightRoomBg.png');
 		bgBack.screenCenter();
@@ -40,6 +42,9 @@ class RightRoom extends Room
 		doorButton = new FlxSprite(158, 400).makeGraphic(70, 50, 0xFFB5F3CE);
 		add(doorButton);
         
+		confirmationKeypad = new ConfirmationKeypad();
+		add(confirmationKeypad);
+		
         possibleMovements = [
             LEFT => 'main'
         ];
@@ -149,7 +154,9 @@ class RightRoom extends Room
 	
 	override function sendBox(id:Int, boxSendType:BoxSendType):Void {
 		if (boxSendType == LEFT_BACK_TO_RIGHT) {
-			spawnBox(id);
+			new FlxTimer().start(GameValues.roomTravelTime(), function(f):Void {
+				spawnBox(id);				
+			});
 		}
 	}
 
