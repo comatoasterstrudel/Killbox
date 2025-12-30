@@ -97,6 +97,20 @@ class LeftRoom extends Room
 		handleFrontConveyor();	
 		handleBackConveyor();	
 		handleCabinet();
+		if (roomActive) {
+			#if debug
+			if (FlxG.keys.justPressed.ONE) {
+				var box = new Box(playState.getBoxID());
+				playState.boxes.push(box);
+				sendBox(box.ID, MAIN_TO_LEFT);
+			}
+			if (FlxG.keys.justPressed.TWO) {
+				var box = new Box(playState.getBoxID());
+				playState.boxes.push(box);
+				sendBox(box.ID, LEFT_TO_LEFT_BACK);
+			}
+			#end
+		}
 	}
 
 	function pressBoxes():Void
@@ -117,6 +131,7 @@ class LeftRoom extends Room
 					box.updateHitbox();
 					box.y += box.height;
 					FlxTween.cancelTweensOf(box);
+					FlxTween.cancelTweensOf(box.velocity);
 					box.x = 150;
 					box.velocity.x = 0;
 					playState.getBoxByID(box.ID).status = LEFT_PRESSED;
@@ -259,6 +274,7 @@ class LeftRoom extends Room
 					|| playState.getBoxByID(box.ID).status == LEFT_BACK_WAITING)) { // fling that shit boy!
 				springThese.push(box);
 				FlxTween.cancelTweensOf(box);
+				FlxTween.cancelTweensOf(box.velocity);
 			}
 		}
 
