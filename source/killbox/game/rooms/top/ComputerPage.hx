@@ -27,13 +27,17 @@ class ComputerPage extends FlxSpriteGroup
                 return new ComputerPageMain(name, changePage, screen);
             case 'finishProduction':
                 return new ComputerPageFinishProduction(name, changePage, screen);
+			case 'acquireCode':
+				return new ComputerPageAcquireCode(name, changePage, screen);
             default:
                 return new ComputerPage(name, changePage, screen);                
         }
     }
     
-    function addButton(xPos:Int, yPos:Int, text:String, pressedFunction:Void->Void):Void{
-        add(new ComputerButton(this, xPos, yPos, text, pressedFunction));
+	function addButton(xPos:Int, yPos:Int, text:String, pressedFunction:Void->Void):ComputerButton {
+		var button = new ComputerButton(this, xPos, yPos, text, pressedFunction);
+		add(button);
+		return button;
     }
     
     function setupPage():Void{

@@ -3,6 +3,7 @@ import flixel.FlxG;
 import flixel.FlxGame;
 import flixel.FlxSprite;
 import flixel.FlxState;
+import flixel.effects.FlxFlicker;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.group.FlxSpriteGroup;
 import flixel.math.FlxMath;

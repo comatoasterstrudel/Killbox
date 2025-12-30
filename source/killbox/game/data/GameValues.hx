@@ -40,4 +40,7 @@ class GameValues
 	public static function roomTravelTime():Float {
 		return 1.5;
 	}
+	public static function getVerificationCodeLength():Int {
+		return 4;
+	}
 }

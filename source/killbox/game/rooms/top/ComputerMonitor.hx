@@ -32,6 +32,7 @@ class ComputerMonitor extends FlxSpriteGroup
 
 		addPage('main');
 		addPage('finishProduction');
+		addPage('acquireCode');
 
 		curPage = 'main';
 		updateActivePages();

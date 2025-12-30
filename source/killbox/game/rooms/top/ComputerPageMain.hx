@@ -7,7 +7,7 @@ class ComputerPageMain extends ComputerPage{
 		});
 		
 		addButton(Std.int(screen.x + 10), Std.int(screen.y + 65), 'ACQUIRE_CODE', function():Void{
-			//
+			changePage('acquireCode');
 		});
 		
 		addButton(Std.int(screen.x + 10), Std.int(screen.y + 90), 'ECTOPLASM', function():Void{
