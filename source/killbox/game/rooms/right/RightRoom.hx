@@ -9,6 +9,8 @@ class RightRoom extends Room
 	var boxSprites:FlxSpriteGroup;
 
 	var doorButton:FlxSprite;
+	var doorButtonPressed:Bool = false;
+	
 	var conveyorDoor:ConveyorDoor;
 
 	var boxCounter:BoxCounter;
@@ -66,17 +68,20 @@ class RightRoom extends Room
 
 	function manageDoorButton():Void {
 		if (Cursor.mouseIsTouching(doorButton)) {
-			if (FlxG.mouse.pressed) {
+			if (FlxG.mouse.pressed && doorButtonPressed || FlxG.mouse.justPressed) {
+				doorButtonPressed = true;
 				doorButton.color = 0xFF3C915E;
 
 				conveyorDoor.updateDoorStatus(true);
 			} else {
+				doorButtonPressed = false;
 				doorButton.color = 0xFF90C7A6;
 
 				conveyorDoor.updateDoorStatus(false);
 			}
 		} else {
 			doorButton.color = 0xFFB5F3CE;
+			doorButtonPressed = false;
 			conveyorDoor.updateDoorStatus(false);
 		}
 	}
