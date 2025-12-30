@@ -63,7 +63,8 @@ class RightRoom extends Room
 		}
 
 		manageDoorButton();
-		manageConveyors();
+		manageLeftConveyor();
+		manageRightConveyor();
 	}
 
 	function manageDoorButton():Void {
@@ -86,7 +87,7 @@ class RightRoom extends Room
 		}
 	}
 
-	function manageConveyors():Void {
+	function manageLeftConveyor():Void {
 		conveyorDoor.blocked = false;
 
 		for (box in boxSprites) {
@@ -129,6 +130,23 @@ class RightRoom extends Room
 		}
 	}
 
+	function manageRightConveyor():Void {
+		for (box in boxSprites) {
+			if (playState.getBoxByID(box.ID).status == RIGHT_RIGHT_CONVEYOR) {
+				if (box.x > 850) {
+					box.velocity.x = 0;
+					playState.getBoxByID(box.ID).status = RIGHT_RIGHT_SLIDING;
+					FlxTween.tween(box, {x: 875}, 1, {
+						ease: FlxEase.quartOut,
+						onComplete: function(f):Void {
+							playState.getBoxByID(box.ID).status = RIGHT_RIGHT_WAITING;
+						}
+					});
+				}
+			}
+		}
+	}
+	
 	override function sendBox(id:Int, boxSendType:BoxSendType):Void {
 		if (boxSendType == LEFT_BACK_TO_RIGHT) {
 			spawnBox(id);
