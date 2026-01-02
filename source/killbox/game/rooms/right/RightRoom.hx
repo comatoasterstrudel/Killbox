@@ -17,6 +17,10 @@ class RightRoom extends Room
 	
 	var confirmationKeypad:ConfirmationKeypad;
 	
+	var partBox:PartBox;
+
+	var partReceptor:PartReceptor;
+	
     override function setupRoom():Void{        
 		bgBack = new FlxSprite().loadGraphic('assets/images/night/rooms/right/rightRoomBg.png');
 		bgBack.screenCenter();
@@ -35,15 +39,20 @@ class RightRoom extends Room
 		bgTube.screenCenter();
 		add(bgTube);
 
+		partReceptor = new PartReceptor(onSpikeHit);
+		add(partReceptor);
+
 		bgFront = new FlxSprite().loadGraphic('assets/images/night/rooms/right/rightRoomFrontDesk.png');
 		bgFront.screenCenter();
 		add(bgFront);   
 		
 		doorButton = new FlxSprite(158, 400).makeGraphic(70, 50, 0xFFB5F3CE);
 		add(doorButton);
-        
-		confirmationKeypad = new ConfirmationKeypad();
+
+		confirmationKeypad = new ConfirmationKeypad(partReceptor);
 		add(confirmationKeypad);
+		partBox = new PartBox(partReceptor);
+		add(partBox);
 		
         possibleMovements = [
             LEFT => 'main'
@@ -52,11 +61,11 @@ class RightRoom extends Room
 	override function update(elapsed:Float):Void {
 		super.update(elapsed);
 
-		for (i in [bgBack, conveyorDoor, boxSprites]) {
+		for (i in [bgBack, conveyorDoor, boxSprites, boxCounter, partReceptor]) {
 			i.scrollFactor.set(0.6, 0.6);
 		}
 		
-		bgTube.scrollFactor.set(0.8, 0.8);
+		bgTube.scrollFactor.set(0.7, 0.7);
 		if (roomActive) {
 			#if debug
 			if (FlxG.keys.justPressed.ONE) {
@@ -152,6 +161,61 @@ class RightRoom extends Room
 		}
 	}
 	
+	function onSpikeHit():Void {
+		var spikeThese:Array<FlxSprite> = [];
+
+		for (i in boxSprites) {
+			for (spike in partReceptor.bottomParts) {
+				if (i.overlaps(spike)
+					&& (playState.getBoxByID(i.ID).status == RIGHT_RIGHT_CONVEYOR
+						|| playState.getBoxByID(i.ID).status == RIGHT_RIGHT_SLIDING
+						|| playState.getBoxByID(i.ID).status == RIGHT_RIGHT_WAITING)) {
+					spikeThese.push(i);
+				}
+			}
+		}
+
+		var timeLeft = partReceptor.timeLeft;
+
+		var boxesSpiked:Int = 0;
+
+		for (i in spikeThese) {
+			if (boxesSpiked >= GameValues.getMaxWorkload()) { // dont do anything
+				i.alpha = 0.5;
+			} else {
+				playState.getBoxByID(i.ID).status = RIGHT_RIGHT_SPIKED;
+				i.makeGraphic(50, 50, 0xFFF2B1B1);
+				i.scale.set(1, 1);
+				i.velocity.x = 0;
+				i.y -= 25;
+				i.x = 875;
+				FlxTween.cancelTweensOf(i.velocity);
+				FlxTween.cancelTweensOf(i);
+
+				var scaleMult = FlxG.random.float(1.3, 1.6);
+
+				i.scale.set(scaleMult, scaleMult);
+
+				FlxTween.tween(i.scale, {x: 1, y: 1}, timeLeft / 2, {ease: FlxEase.quartOut});
+			}
+
+			boxesSpiked++;
+		}
+
+		if (spikeThese.length > 0) {
+			new FlxTimer().start(timeLeft, function(f):Void {
+				for (i in boxSprites) {
+					if (i.alpha == .5) {
+						i.alpha = 1;
+					} else if (playState.getBoxByID(i.ID).status == RIGHT_RIGHT_SPIKED) {
+						i.velocity.x = GameValues.getConveyorSpeed();
+						playState.getBoxByID(i.ID).status = RIGHT_RIGHT_SPIKED_CONVEYOR;
+					}
+				}
+			});
+		}
+	}
+	
 	override function sendBox(id:Int, boxSendType:BoxSendType):Void {
 		if (boxSendType == LEFT_BACK_TO_RIGHT) {
 			new FlxTimer().start(GameValues.roomTravelTime(), function(f):Void {
@@ -161,11 +225,15 @@ class RightRoom extends Room
 	}
 
 	function spawnBox(id:Int):Void {
-		var boxSprite = new FlxSprite(80, -50).makeGraphic(50, 50, 0xFF424242);
+		var boxSprite = new FlxSprite(80, -50).makeGraphic(50, 25, 0xFF424242);
 		boxSprite.ID = id;
 		boxSprite.acceleration.y = 300;
 		boxSprites.add(boxSprite);
 
 		playState.getBoxByID(id).status = RIGHT_FALLING;
+	}
+	override function leaveRoom():Void {
+		if (partBox.partDraggable != null)
+			partBox.partDraggable.finish();
 	}
 }

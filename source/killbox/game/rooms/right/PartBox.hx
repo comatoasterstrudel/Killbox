@@ -1,0 +1,68 @@
+package killbox.game.rooms.right;
+
+class PartBox extends FlxSpriteGroup
+{
+    var box:FlxSprite;
+    
+    var interactable:Bool = true;
+    
+    public var partDraggable:PartDraggable;
+    
+    var partReceptor:PartReceptor;
+    
+    public function new(partReceptor:PartReceptor):Void{
+        super();
+        
+        this.partReceptor = partReceptor;
+        
+        box = new FlxSprite(350, 450).makeGraphic(200,100,0xFF2F3940);
+        add(box);
+    }
+    
+    override function update(elapsed:Float):Void{
+        super.update(elapsed);
+        
+        updateBoxPosition();
+        
+        if(interactable){
+            if(Cursor.mouseIsTouching(box)){
+                if(FlxG.mouse.justPressed){
+                    box.scale.set(1.2, .8);
+                    FlxTween.cancelTweensOf(box.scale);
+                    FlxTween.tween(box.scale, {x: 1, y: 1}, 1, {ease: FlxEase.quartOut});
+                    updateBoxPosition();
+                    generatePart();
+                }
+                box.color = 0xFF1F252A;
+            } else {
+                box.color = 0xFF2F3940;
+            }
+        } else {
+            box.color = 0xFF2F3940;
+        }
+    }
+    
+    function generatePart():Void{
+        interactable = false;
+        partDraggable = new PartDraggable(function(part:PartDraggable):Void{
+            interactable = true;
+            
+            if(partReceptor.depositHere.overlaps(part)){
+                if(partReceptor.depositPart()){
+                    part.doDepositAnim();
+                } else {
+                    part.doDropAnim();
+                }
+            } else {
+                part.doDropAnim();
+            }
+        });
+        add(partDraggable);
+    }
+    
+    function updateBoxPosition():Void{
+        box.updateHitbox();
+        box.x = 350 + 100 - box.width / 2;
+        box.y = 450 + 100 - box.height;
+    }
+}

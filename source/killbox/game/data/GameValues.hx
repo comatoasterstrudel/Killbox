@@ -43,4 +43,15 @@ class GameValues
 	public static function getVerificationCodeLength():Int {
 		return 4;
 	}
+	public static function getMaxSpikePartCount():Int {
+		return 3;
+	}
+
+	public static function getSpikingTime():Float {
+		return 4;
+	}
+
+	public static function getSuckSpeed():Float {
+		return 2;
+	}
 }

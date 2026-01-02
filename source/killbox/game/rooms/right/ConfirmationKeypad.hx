@@ -10,9 +10,13 @@ class ConfirmationKeypad extends FlxSpriteGroup
 	var interactable:Bool = true;
 	var curCode:Array<Int> = [];
     
-    public function new():Void{
+	var partReceptor:PartReceptor;
+
+	public function new(partReceptor:PartReceptor):Void {
         super();
         
+		this.partReceptor = partReceptor;
+		
         padBg = new FlxSprite(670, 340).makeGraphic(120, 160, 0xFFC4C4C4);
         
         padStand = new FlxSprite().makeGraphic(70, 30, 0xFF807C7C);
@@ -30,6 +34,17 @@ class ConfirmationKeypad extends FlxSpriteGroup
 		super.update(elapsed);
 
 		updateLabel();
+		if (interactable && partReceptor.ready) {
+			for (i in buttons) {
+				i.enabled = true;
+			}
+			padBg.color = FlxColor.WHITE;
+		} else {
+			for (i in buttons) {
+				i.enabled = false;
+			}
+			padBg.color = FlxColor.WHITE.getDarkened(.2);
+		}
 	}
     
     function addButtons():Void{
@@ -57,18 +72,21 @@ class ConfirmationKeypad extends FlxSpriteGroup
                     xID = 0;
                     yID ++;
                 }   
-            }            
+			}        
+			buttons.push(button);
         }
         
-        var button = new ConfirmationKeypadButton(padBg, 'confirm', 0xFFADDDB8, 2, 3, function():Void{
+		var button = new ConfirmationKeypadButton(padBg, 'Yes', 0xFFADDDB8, 2, 3, function():Void {
 			confirmCode();
 		});
 		add(button);
+		buttons.push(button);
 
-		var button = new ConfirmationKeypadButton(padBg, 'cancel', 0xFFDDADAD, 0, 3, function():Void {
+		var button = new ConfirmationKeypadButton(padBg, 'No', 0xFFDDADAD, 0, 3, function():Void {
 			clearCode();
 		});
 		add(button);
+		buttons.push(button);
 	}
 
 	function addNumber(num:Int):Void {
@@ -122,10 +140,14 @@ class ConfirmationKeypad extends FlxSpriteGroup
 			updateLabel();
 
 			if (succeeded) {
-				interactable = true;
+				partReceptor.shoot();
 			} else {
-				interactable = true;
+				partReceptor.shootWrong();
 			}
+
+			new FlxTimer().start(GameValues.getSpikingTime(), function(f):Void {
+				interactable = true;
+			});
         });
 	}
 
