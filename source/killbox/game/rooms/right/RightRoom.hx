@@ -3,7 +3,6 @@ package killbox.game.rooms.right;
 class RightRoom extends Room
 {
 	var bgBack:FlxSprite;
-	var bgTube:FlxSprite;
 	var bgFront:FlxSprite;
     
 	var boxSprites:FlxSpriteGroup;
@@ -14,12 +13,14 @@ class RightRoom extends Room
 	var conveyorDoor:ConveyorDoor;
 
 	var boxCounter:BoxCounter;
-	
+
 	var confirmationKeypad:ConfirmationKeypad;
 	
 	var partBox:PartBox;
 
 	var partReceptor:PartReceptor;
+	
+	var boxVacuum:BoxVacuum;
 	
     override function setupRoom():Void{        
 		bgBack = new FlxSprite().loadGraphic('assets/images/night/rooms/right/rightRoomBg.png');
@@ -35,9 +36,8 @@ class RightRoom extends Room
 		boxCounter = new BoxCounter(this, boxSprites, 30);
 		add(boxCounter);
 		
-		bgTube = new FlxSprite().loadGraphic('assets/images/night/rooms/right/rightRoomTube.png');
-		bgTube.screenCenter();
-		add(bgTube);
+		boxVacuum = new BoxVacuum(this);
+		add(boxVacuum);
 
 		partReceptor = new PartReceptor(onSpikeHit);
 		add(partReceptor);
@@ -64,8 +64,7 @@ class RightRoom extends Room
 		for (i in [bgBack, conveyorDoor, boxSprites, boxCounter, partReceptor]) {
 			i.scrollFactor.set(0.6, 0.6);
 		}
-		
-		bgTube.scrollFactor.set(0.7, 0.7);
+
 		if (roomActive) {
 			#if debug
 			if (FlxG.keys.justPressed.ONE) {
@@ -79,6 +78,7 @@ class RightRoom extends Room
 		manageDoorButton();
 		manageLeftConveyor();
 		manageRightConveyor();
+		manageSucking();
 	}
 
 	function manageDoorButton():Void {
@@ -161,6 +161,28 @@ class RightRoom extends Room
 		}
 	}
 	
+	function manageSucking():Void {
+		for (box in boxSprites) {
+			if (playState.getBoxByID(box.ID).status == RIGHT_RIGHT_SPIKED_CONVEYOR) {
+				if (box.x >= FlxG.random.float(1000, 1150)) {
+					boxSprites.remove(box, true);
+					boxVacuum.boxGroup.add(box);
+					playState.getBoxByID(box.ID).status = RIGHT_SUCKING;
+					box.velocity.x = 0;
+					FlxTween.tween(box, {angularVelocity: FlxG.random.float(100, 1000), x: 1200, y: -box.height},
+						GameValues.getSuckSpeed() * FlxG.random.float(.8, 1.2), {
+							ease: FlxEase.quadInOut,
+							onComplete: function(f):Void {
+								sendBox(box.ID, RIGHT_TO_TOP);
+								boxVacuum.boxGroup.remove(box, true);
+								box.destroy();
+							}
+						});
+				}
+			}
+		}
+	}
+	
 	function onSpikeHit():Void {
 		var spikeThese:Array<FlxSprite> = [];
 
@@ -203,7 +225,7 @@ class RightRoom extends Room
 		}
 
 		if (spikeThese.length > 0) {
-			new FlxTimer().start(timeLeft, function(f):Void {
+			new FlxTimer().start(timeLeft / 1.5, function(f):Void {
 				for (i in boxSprites) {
 					if (i.alpha == .5) {
 						i.alpha = 1;

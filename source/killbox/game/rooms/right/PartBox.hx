@@ -47,7 +47,7 @@ class PartBox extends FlxSpriteGroup
         partDraggable = new PartDraggable(function(part:PartDraggable):Void{
             interactable = true;
             
-            if(partReceptor.depositHere.overlaps(part)){
+			if (Cursor.mouseIsTouching(partReceptor.depositHere, false)) {
                 if(partReceptor.depositPart()){
                     part.doDepositAnim();
                 } else {
