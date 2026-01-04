@@ -173,7 +173,7 @@ class RightRoom extends Room
 						GameValues.getSuckSpeed() * FlxG.random.float(.8, 1.2), {
 							ease: FlxEase.quadInOut,
 							onComplete: function(f):Void {
-								sendBox(box.ID, RIGHT_TO_TOP);
+								playState.sendBox(box.ID, RIGHT_TO_TOP);
 								boxVacuum.boxGroup.remove(box, true);
 								box.destroy();
 							}
@@ -206,11 +206,11 @@ class RightRoom extends Room
 				i.alpha = 0.5;
 			} else {
 				playState.getBoxByID(i.ID).status = RIGHT_RIGHT_SPIKED;
-				i.makeGraphic(50, 50, 0xFFF2B1B1);
+				i.loadGraphic('assets/images/night/rooms/right/spikedBox.png');
 				i.scale.set(1, 1);
 				i.velocity.x = 0;
 				i.y -= 25;
-				i.x = 875;
+				i.x = 860;
 				FlxTween.cancelTweensOf(i.velocity);
 				FlxTween.cancelTweensOf(i);
 
@@ -218,7 +218,7 @@ class RightRoom extends Room
 
 				i.scale.set(scaleMult, scaleMult);
 
-				FlxTween.tween(i.scale, {x: 1, y: 1}, timeLeft / 2, {ease: FlxEase.quartOut});
+				FlxTween.tween(i.scale, {x: 1.2, y: 1.2}, timeLeft / 2, {ease: FlxEase.quartOut});
 			}
 
 			boxesSpiked++;

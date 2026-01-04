@@ -19,6 +19,9 @@ class TopRoom extends Room
 	var boxSprites:FlxSpriteGroup;
 
 	var boxCounter:BoxCounter;
+
+	var tubeShader:MaskAlphaShader;
+	var tubeGradient:FlxSprite;
 	
     override function setupRoom():Void{        
 		bgBack = new FlxSprite().loadGraphic('assets/images/night/rooms/top/topRoomBack.png');
@@ -32,6 +35,14 @@ class TopRoom extends Room
 		bottomTube = new FlxSprite().loadGraphic('assets/images/night/rooms/top/topTube.png');
 		add(bottomTube);
 
+		tubeGradient = new FlxSprite().loadGraphic('assets/images/night/rooms/top/tubeGradient.png');
+		tubeGradient.alpha = 0;
+		add(tubeGradient);
+
+		tubeShader = new MaskAlphaShader(tubeGradient, 'assets/images/night/rooms/top/tubeMask.png');
+
+		tubeGradient.shader = tubeShader;
+		
 		boxSprites = new FlxSpriteGroup();
 		add(boxSprites);
 
@@ -89,6 +100,11 @@ class TopRoom extends Room
 			#end
 		}
 		manageTube();
+		if (tubeGradient.alpha > 0) {
+			tubeShader.update();
+		}
+
+		updateBoxesToConfirm();
 	}
 
 	function manageTube():Void {
@@ -97,12 +113,10 @@ class TopRoom extends Room
 				if (box.x < 685) {
 					box.velocity.x = 0;
 					playState.getBoxByID(box.ID).status = TOP_SLIDING;
-					updateBoxesToConfirm();
-					FlxTween.tween(box, {x: 660, angularVelocity: FlxG.random.float(-1, -20)}, 2, {
+					FlxTween.tween(box, {x: FlxG.random.float(635, 665), angularVelocity: FlxG.random.float(-1, -20)}, 2, {
 						ease: FlxEase.quartOut,
 						onComplete: function(f):Void {
 							playState.getBoxByID(box.ID).status = TOP_WAITING;
-							updateBoxesToConfirm();
 						}
 					});
 				}
@@ -119,7 +133,7 @@ class TopRoom extends Room
 	}
 
 	function spawnBox(id:Int):Void {
-		var boxSprite = new FlxSprite(FlxG.width, FlxG.random.int(100, 120)).makeGraphic(36, 36, 0xFF424242);
+		var boxSprite = new FlxSprite(FlxG.width, FlxG.random.int(100, 110)).loadGraphic('assets/images/night/rooms/right/spikedBox.png');
 		boxSprite.ID = id;
 		boxSprite.velocity.x = -GameValues.getTubeSpeed();
 		boxSprite.angularVelocity = FlxG.random.float(-20, -200);
@@ -140,7 +154,6 @@ class TopRoom extends Room
 			}
 		}
 		computerMonitor.pageFinishProduction.updateBoxesToConfirm(allBoxes, availableBoxes);
-		//
 	}
 
 	function confirmBoxes():Void {
@@ -157,23 +170,28 @@ class TopRoom extends Room
 			if (boxesConfirmed >= GameValues.getMaxWorkload()) {
 				i.alpha = .5;
 			} else {
+				FlxTween.cancelTweensOf(i);
 				playState.getBoxByID(i.ID).status = TOP_CONFIRMING;
-
-				var ogPos = new FlxPoint(i.x, i.y);
-				var ogSize = new FlxPoint(i.width, i.height);
 
 				i.loadGraphic('assets/images/night/rooms/top/finishedBox.png');
 				i.velocity.set(0, 0);
 				i.angularVelocity = 0;
-				i.setPosition(ogPos.x + ogSize.x / 2 - i.width / 2, ogPos.y + ogSize.y / 2 - i.height / 2);
 				i.scale.set(1.3, 1.3);
+				i.angle = FlxG.random.int(0, 360);
 				FlxTween.tween(i.scale, {x: 1, y: 1}, GameValues.getConfirmationTime() / 3, {ease: FlxEase.quartOut});
 				FlxTween.tween(i, {
 					angle: i.angle + FlxG.random.float(-200, 200),
 					x: i.x + FlxG.random.float(-3, 3),
 					y: -i.height
 				}, GameValues.getConfirmationTime() * FlxG.random.float(.8, 1.2),
-					{ease: FlxEase.quartIn});
+				{
+					ease: FlxEase.quartIn,
+					onComplete: function(f):Void {
+						finishBox();
+						boxSprites.remove(i, true);
+						i.destroy();
+					}
+				});
 			}
 			boxesConfirmed++;
 		}
@@ -184,8 +202,14 @@ class TopRoom extends Room
 					i.alpha = 1;
 			}
 		});
+	}
 
-		updateBoxesToConfirm();
+	function finishBox():Void {
+		FlxTween.cancelTweensOf(tubeGradient);
+		tubeGradient.alpha = FlxG.random.float(.7, 1);
+		tubeGradient.y = 0;
+		var time = FlxG.random.float(2, 2.5);
+		FlxTween.tween(tubeGradient, {y: -70, alpha: 0}, time, {ease: FlxEase.quartOut});
 	}
 
 	override function enterRoom():Void {
