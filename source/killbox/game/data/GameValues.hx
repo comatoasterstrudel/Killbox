@@ -11,6 +11,9 @@ class GameValues
     public static function getConveyorSpeed():Float{
         return 100;
     }
+	public static function getTubeSpeed():Float {
+		return 100;
+	}
     public static function getPressSpeed():Float{
         return 2.5;
     }
