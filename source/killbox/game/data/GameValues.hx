@@ -57,4 +57,7 @@ class GameValues
 	public static function getSuckSpeed():Float {
 		return 2;
 	}
+	public static function getConfirmationTime():Float {
+		return 3.2;
+	}
 }

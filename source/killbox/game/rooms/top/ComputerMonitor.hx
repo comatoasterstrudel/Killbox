@@ -16,6 +16,10 @@ class ComputerMonitor extends FlxSpriteGroup
 
 	var interactable:Bool = false;
     
+	public var pageMain:ComputerPageMain;
+	public var pageFinishProduction:ComputerPageFinishProduction;
+	public var pageAcquireCode:ComputerPageAcquireCode;
+
     public function new():Void{
         super();
         
@@ -30,22 +34,23 @@ class ComputerMonitor extends FlxSpriteGroup
 		textTopRight.x = screen.x + screen.width - textTopRight.width - 10;
 		add(textTopRight);
 
-		addPage('main');
-		addPage('finishProduction');
-		addPage('acquireCode');
+		pageMain = new ComputerPageMain('main', changePage, screen);
+		add(pageMain);
 
+		pageFinishProduction = new ComputerPageFinishProduction('finishProduction', changePage, screen);
+		add(pageFinishProduction);
+
+		pageAcquireCode = new ComputerPageAcquireCode('acquireCode', changePage, screen);
+		add(pageAcquireCode);
+
+		pages = [pageMain, pageFinishProduction, pageAcquireCode];
+		
 		curPage = 'main';
 		updateActivePages();
 
 		flashSprite = new FlxSprite(screen.x, screen.y).makeGraphic(Std.int(screen.width), Std.int(screen.height), FlxColor.WHITE);
 		flashSprite.alpha = 0;
 		add(flashSprite);
-	}
-
-	function addPage(name:String):Void {
-		var page = ComputerPage.createPage(name, changePage, screen);
-		pages.push(page);
-		add(page);
 	}
 
 	function changePage(name:String):Void {

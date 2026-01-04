@@ -12,6 +12,8 @@ class ComputerButton extends FlxText
     
     var pressedFunction:Void->Void;
     
+	public var pressable:Bool = true;
+    
     public function new(page:ComputerPage, realX:Int, realY:Int, realText:String, pressedFunction:Void->Void):Void{
         super();
         
@@ -27,7 +29,7 @@ class ComputerButton extends FlxText
     override function update(elapsed:Float):Void{
         super.update(elapsed);
                 
-        if(page.active && visible && FlxG.mouse.overlaps(this)){
+		if (page.active && visible && FlxG.mouse.overlaps(this) && pressable) {
             alpha = 1;
             text = '>  ' + realText;
             
