@@ -183,13 +183,14 @@ class TopRoom extends Room
 					angle: i.angle + FlxG.random.float(-200, 200),
 					x: i.x + FlxG.random.float(-3, 3),
 					y: -i.height
-				}, GameValues.getConfirmationTime() * FlxG.random.float(.8, 1.2),
+				}, GameValues.getConfirmationTime() * FlxG.random.float(.6, .95),
 				{
 					ease: FlxEase.quartIn,
 					onComplete: function(f):Void {
 						finishBox();
 						boxSprites.remove(i, true);
 						i.destroy();
+						playState.boxesProduced++;
 					}
 				});
 			}

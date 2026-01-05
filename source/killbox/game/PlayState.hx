@@ -2,6 +2,8 @@ package killbox.game;
 
 class PlayState extends FlxState
 {
+	public static var GAME_RULES:GameRules;
+	
 	var rooms:Map<String, Room> = [];
 	var roomList:Array<String> = [];
 	public static var curRoom:String = '';
@@ -31,12 +33,19 @@ class PlayState extends FlxState
 	
 	public var flashlightBattery:Float = GameValues.getMaxFlashlightBattery();
 	
+	public var boxesProduced:Int = 0;
+	
 	override public function create()
 	{		
+		if (GAME_RULES == null) {
+			createGame();
+		}
+		
 		#if debug
 		FlxG.watch.add(this, "availableMaterials");
 		FlxG.watch.add(this, "timeUntilNextMaterial");
 		FlxG.watch.add(this, "flashlightBattery");
+		FlxG.watch.add(this, "boxesProduced");
 		#end
 		
 		camGame = new FlxCamera();
@@ -308,5 +317,10 @@ class PlayState extends FlxState
 		{
 			i.sendBox(id, boxSendType);
 		}
+	}
+	public static function createGame(boxQuota:Int = 3):GameRules {
+		return {
+			boxQuota: boxQuota
+		};
 	}
 }

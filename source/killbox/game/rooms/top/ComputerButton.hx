@@ -30,14 +30,14 @@ class ComputerButton extends FlxText
         super.update(elapsed);
                 
 		if (page.active && visible && FlxG.mouse.overlaps(this) && pressable) {
-            alpha = 1;
+			color = FlxColor.GREEN;
             text = '>  ' + realText;
             
             if(FlxG.mouse.justPressed){
                 pressedFunction();
             }
         } else {
-            alpha = .5;
+			color = 0xFF00AB01;
             text = realText;
         }
         
