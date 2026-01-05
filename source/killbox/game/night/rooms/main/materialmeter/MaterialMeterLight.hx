@@ -51,8 +51,6 @@ class MaterialMeterLight extends FlxSpriteGroup
             lightSprite.color = FlxColor.GREEN.getDarkened(.8);
             status = OFF;
             whiteOverlay.alpha = 0;
-        }        
-        
-        trace(whiteOverlay.alpha);
+        }                
     }
 }
