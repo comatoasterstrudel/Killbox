@@ -35,4 +35,7 @@ class BoxQuotaText extends FlxSpriteGroup
 			i.alpha = alpha;
 		}
 	}
+	public function getWidth():Float {
+		return (leftNumbers.getWidth() + 63 + divider.width + rightNumbers.getWidth());
+	}
 }

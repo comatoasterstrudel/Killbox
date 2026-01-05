@@ -13,6 +13,8 @@ class BoxQuotaDisplay extends FlxSpriteGroup
 	var textTargetPosition:FlxPoint;
 	var textTargetAlpha:Float;
 
+	var boxSpriteTargetPosition:FlxPoint;
+    
 	var textPosition:FlxPoint;
 	var textAlpha:Float = 1;
     
@@ -21,11 +23,11 @@ class BoxQuotaDisplay extends FlxSpriteGroup
     var timeSinceLastChange:Float = Constants.BOX_QUOTA_DISPLAY_INACTIVITY_TIME;
     
     var lastBoxesProduced:Int = 0;
-    var lastQuota:Int = 0;
+	var lastQuota:Int = 3;
     
 	var boxQuotaText:BoxQuotaText;
     
-    public function new():Void{
+	public function new(curBoxesProduced:Int, curQuota:Int):Void {
         super();
         
         backShadow = new FlxSprite().loadGraphic('assets/images/night/ui/boxProgress_back.png');
@@ -46,13 +48,15 @@ class BoxQuotaDisplay extends FlxSpriteGroup
         
         shadowPosition = new FlxPoint(backShadow.x, backShadow.y);
         
-        backShadowTargetPosition = new FlxPoint();
-        
+		backShadowTargetPosition = new FlxPoint();
 		textTargetPosition = new FlxPoint();
+		boxSpriteTargetPosition = new FlxPoint();
 
 		textPosition = new FlxPoint(30, FlxG.height - 80);
 
-		updateSprites(0, 0, FlxG.elapsed, true);
+		lastBoxesProduced = curBoxesProduced;
+		lastQuota = curQuota;
+		updateSprites(curBoxesProduced, curQuota, FlxG.elapsed, true);
     }
     
 	public function updateSprites(curBoxesProduced:Int, curQuota:Int, elapsed:Float, snap:Bool = false):Void {        
@@ -72,6 +76,7 @@ class BoxQuotaDisplay extends FlxSpriteGroup
             backShadowTargetPosition.set(shadowPosition.x, shadowPosition.y);
 			textTargetAlpha = 1;
 			textTargetPosition.set(30, FlxG.height - 80);
+			boxSpriteTargetPosition.set(-20, FlxG.height - 125);
           } else { //hide it
             lerpSpeed = 5;
             
@@ -79,6 +84,7 @@ class BoxQuotaDisplay extends FlxSpriteGroup
             backShadowTargetPosition.set(shadowPosition.x - 40, shadowPosition.y + 40);
 			textTargetAlpha = 0;
 			textTargetPosition.set(-10, FlxG.height);
+			boxSpriteTargetPosition.set(-70, FlxG.height - 30);
         }
         
         updatePosition(elapsed, snap);
@@ -90,16 +96,20 @@ class BoxQuotaDisplay extends FlxSpriteGroup
             backShadow.setPosition(backShadowTargetPosition.x, backShadowTargetPosition.y);
 			textAlpha = textTargetAlpha;
 			textPosition.set(textTargetPosition.x, textTargetPosition.y);
+			boxSprite.setPosition(boxSpriteTargetPosition.x, boxSpriteTargetPosition.y);
         } else {
             backShadow.alpha = Utilities.lerpThing(backShadow.alpha, backShadowTargetAlpha, elapsed, lerpSpeed);
             backShadow.setPosition(Utilities.lerpThing(backShadow.x, backShadowTargetPosition.x, elapsed, lerpSpeed), Utilities.lerpThing(backShadow.y, backShadowTargetPosition.y, elapsed, lerpSpeed));
 			textAlpha = Utilities.lerpThing(textAlpha, textTargetAlpha, elapsed, lerpSpeed);
 			textPosition.set(Utilities.lerpThing(textPosition.x, textTargetPosition.x, elapsed, lerpSpeed),
 				Utilities.lerpThing(textPosition.y, textTargetPosition.y, elapsed, lerpSpeed));
+			boxSprite.setPosition(Utilities.lerpThing(boxSprite.x, boxSpriteTargetPosition.x, elapsed, lerpSpeed),
+				Utilities.lerpThing(boxSprite.y, boxSpriteTargetPosition.y, elapsed, lerpSpeed));
         }
 		boxQuotaText.updateText(lastBoxesProduced, lastQuota, Std.int(textPosition.x), Std.int(textPosition.y), textAlpha);
 
 		boxSprite.alpha = textAlpha;
-		boxSprite.setPosition(backShadow.x, backShadow.y);
+		backShadow.setGraphicSize(60 + boxQuotaText.getWidth(), backShadow.height);
+		backShadow.updateHitbox();
     }
 }

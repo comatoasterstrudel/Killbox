@@ -88,7 +88,7 @@ class PlayState extends FlxState
 		flashlightChargeBar.camera = camUI;
 		add(flashlightChargeBar);
 
-		boxQuotaDisplay = new BoxQuotaDisplay();
+		boxQuotaDisplay = new BoxQuotaDisplay(boxesProduced, GAME_RULES.boxQuota);
 		boxQuotaDisplay.camera = camUI;
 		add(boxQuotaDisplay);
 		

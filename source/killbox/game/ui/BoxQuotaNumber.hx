@@ -19,7 +19,7 @@ class BoxQuotaNumber extends FlxText
 		if (lastNumber != number) {
 			yOffset = (lastNumber < number || lastNumber == 9 && number == 0) ? -15 : 15;
 			FlxTween.cancelTweensOf(this);
-			FlxTween.tween(this, {yOffset: 0}, .3, {ease: FlxEase.quartOut});
+			FlxTween.tween(this, {yOffset: 0}, .67, {ease: FlxEase.quartOut});
 		}
 
 		lastNumber = number;
