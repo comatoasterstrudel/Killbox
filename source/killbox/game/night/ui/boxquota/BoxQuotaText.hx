@@ -1,7 +1,13 @@
-package killbox.game.night.ui;
+package killbox.game.night.ui.boxquota;
 
+/**
+ * the text to be displayed on the BoxQuotaDisplay
+ */
 class BoxQuotaText extends FlxSpriteGroup
 {
+	/**
+	 * sprites
+	 */
 	var leftNumbers:BoxQuotaNumbers;
     var divider:KbText;
 	var rightNumbers:BoxQuotaNumbers;
@@ -23,6 +29,14 @@ class BoxQuotaText extends FlxSpriteGroup
 		angle = -8;
 	}
 
+	/**
+	 * call this to update all of the numbers on this display
+	 * @param boxesProduced how many boxes have been produced
+	 * @param quota how many boxes you need to produce
+	 * @param x x position
+	 * @param y y position
+	 * @param alpha the alpha of these sprites
+	 */
 	public function updateText(boxesProduced:Int, quota:Int, x:Int, y:Int, alpha:Float):Void {
 		leftNumbers.updateText(boxesProduced, x, y);
 		divider.setPosition(Std.int(x + leftNumbers.getWidth() + 30), y);
@@ -35,6 +49,11 @@ class BoxQuotaText extends FlxSpriteGroup
 			i.alpha = alpha;
 		}
 	}
+	
+	/**
+	 * call this to get the width of all number and text objects
+	 * @return the width of all number and text objects
+	 */
 	public function getWidth():Float {
 		return (leftNumbers.getWidth() + 63 + divider.width + rightNumbers.getWidth());
 	}

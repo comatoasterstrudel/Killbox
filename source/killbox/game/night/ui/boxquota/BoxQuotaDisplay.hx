@@ -1,5 +1,9 @@
-package killbox.game.night.ui;
+package killbox.game.night.ui.boxquota;
 
+/**
+ * ui element to display how many boxes youve produced, 
+ * and what the quota is
+ */
 class BoxQuotaDisplay extends FlxSpriteGroup
 {
 	/**
