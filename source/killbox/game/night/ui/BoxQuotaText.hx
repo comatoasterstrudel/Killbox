@@ -3,7 +3,7 @@ package killbox.game.night.ui;
 class BoxQuotaText extends FlxSpriteGroup
 {
 	var leftNumbers:BoxQuotaNumbers;
-    var divider:FlxText;
+    var divider:KbText;
 	var rightNumbers:BoxQuotaNumbers;
 
 	public function new():Void {
@@ -12,7 +12,7 @@ class BoxQuotaText extends FlxSpriteGroup
 		leftNumbers = new BoxQuotaNumbers();
 		add(leftNumbers);
 
-		divider = new FlxText(0, 0, 0, '/', 50);
+		divider = new KbText(0, 0, 0, '/', 50);
 		add(divider);
 
 		rightNumbers = new BoxQuotaNumbers();
