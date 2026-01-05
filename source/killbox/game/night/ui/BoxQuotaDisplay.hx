@@ -2,64 +2,85 @@ package killbox.game.night.ui;
 
 class BoxQuotaDisplay extends FlxSpriteGroup
 {
-	var backShadow:FlxSprite;
-	var boxSprite:FlxSprite;
-    
+	/**
+	 * sprites
+	 */
+	var backShadow:KbSprite;
+	var boxSprite:KbSprite;
+    var boxQuotaText:BoxQuotaText;
+
+	/**
+     * the original positions for the sprites
+     */
     var shadowPosition:FlxPoint;
-
-    var backShadowTargetPosition:FlxPoint;
-    var backShadowTargetAlpha:Float;
-    
-	var textTargetPosition:FlxPoint;
-	var textTargetAlpha:Float;
-
-	var boxSpriteTargetPosition:FlxPoint;
-    
+	var boxPosition:FlxPoint;
 	var textPosition:FlxPoint;
-	var textAlpha:Float = 1;
-    
-    var lerpSpeed:Float = 1;
 
-    var timeSinceLastChange:Float = Constants.BOX_QUOTA_DISPLAY_INACTIVITY_TIME;
-    
-    var lastBoxesProduced:Int = 0;
+	/**
+	 * lerp manager for the text,
+	 * instead of using lerps on each individual text object
+	 */
+	var textLerpManager:LerpManager;
+	
+	/**
+	 * how many boxes were produced as of the last frame
+	 */
+	var lastBoxesProduced:Int = 0;
+	
+	/**
+	 * what the quota was as of the last frame
+	 */
 	var lastQuota:Int = 3;
-    
-	var boxQuotaText:BoxQuotaText;
+	
+	/**
+    * how long since the box values have changed, 
+    * used to determine when this ui element should drop off the screen
+    */
+    var timeSinceLastChange:Float = Constants.BOX_QUOTA_DISPLAY_INACTIVITY_TIME;
     
 	public function new(curBoxesProduced:Int, curQuota:Int):Void {
         super();
         
-        backShadow = new FlxSprite().loadGraphic('assets/images/night/ui/boxProgress_back.png');
+        backShadow = new KbSprite().createFromImage('assets/images/night/ui/boxProgress_back.png', .8);
+		backShadow.setPosition(0, FlxG.height - backShadow.height);
         backShadow.alpha = .8;
-        backShadow.setGraphicSize(Std.int(backShadow.width * .8));
-        backShadow.updateHitbox();
-        backShadow.setPosition(0, FlxG.height - backShadow.height);
+		backShadow.lerpManager.lerpX = true;
+		backShadow.lerpManager.lerpY = true;
+		backShadow.lerpManager.lerpAlpha = true;
         add(backShadow);
         
-		boxSprite = new FlxSprite('assets/images/night/ui/boxSprite.png');
-		boxSprite.setGraphicSize(Std.int(boxSprite.width * 1.1));
-		boxSprite.updateHitbox();
-		boxSprite.setPosition(0, FlxG.height - boxSprite.height);
+		boxSprite = new KbSprite().createFromImage('assets/images/night/ui/boxSprite.png', 1.1);
+		boxSprite.setPosition(-20, FlxG.height - 125);
+		boxSprite.lerpManager.lerpX = true;
+		boxSprite.lerpManager.lerpY = true;
+		boxSprite.lerpManager.lerpAlpha = true;
 		add(boxSprite);
 
 		boxQuotaText = new BoxQuotaText();
 		add(boxQuotaText);
         
+		textLerpManager = new LerpManager();
+		textLerpManager.lerpX = true;
+		textLerpManager.lerpY = true;
+		textLerpManager.lerpAlpha = true;
+		
         shadowPosition = new FlxPoint(backShadow.x, backShadow.y);
-        
-		backShadowTargetPosition = new FlxPoint();
-		textTargetPosition = new FlxPoint();
-		boxSpriteTargetPosition = new FlxPoint();
-
+		boxPosition = new FlxPoint(boxSprite.x, boxSprite.y);
 		textPosition = new FlxPoint(30, FlxG.height - 80);
 
 		lastBoxesProduced = curBoxesProduced;
 		lastQuota = curQuota;
-		updateSprites(curBoxesProduced, curQuota, FlxG.elapsed, true);
+		updateDisplay(curBoxesProduced, curQuota, FlxG.elapsed, true);
     }
     
-	public function updateSprites(curBoxesProduced:Int, curQuota:Int, elapsed:Float, snap:Bool = false):Void {        
+	/**
+	 * call this to update this displays info
+	 * @param curBoxesProduced the current amount of boxes produced
+	 * @param curQuota the current box quota
+	 * @param elapsed time since last frame in ms
+	 * @param snap should the sprites snap into place?
+	 */
+	public function updateDisplay(curBoxesProduced:Int, curQuota:Int, elapsed:Float, snap:Bool = false):Void {        
         if(curBoxesProduced == lastBoxesProduced && curQuota == lastQuota){
             timeSinceLastChange += elapsed;
         } else {
@@ -68,47 +89,50 @@ class BoxQuotaDisplay extends FlxSpriteGroup
         
         lastBoxesProduced = curBoxesProduced;
         lastQuota = curQuota;
-        
-        if(timeSinceLastChange < Constants.BOX_QUOTA_DISPLAY_INACTIVITY_TIME){ // show it
-            lerpSpeed = 12;
-            
-            backShadowTargetAlpha = .8;
-            backShadowTargetPosition.set(shadowPosition.x, shadowPosition.y);
-			textTargetAlpha = 1;
-			textTargetPosition.set(30, FlxG.height - 80);
-			boxSpriteTargetPosition.set(-20, FlxG.height - 125);
-          } else { //hide it
-            lerpSpeed = 5;
-            
-            backShadowTargetAlpha = 0;
-            backShadowTargetPosition.set(shadowPosition.x - 40, shadowPosition.y + 40);
-			textTargetAlpha = 0;
-			textTargetPosition.set(-10, FlxG.height);
-			boxSpriteTargetPosition.set(-70, FlxG.height - 30);
-        }
-        
-        updatePosition(elapsed, snap);
+        		
+        configurePositions(elapsed, snap);
     }
     
-    public function updatePosition(elapsed:Float, snap:Bool = false):Void{
-        if(snap){
-            backShadow.alpha = backShadowTargetAlpha;
-            backShadow.setPosition(backShadowTargetPosition.x, backShadowTargetPosition.y);
-			textAlpha = textTargetAlpha;
-			textPosition.set(textTargetPosition.x, textTargetPosition.y);
-			boxSprite.setPosition(boxSpriteTargetPosition.x, boxSpriteTargetPosition.y);
-        } else {
-            backShadow.alpha = Utilities.lerpThing(backShadow.alpha, backShadowTargetAlpha, elapsed, lerpSpeed);
-            backShadow.setPosition(Utilities.lerpThing(backShadow.x, backShadowTargetPosition.x, elapsed, lerpSpeed), Utilities.lerpThing(backShadow.y, backShadowTargetPosition.y, elapsed, lerpSpeed));
-			textAlpha = Utilities.lerpThing(textAlpha, textTargetAlpha, elapsed, lerpSpeed);
-			textPosition.set(Utilities.lerpThing(textPosition.x, textTargetPosition.x, elapsed, lerpSpeed),
-				Utilities.lerpThing(textPosition.y, textTargetPosition.y, elapsed, lerpSpeed));
-			boxSprite.setPosition(Utilities.lerpThing(boxSprite.x, boxSpriteTargetPosition.x, elapsed, lerpSpeed),
-				Utilities.lerpThing(boxSprite.y, boxSpriteTargetPosition.y, elapsed, lerpSpeed));
-        }
-		boxQuotaText.updateText(lastBoxesProduced, lastQuota, Std.int(textPosition.x), Std.int(textPosition.y), textAlpha);
+	/**
+     * call this to set the values for the sprites. 
+     * this is in its own function since its long.
+     */
+    public function configurePositions(elapsed:Float, snap:Bool = false):Void{ 
+        if(timeSinceLastChange < Constants.BOX_QUOTA_DISPLAY_INACTIVITY_TIME){ // show it
+			backShadow.lerpManager.targetPosition.set(shadowPosition.x, shadowPosition.y);
+			backShadow.lerpManager.targetAlpha = .8;
+            backShadow.lerpManager.lerpSpeed = 12;
+			
+			boxSprite.lerpManager.targetPosition.set(boxPosition.x, boxPosition.y);
+			boxSprite.lerpManager.targetAlpha = 1;
+            boxSprite.lerpManager.lerpSpeed = 12;
 
-		boxSprite.alpha = textAlpha;
+			textLerpManager.targetPosition.set(textPosition.x, textPosition.y);
+			textLerpManager.targetAlpha = 1;
+            textLerpManager.lerpSpeed = 12;
+          } else { //hide it
+            backShadow.lerpManager.targetPosition.set(shadowPosition.x - 40, shadowPosition.y + 40);
+			backShadow.lerpManager.targetAlpha = .0;
+            backShadow.lerpManager.lerpSpeed = 5;
+			
+			boxSprite.lerpManager.targetPosition.set(boxPosition.x - 50, boxPosition.y + 40);
+			boxSprite.lerpManager.targetAlpha = 0;
+            boxSprite.lerpManager.lerpSpeed = 5;
+
+			textLerpManager.targetPosition.set(textPosition.x - 100, textPosition.y + 100);
+			textLerpManager.targetAlpha = 0;
+            textLerpManager.lerpSpeed = 5;
+        }
+		
+        if(snap){
+			backShadow.lerpManager.snap();
+			boxSprite.lerpManager.snap();
+			textLerpManager.snap();
+        }
+		
+		textLerpManager.updateLerps(elapsed);
+		boxQuotaText.updateText(lastBoxesProduced, lastQuota, Std.int(textLerpManager.x), Std.int(textLerpManager.y), textLerpManager.alpha);
+
 		backShadow.setGraphicSize(60 + boxQuotaText.getWidth(), backShadow.height);
 		backShadow.updateHitbox();
     }

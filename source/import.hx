@@ -36,3 +36,4 @@ import killbox.shaders.*;
 import killbox.util.*;
 import openfl.display.BitmapData;
 import openfl.display.Sprite;
+import killbox.extensions.*;

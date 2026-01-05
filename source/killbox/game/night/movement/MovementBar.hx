@@ -1,6 +1,6 @@
 package killbox.game.night.movement;
 
-class MovementBar extends FlxSprite 
+class MovementBar extends KbSprite 
 {
     public var movementType:MovementTypes;
     
@@ -18,9 +18,7 @@ class MovementBar extends FlxSprite
         this.movementType = movementType;
         this.movementUI = movementUI;
         
-		loadGraphic('assets/images/night/ui/movement.png');
-		setGraphicSize(Std.int(width * .7));
-		updateHitbox();
+		createFromImage('assets/images/night/ui/movement.png', .7);
 		screenCenter();
                 
         alpha = .4;

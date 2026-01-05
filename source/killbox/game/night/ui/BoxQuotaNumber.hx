@@ -1,6 +1,6 @@
 package killbox.game.night.ui;
 
-class BoxQuotaNumber extends FlxText
+class BoxQuotaNumber extends KbText
 {
 	public var inUse:Bool = false;
 
