@@ -1,19 +1,28 @@
 package killbox.game.night.rooms.left;
 
+/**
+ * the box spring in the left room that sends boxes to the right room
+ */
 class BoxSpring extends FlxSpriteGroup
 {
-    public var springTop:FlxSprite;
-    public var springBottom:FlxSprite;
+    /**
+     * sprites
+     */
+    public var springTop:KbSprite;
+    public var springBottom:KbSprite;
     
+    /**
+     * is the spring currently springing?
+     */
     public var springing:Bool = false;
     
     public function new():Void{
         super();
         
-        springBottom = new FlxSprite().loadGraphic('assets/images/night/rooms/left/spring.png');
+        springBottom = new KbSprite().createFromImage('assets/images/night/rooms/left/spring.png');
         add(springBottom);
         
-        springTop = new FlxSprite(745, 230).makeGraphic(115, 20, 0xFF3C3C3C);
+        springTop = new KbSprite(745, 230).createColorBlock(115, 20, 0xFF3C3C3C);
         add(springTop);
     }
     
@@ -23,6 +32,9 @@ class BoxSpring extends FlxSpriteGroup
         updateSpringPosition();
     }
     
+    /**
+     * update the bottom sprite position according to the top sprite
+     */
     function updateSpringPosition():Void{
         springBottom.setGraphicSize(springBottom.width, springTop.height + (230 - springTop.y));
         springBottom.updateHitbox();
@@ -30,6 +42,9 @@ class BoxSpring extends FlxSpriteGroup
         springBottom.x = springTop.x + springTop.width / 2 - springBottom.width / 2;
     }
     
+    /**
+     * call this to start the spring animation
+     */
     public function springUp():Void{
         springing = true;
         
