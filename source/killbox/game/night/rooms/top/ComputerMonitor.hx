@@ -59,7 +59,7 @@ class ComputerMonitor extends FlxSpriteGroup
 
 		changeScreenVisibility(false);
 
-		timers.push(new FlxTimer().start(.2, function(f):Void {
+		timers.push(new FlxTimer(PlayState.timerManager).start(.2, function(f):Void {
 			changeScreenVisibility(true);
 		}));
 	}
@@ -83,7 +83,7 @@ class ComputerMonitor extends FlxSpriteGroup
         screen.color = FlxColor.LIME.getDarkened(.8);
         
         for(i in 0...5){
-            timers.push(new FlxTimer().start((.3 - (.1 * (GameValues.getComputerSpeed()))) * i, function(f):Void{
+            timers.push(new FlxTimer(PlayState.timerManager).start((.3 - (.1 * (GameValues.getComputerSpeed()))) * i, function(f):Void{
                 screen.color = FlxColor.LIME.getDarkened(.8 * (1 - (i / 5)));
 				if (i == 4) {
 					changeScreenVisibility(true);
@@ -91,7 +91,7 @@ class ComputerMonitor extends FlxSpriteGroup
 						i.visible = true;
 					}
 					flashSprite.alpha = FlxG.random.float(.2, .4);
-					FlxTween.tween(flashSprite, {alpha: 0}, .3);
+					PlayState.tweenManager.tween(flashSprite, {alpha: 0}, .3);
 				}
             }));
         }
@@ -108,7 +108,7 @@ class ComputerMonitor extends FlxSpriteGroup
         screen.color = FlxColor.LIME;
 
         for(i in 0...3){
-            timers.push(new FlxTimer().start(((GameValues.getMovementSpeed() / 3) / 3) * i, function(f):Void{
+            timers.push(new FlxTimer(PlayState.timerManager).start(((GameValues.getMovementSpeed() / 3) / 3) * i, function(f):Void{
                 screen.color = FlxColor.LIME.getDarkened(1 * (i / 3));
             }));
         }

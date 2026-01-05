@@ -23,7 +23,7 @@ class BoxCounter extends FlxTypedSpriteGroup<BoxCounterLabel>
         this.boxGroup = boxGroup;
 		this.yOffset = yOffset;
 
-        new FlxTimer().start(.5, function(tmr):Void{
+        new FlxTimer(PlayState.timerManager).start(.5, function(tmr):Void{
             tmr.reset();
             updateGroups();
         });

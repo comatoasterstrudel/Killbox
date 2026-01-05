@@ -1,44 +1,75 @@
 package killbox.game.night;
 
+/**
+ * the state that holds the night gameplay
+ * this is the main state you'll be in for the game!!
+ */
 class PlayState extends FlxState
 {
+	/**
+	 * tween and timer managers
+	 */ 
+	public static var tweenManager:FlxTweenManager;
+	public static var timerManager:FlxTimerManager;
+
+	/**
+	 * the game rules for this round
+	 */
 	public static var GAME_RULES:GameRules;
 	
+	/**
+	 * cameras
+	 */
+	public var camGame:FlxCamera;
+	public var camTransition:FlxCamera;
+	public var camUI:FlxCamera;
+		
+	/**
+	 * camera movement
+	 */
+	var camTargetX:Float = 0;
+	var camTargetY:Float = 0;
+	var camFollowType:CamFollowType = MOUSE;
+	
+	/**
+	 * rooms
+	 */
 	var rooms:Map<String, Room> = [];
 	var roomList:Array<String> = [];
 	public static var curRoom:String = '';
 	var roomGroup:FlxTypedGroup<Room>;
 	
+	/**
+	 * ui
+	 */
 	var movementUI:MovementUI;
-
-	public var camGame:FlxCamera;
-	public var camTransition:FlxCamera;
-	public var camUI:FlxCamera;
-	
-	var camTargetX:Float = 0;
-	var camTargetY:Float = 0;
-	var camFollowType:CamFollowType = MOUSE;
-	
-	var flashlightActive:Bool = false;
-	var flashlightSprite:FlxSprite;
-	
 	var flashlightChargeBar:FlashlightChargeBar;
-	
 	var boxQuotaDisplay:BoxQuotaDisplay;
 	
+	/**
+	 * flashlight
+	 */
+	public var flashlightBattery:Float = GameValues.getMaxFlashlightBattery();
+	var flashlightActive:Bool = false;
+	var flashlightSprite:FlxSprite;
+
+	/**
+	 * boxes
+	 */
 	public var boxes:Array<Box> = [];
 	public var boxIdAssignment:Int = 0;
-	
-	// GAME STUFF
-	public var availableMaterials:Int = GameValues.getMaxMaterials();
-	public var timeUntilNextMaterial:Float = 0;
-	
-	public var flashlightBattery:Float = GameValues.getMaxFlashlightBattery();
-	
 	public var boxesProduced:Int = 0;
 	
+	/**
+	 * materials
+	 */
+	public var availableMaterials:Int = GameValues.getMaxMaterials();
+	public var timeUntilNextMaterial:Float = 0;
+		
 	override public function create()
 	{		
+		clearManagers();
+		
 		if (GAME_RULES == null) {
 			createGame();
 		}
@@ -109,6 +140,10 @@ class PlayState extends FlxState
 		
 		boxQuotaDisplay.updateDisplay(boxesProduced, GAME_RULES.boxQuota, elapsed);
 
+		updateManagers(elapsed);
+		
+		managePauseMenu();
+		
 		super.update(elapsed);
 	}
 	
@@ -245,7 +280,7 @@ class PlayState extends FlxState
 			camFollowType = MOUSE;
 			curRoom = newRoom;
 			updateActiveRooms();	
-			new FlxTimer().start(timeToTransition / 2, function(f):Void
+			new FlxTimer(PlayState.timerManager).start(timeToTransition / 2, function(f):Void
 			{
 				movementUI.updateActiveButtons(rooms.get(curRoom).possibleMovements);
 			});
@@ -259,11 +294,11 @@ class PlayState extends FlxState
 		tranSprite.alpha = 0;
 		add(tranSprite);
 
-		FlxTween.tween(tranSprite, {alpha: 1}, time / 2, {
+		tweenManager.tween(tranSprite, {alpha: 1}, time / 2, {
 			onComplete: function(f):Void
 			{
 				after();
-				FlxTween.tween(tranSprite, {alpha: 0}, time / 2, {
+				tweenManager.tween(tranSprite, {alpha: 0}, time / 2, {
 					onComplete: function(f):Void
 					{
 						tranSprite.destroy();
@@ -329,5 +364,45 @@ class PlayState extends FlxState
 			boxQuota: boxQuota
 		};
 		return GAME_RULES;
+	}
+	
+	function managePauseMenu():Void{
+		if(FlxG.keys.justPressed.ESCAPE){
+			openSubState(new PauseSubState([
+				{name: "Resume Game", pressEscape: true, close: true, onClick: function():Void{
+					//
+				}},
+				{name: "Exit Game", pressEscape: false, close: false, onClick: function():Void{
+					Sys.exit(1);
+				}}
+			]));
+		}
+	}
+	
+	/**
+	 * call this to setup the tween and timer managers
+	 * theyre specifically defined so they can be paused
+	 */
+	public static function setUpManagers():Void{
+		if(tweenManager == null) tweenManager = new FlxTweenManager();
+		if(timerManager == null) timerManager = new FlxTimerManager();
+	}
+	
+	/**
+	 * call this to update the tween and timer managers
+	 * theyre specifically defined so they can be paused
+	 */
+	public static function updateManagers(elapsed:Float):Void{
+		tweenManager.update(elapsed);
+		timerManager.update(elapsed);
+	}
+	
+	/**
+	 * call this to update the tween and timer managers
+	 * theyre specifically defined so they can be paused
+	 */
+	public static function clearManagers():Void{
+		tweenManager.clear();
+		timerManager.clear();
 	}
 }

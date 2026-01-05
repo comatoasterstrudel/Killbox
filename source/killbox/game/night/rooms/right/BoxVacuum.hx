@@ -70,8 +70,8 @@ class BoxVacuum extends FlxSpriteGroup
             particle.color = FlxColor.GRAY;
         } else particleGroup1.add(particle);
         
-        FlxTween.tween(particle.scale, {x: particle.scale.x + .2, y: particle.scale.y - .2}, time - 0.1, {ease: FlxEase.quartIn});
-        FlxTween.tween(particle, {y: -particle.height, x: FlxG.width, alpha: FlxG.random.float(.4, .9)}, time, {ease: FlxEase.quartIn, onComplete: function(f):Void{
+        PlayState.tweenManager.tween(particle.scale, {x: particle.scale.x + .2, y: particle.scale.y - .2}, time - 0.1, {ease: FlxEase.quartIn});
+        PlayState.tweenManager.tween(particle, {y: -particle.height, x: FlxG.width, alpha: FlxG.random.float(.4, .9)}, time, {ease: FlxEase.quartIn, onComplete: function(f):Void{
             if(back){
                 particleGroup2.remove(particle, true);
             } else {

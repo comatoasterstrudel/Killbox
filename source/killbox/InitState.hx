@@ -7,6 +7,9 @@ class InitState extends FlxState{
         // initialize the cursor! 
         initCursor();
         
+        // setup timers and tweens in playstate
+        PlayState.setUpManagers();
+                
         // start the game !!
         FlxG.switchState(#if release Constants.INITIAL_STATE_RELEASE #end #if debug Constants.INITIAL_STATE_DEBUG #end);
     }

@@ -96,11 +96,11 @@ class InsideCabinet extends FlxSpriteGroup
         cabinetResult.setPosition(hitLine.x + hitLine.width / 2 - cabinetResult.width / 2, hitLine.y + hitLine.height / 2 - cabinetResult.height / 2);
         cabinetResult.scale.set(1.2, 1.2);
         
-        FlxTween.tween(cabinetOverlay, {alpha: .6}, .5, {ease: FlxEase.quartOut});
-        FlxTween.tween(cabinetResult, {alpha: 1}, .5, {ease: FlxEase.quartOut});
-        FlxTween.tween(cabinetResult.scale, {x: 1, y: 1}, .5, {ease: FlxEase.quartOut});
+        PlayState.tweenManager.tween(cabinetOverlay, {alpha: .6}, .5, {ease: FlxEase.quartOut});
+        PlayState.tweenManager.tween(cabinetResult, {alpha: 1}, .5, {ease: FlxEase.quartOut});
+        PlayState.tweenManager.tween(cabinetResult.scale, {x: 1, y: 1}, .5, {ease: FlxEase.quartOut});
 
-		new FlxTimer().start(1, function(f):Void {
+		new FlxTimer(PlayState.timerManager).start(1, function(f):Void {
             onCabinetGameFinished(status);
             status = INACTIVE; 
         });

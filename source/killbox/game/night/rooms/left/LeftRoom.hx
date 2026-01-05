@@ -151,7 +151,7 @@ class LeftRoom extends Room
 				if (box.x < 175) {
 					box.velocity.x = 0;
 					boxData.status = LEFT_SLIDING;
-					FlxTween.tween(box, {x: 150}, 1, {ease: FlxEase.quartOut, onComplete: function(f):Void{
+					PlayState.tweenManager.tween(box, {x: 150}, 1, {ease: FlxEase.quartOut, onComplete: function(f):Void{
 						boxData.status = LEFT_WAITING;
 					}});
 				}
@@ -201,7 +201,7 @@ class LeftRoom extends Room
 				if (box.x > 750) {
 					box.velocity.x = 0;
 					boxData.status = LEFT_BACK_SLIDING;
-					FlxTween.tween(box, {x: 775}, 1, {
+					PlayState.tweenManager.tween(box, {x: 775}, 1, {
 						ease: FlxEase.quartOut,
 						onComplete: function(f):Void {
 							boxData.status = LEFT_BACK_WAITING;
@@ -244,7 +244,7 @@ class LeftRoom extends Room
 					insideCabinet.prepGame();
 					cabinetDoor.openDoor();
 
-					new FlxTimer().start(GameValues.getCabinetDoorOpenTime() / 2, function(F):Void {
+					new FlxTimer(PlayState.timerManager).start(GameValues.getCabinetDoorOpenTime() / 2, function(F):Void {
 						cabinetStatus = PLAYING;
 						insideCabinet.startGame();
 					});
@@ -289,7 +289,7 @@ class LeftRoom extends Room
 					box.velocity.y = FlxG.random.float(-200, -260);
 					box.velocity.x = FlxG.random.float(-100, -200);
 					box.angularAcceleration = FlxG.random.float(-300, -10);
-					FlxTween.tween(box.velocity, {y: 200}, FlxG.random.float(2, 4));	
+					PlayState.tweenManager.tween(box.velocity, {y: 200}, FlxG.random.float(2, 4));	
 				}
 
 				boxesFlung++;
@@ -302,7 +302,7 @@ class LeftRoom extends Room
 					box.alpha = .5;
 				} else {
 					playState.getBoxByID(box.ID).status = LEFT_BACK_SPRINGING_CORRECT;
-					FlxTween.tween(box, {y: -box.height, angularVelocity: FlxG.random.float(-200, 200)}, FlxG.random.float(.4, .7), {
+					PlayState.tweenManager.tween(box, {y: -box.height, angularVelocity: FlxG.random.float(-200, 200)}, FlxG.random.float(.4, .7), {
 						ease: FlxEase.quartOut,
 						onComplete: function(f):Void {
 							playState.sendBox(box.ID, LEFT_BACK_TO_RIGHT);
@@ -317,7 +317,7 @@ class LeftRoom extends Room
 		}
 		boxSpring.springUp();
 		cabinetStatus = RECHARGING;
-		new FlxTimer().start(GameValues.getSpringTime(), function(f):Void {
+		new FlxTimer(PlayState.timerManager).start(GameValues.getSpringTime(), function(f):Void {
 			cabinetStatus = CLOSED;
 			for (box in springThese) {
 				if (box.alpha == .5)
@@ -330,12 +330,12 @@ class LeftRoom extends Room
 	{
 		if (boxSendType == MAIN_TO_LEFT)
 		{
-			new FlxTimer().start(GameValues.roomTravelTime(), function(f):Void {
+			new FlxTimer(PlayState.timerManager).start(GameValues.roomTravelTime(), function(f):Void {
 				addBoxToFront(id);
 			});
 		}
 		if (boxSendType == LEFT_TO_LEFT_BACK) {
-			new FlxTimer().start(GameValues.roomTravelTime(), function(f):Void {
+			new FlxTimer(PlayState.timerManager).start(GameValues.roomTravelTime(), function(f):Void {
 				addBoxToBack(id);
 			});
 		}

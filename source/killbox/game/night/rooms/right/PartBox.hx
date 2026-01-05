@@ -29,7 +29,7 @@ class PartBox extends FlxSpriteGroup
                 if(FlxG.mouse.justPressed){
                     box.scale.set(1.2, .8);
                     FlxTween.cancelTweensOf(box.scale);
-                    FlxTween.tween(box.scale, {x: 1, y: 1}, 1, {ease: FlxEase.quartOut});
+                    PlayState.tweenManager.tween(box.scale, {x: 1, y: 1}, 1, {ease: FlxEase.quartOut});
                     updateBoxPosition();
                     generatePart();
                 }

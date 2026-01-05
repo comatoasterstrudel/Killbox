@@ -82,7 +82,7 @@ class PartReceptor extends FlxSpriteGroup
         
         for(i in bottomParts){
             i.alpha = 1;
-            FlxTween.tween(i, {y: FlxG.height}, GameValues.getSpikingTime() / 2, {onUpdate: function(f):Void{
+            PlayState.tweenManager.tween(i, {y: FlxG.height}, GameValues.getSpikingTime() / 2, {onUpdate: function(f):Void{
                 if(i.y > 300 && !triggered){
                     timeLeft = (GameValues.getSpikingTime() / 2) + (GameValues.getSpikingTime() / 2 * (1 - (f.percent)));
                     hitFunction();
@@ -92,7 +92,7 @@ class PartReceptor extends FlxSpriteGroup
                 i.y = (topPart.y + topPart.height) - i.height;
                 i.alpha = .3;
 
-                FlxTween.tween(i, {y: topPart.y + topPart.height}, GameValues.getSpikingTime() / 2, {ease: FlxEase.quartOut, onComplete: function(F):Void{
+                PlayState.tweenManager.tween(i, {y: topPart.y + topPart.height}, GameValues.getSpikingTime() / 2, {ease: FlxEase.quartOut, onComplete: function(F):Void{
                     shooting = false;
                 }});
             }});
@@ -106,11 +106,11 @@ class PartReceptor extends FlxSpriteGroup
         
         for(i in bottomParts){
             i.alpha = 1;
-            FlxTween.tween(i, {y: i.y + FlxG.random.float(30, 150), angle: FlxG.random.float(0, 360), alpha: 0}, GameValues.getSpikingTime() / 2, {onComplete: function(F):Void{
+            PlayState.tweenManager.tween(i, {y: i.y + FlxG.random.float(30, 150), angle: FlxG.random.float(0, 360), alpha: 0}, GameValues.getSpikingTime() / 2, {onComplete: function(F):Void{
                 i.y = (topPart.y + topPart.height) - i.height;
                 i.alpha = .3;
                 i.angle = 0;
-                FlxTween.tween(i, {y: topPart.y + topPart.height}, GameValues.getSpikingTime() / 2, {ease: FlxEase.quartOut, onComplete: function(F):Void{
+                PlayState.tweenManager.tween(i, {y: topPart.y + topPart.height}, GameValues.getSpikingTime() / 2, {ease: FlxEase.quartOut, onComplete: function(F):Void{
                     shooting = false;
                 }});
             }});

@@ -59,7 +59,7 @@ class ChainPulley extends FlxSpriteGroup
 					if(pressHandle.y > Constants.CHAIN_PULLEY_BASE_PRESS_HANDLE_POSITION + (Constants.CHAIN_PULLEY_PRESS_DOWN_POSITION_ADDITIVE - 10)){ // the handle is pulled down enough..
 						pressHandleDown = true;
 						pressedDown();
-						new FlxTimer().start(GameValues.getPressSpeed(), function(f):Void{
+						new FlxTimer(PlayState.timerManager).start(GameValues.getPressSpeed(), function(f):Void{
 							pressHandleDown = false;
 							pressHandleWindingBack = true;
 						});

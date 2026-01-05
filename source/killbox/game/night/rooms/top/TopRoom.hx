@@ -113,7 +113,7 @@ class TopRoom extends Room
 				if (box.x < 685) {
 					box.velocity.x = 0;
 					playState.getBoxByID(box.ID).status = TOP_SLIDING;
-					FlxTween.tween(box, {x: FlxG.random.float(635, 665), angularVelocity: FlxG.random.float(-1, -20)}, 2, {
+					PlayState.tweenManager.tween(box, {x: FlxG.random.float(635, 665), angularVelocity: FlxG.random.float(-1, -20)}, 2, {
 						ease: FlxEase.quartOut,
 						onComplete: function(f):Void {
 							playState.getBoxByID(box.ID).status = TOP_WAITING;
@@ -126,7 +126,7 @@ class TopRoom extends Room
 
 	override function sendBox(id:Int, boxSendType:BoxSendType):Void {
 		if (boxSendType == RIGHT_TO_TOP) {
-			new FlxTimer().start(GameValues.roomTravelTime(), function(f):Void {
+			new FlxTimer(PlayState.timerManager).start(GameValues.roomTravelTime(), function(f):Void {
 				spawnBox(id);
 			});
 		}
@@ -178,8 +178,8 @@ class TopRoom extends Room
 				i.angularVelocity = 0;
 				i.scale.set(1.3, 1.3);
 				i.angle = FlxG.random.int(0, 360);
-				FlxTween.tween(i.scale, {x: 1, y: 1}, GameValues.getConfirmationTime() / 3, {ease: FlxEase.quartOut});
-				FlxTween.tween(i, {
+				PlayState.tweenManager.tween(i.scale, {x: 1, y: 1}, GameValues.getConfirmationTime() / 3, {ease: FlxEase.quartOut});
+				PlayState.tweenManager.tween(i, {
 					angle: i.angle + FlxG.random.float(-200, 200),
 					x: i.x + FlxG.random.float(-3, 3),
 					y: -i.height
@@ -197,7 +197,7 @@ class TopRoom extends Room
 			boxesConfirmed++;
 		}
 
-		new FlxTimer().start(GameValues.getConfirmationTime(), function(f):Void {
+		new FlxTimer(PlayState.timerManager).start(GameValues.getConfirmationTime(), function(f):Void {
 			for (i in boxSprites) {
 				if (i.alpha == .5)
 					i.alpha = 1;
@@ -210,7 +210,7 @@ class TopRoom extends Room
 		tubeGradient.alpha = FlxG.random.float(.7, 1);
 		tubeGradient.y = 0;
 		var time = FlxG.random.float(2, 2.5);
-		FlxTween.tween(tubeGradient, {y: -70, alpha: 0}, time, {ease: FlxEase.quartOut});
+		PlayState.tweenManager.tween(tubeGradient, {y: -70, alpha: 0}, time, {ease: FlxEase.quartOut});
 	}
 
 	override function enterRoom():Void {

@@ -40,3 +40,5 @@ import openfl.display.Sprite;
 import killbox.extensions.*;
 import killbox.game.night.ui.boxquota.*;
 import killbox.game.night.ui.boxcounter.*;
+import flixel.FlxSubState;
+import killbox.game.pause.*;

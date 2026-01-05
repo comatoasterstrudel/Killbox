@@ -42,7 +42,7 @@ class BoxPress extends FlxSpriteGroup
 		var pressSpeed = GameValues.getPressSpeed();
         
         pressing = true;
-		FlxTween.tween(pressBottom, {y: 60 + 260}, pressSpeed / 6, {
+		PlayState.tweenManager.tween(pressBottom, {y: 60 + 260}, pressSpeed / 6, {
 			ease: FlxEase.quartOut,
 			onUpdate: (function(f):Void
 			{
@@ -54,7 +54,7 @@ class BoxPress extends FlxSpriteGroup
 			}),
 			onComplete: function(f):Void
 			{
-				FlxTween.tween(pressBottom, {y: 60}, pressSpeed / 6, {
+				PlayState.tweenManager.tween(pressBottom, {y: 60}, pressSpeed / 6, {
 					startDelay: (pressSpeed / 6) * 5,
 					ease: FlxEase.quartOut,
 					onUpdate: (function(f):Void

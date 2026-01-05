@@ -145,7 +145,7 @@ class ConfirmationKeypad extends FlxSpriteGroup
 				partReceptor.shootWrong();
 			}
 
-			new FlxTimer().start(GameValues.getSpikingTime(), function(f):Void {
+			new FlxTimer(PlayState.timerManager).start(GameValues.getSpikingTime(), function(f):Void {
 				interactable = true;
 			});
         });

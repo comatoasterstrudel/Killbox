@@ -85,7 +85,7 @@ class ComputerPageFinishProduction extends ComputerPage{
 		productionProgress = 0;
 
 		changeStatus(true);
-		FlxTween.tween(this, {productionProgress: 1}, GameValues.getConfirmationTime(), {
+		PlayState.tweenManager.tween(this, {productionProgress: 1}, GameValues.getConfirmationTime(), {
 			onComplete: function(f):Void {
 				changeStatus(false);
 			}

@@ -128,7 +128,7 @@ class RightRoom extends Room
 				} else if ((box.x + box.width) > conveyorDoor.door.x + conveyorDoor.door.width) {
 					playState.getBoxByID(box.ID).status = RIGHT_LEFT_CONVEYOR_FALLING;
 					box.acceleration.y = 100;
-					FlxTween.tween(box.velocity, {x: 0}, 2);
+					PlayState.tweenManager.tween(box.velocity, {x: 0}, 2);
 				}
 			}
 			if (playState.getBoxByID(box.ID).status == RIGHT_LEFT_CONVEYOR_FALLING) {
@@ -150,7 +150,7 @@ class RightRoom extends Room
 				if (box.x > 850) {
 					box.velocity.x = 0;
 					playState.getBoxByID(box.ID).status = RIGHT_RIGHT_SLIDING;
-					FlxTween.tween(box, {x: 875}, 1, {
+					PlayState.tweenManager.tween(box, {x: 875}, 1, {
 						ease: FlxEase.quartOut,
 						onComplete: function(f):Void {
 							playState.getBoxByID(box.ID).status = RIGHT_RIGHT_WAITING;
@@ -169,7 +169,7 @@ class RightRoom extends Room
 					boxVacuum.boxGroup.add(box);
 					playState.getBoxByID(box.ID).status = RIGHT_SUCKING;
 					box.velocity.x = 0;
-					FlxTween.tween(box, {angularVelocity: FlxG.random.float(100, 1000), x: 1200, y: -box.height},
+					PlayState.tweenManager.tween(box, {angularVelocity: FlxG.random.float(100, 1000), x: 1200, y: -box.height},
 						GameValues.getSuckSpeed() * FlxG.random.float(.8, 1.2), {
 							ease: FlxEase.quadInOut,
 							onComplete: function(f):Void {
@@ -218,14 +218,14 @@ class RightRoom extends Room
 
 				i.scale.set(scaleMult, scaleMult);
 
-				FlxTween.tween(i.scale, {x: 1.2, y: 1.2}, timeLeft / 2, {ease: FlxEase.quartOut});
+				PlayState.tweenManager.tween(i.scale, {x: 1.2, y: 1.2}, timeLeft / 2, {ease: FlxEase.quartOut});
 			}
 
 			boxesSpiked++;
 		}
 
 		if (spikeThese.length > 0) {
-			new FlxTimer().start(timeLeft / 1.5, function(f):Void {
+			new FlxTimer(PlayState.timerManager).start(timeLeft / 1.5, function(f):Void {
 				for (i in boxSprites) {
 					if (i.alpha == .5) {
 						i.alpha = 1;
@@ -240,7 +240,7 @@ class RightRoom extends Room
 	
 	override function sendBox(id:Int, boxSendType:BoxSendType):Void {
 		if (boxSendType == LEFT_BACK_TO_RIGHT) {
-			new FlxTimer().start(GameValues.roomTravelTime(), function(f):Void {
+			new FlxTimer(PlayState.timerManager).start(GameValues.roomTravelTime(), function(f):Void {
 				spawnBox(id);				
 			});
 		}

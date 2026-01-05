@@ -40,7 +40,7 @@ class PartDraggable extends FlxSprite
     }
     
     public function doDropAnim():Void{
-        FlxTween.tween(this, {alpha: 0}, 0.4, {onComplete: function(f):Void{
+        PlayState.tweenManager.tween(this, {alpha: 0}, 0.4, {onComplete: function(f):Void{
             this.destroy();
         }});
     }

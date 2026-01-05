@@ -35,8 +35,8 @@ class BoxSpring extends FlxSpriteGroup
         
         var time = GameValues.getSpringTime();
         
-        FlxTween.tween(springTop, {y: 100}, time / 5, {ease: FlxEase.quartOut, onComplete: function(f):Void{
-            FlxTween.tween(springTop, {y: 230}, (time / 5) * 2, {startDelay: (time / 5) * 2, onComplete: function(f):Void{
+        PlayState.tweenManager.tween(springTop, {y: 100}, time / 5, {ease: FlxEase.quartOut, onComplete: function(f):Void{
+            PlayState.tweenManager.tween(springTop, {y: 230}, (time / 5) * 2, {startDelay: (time / 5) * 2, onComplete: function(f):Void{
                 springing = false;
             }});
         }});
