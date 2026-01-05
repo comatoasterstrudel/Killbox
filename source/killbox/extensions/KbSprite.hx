@@ -27,6 +27,11 @@ class KbSprite extends FlxSprite
         return this;
     }
     
+    public function createColorBlock(width:Int, height:Int, color:FlxColor):KbSprite{
+        makeGraphic(width, height, color);
+        return this;
+    }
+    
     public function resize(size:Float):Void{
         setGraphicSize(Std.int(this.width * size));
         updateHitbox();

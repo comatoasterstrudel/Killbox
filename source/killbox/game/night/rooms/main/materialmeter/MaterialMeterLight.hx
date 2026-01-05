@@ -1,46 +1,47 @@
-package killbox.game.night.rooms.main;
+package killbox.game.night.rooms.main.materialmeter;
 
+/**
+ * the individual light sprites for the material meter
+ */
 class MaterialMeterLight extends FlxSpriteGroup
 {
-    var flashTimer:Float = 0;
+    /**
+     * sprites
+     */
+    public var lightSprite:KbSprite;
+	public var whiteOverlay:KbSprite;
     
+    /**
+     * the status of this light. (ON vs CHARGING vs OFF)
+     */
     var status:MaterialMeterLightStatus = ON;
-    
-	public var lightSprite:FlxSprite;
-	public var whiteOverlay:FlxSprite;
-    
+
     public function new(ID:Int):Void{
         super();
         this.ID = ID;
         
-        lightSprite = new FlxSprite().makeGraphic(25, 25, FlxColor.LIME);
+        lightSprite = new KbSprite().createColorBlock(25, 25, FlxColor.LIME);
 		lightSprite.setPosition((200 + (50 * (ID - 1))), 250);
         add(lightSprite);
         
-		whiteOverlay = new FlxSprite().makeGraphic(25, 25, FlxColor.WHITE);
+		whiteOverlay = new KbSprite(lightSprite.x, lightSprite.y).createColorBlock(25, 25, FlxColor.WHITE);
         whiteOverlay.alpha = 0;
+        whiteOverlay.lerpManager.lerpAlpha = true;
+        whiteOverlay.lerpManager.targetAlpha = 0;
+        whiteOverlay.lerpManager.lerpSpeed = 4;
         add(whiteOverlay);
     }
     
-    override function update(elapsed:Float):Void{
-        super.update(elapsed);
-        
-        if(flashTimer > 0){
-            flashTimer -= elapsed;
-        }
-        
-        if(flashTimer < 0){
-            flashTimer = 0;
-        }        
-    }
-    
+    /**
+     * call this to update the values for this sprite
+     * @param availableMaterials how many materials are available for use
+     * @param timeUntilNextMaterial how long until the next material will be ready
+     */
     public function updateMaterialMeter(availableMaterials:Int, timeUntilNextMaterial:Float):Void{
         if(availableMaterials >= ID){
             lightSprite.color = FlxColor.LIME;
-            if(status != ON) flashTimer = .7;
+            if(status != ON) whiteOverlay.alpha = .7;
             status = ON;
-            whiteOverlay.alpha = flashTimer;
-			whiteOverlay.setPosition(lightSprite.x, lightSprite.y);
         } else if(ID == availableMaterials + 1){ //this one is charging
             lightSprite.color = FlxColor.GREEN.getDarkened((.8) * 1 - (timeUntilNextMaterial / GameValues.getMaterialRefillTime()));
             status = CHARGING;
