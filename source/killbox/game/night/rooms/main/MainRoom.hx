@@ -2,11 +2,11 @@ package killbox.game.night.rooms.main;
 
 class MainRoom extends Room
 {
-	var bgBack:FlxSprite;
+	var bgBack:KbSprite;
 	var boxSprites:FlxSpriteGroup;
-	var bgFront:FlxSprite;
+	var bgFront:KbSprite;
 
-	var addBoxButton:FlxSprite;
+	var addBoxButton:KbSprite;
 	
 	var boxCounter:BoxCounter;
 	
@@ -16,7 +16,7 @@ class MainRoom extends Room
 	
 	override function setupRoom():Void
 	{     
-		bgBack = new FlxSprite().loadGraphic('assets/images/night/rooms/main/mainRoomPlaceholderBack.png');
+		bgBack = new KbSprite().createFromImage('assets/images/night/rooms/main/mainRoomPlaceholderBack.png');
 		bgBack.screenCenter();
 		bgBack.scrollFactor.set(0, 0);
 		add(bgBack);  
@@ -27,11 +27,11 @@ class MainRoom extends Room
 		boxCounter = new BoxCounter(this, boxSprites, 80);
 		add(boxCounter);
 		
-		bgFront = new FlxSprite().loadGraphic('assets/images/night/rooms/main/mainRoomPlaceholder.png');
+		bgFront = new KbSprite().createFromImage('assets/images/night/rooms/main/mainRoomPlaceholder.png');
 		bgFront.screenCenter();
 		add(bgFront);  
 
-		addBoxButton = new FlxSprite(270, 295).makeGraphic(100, 30, FlxColor.WHITE);
+		addBoxButton = new KbSprite(270, 295).createColorBlock(100, 30, FlxColor.WHITE);
 		add(addBoxButton);
 		
 		materialMeter = new MaterialMeter(addBoxButton);
@@ -121,7 +121,7 @@ class MainRoom extends Room
 		var box = new Box(playState.getBoxID());
 		playState.boxes.push(box);
 
-		var boxSprite = new FlxSprite(400, 0).makeGraphic(50, 50, 0xFF424242);
+		var boxSprite = new KbSprite(400, 0).createColorBlock(50, 50, 0xFF424242);
 		boxSprite.ID = box.ID;
 		boxSprite.acceleration.y = 300;
 		boxSprites.add(boxSprite);

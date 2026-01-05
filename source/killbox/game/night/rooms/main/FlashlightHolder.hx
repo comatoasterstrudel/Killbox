@@ -4,16 +4,16 @@ class FlashlightHolder extends FlxSpriteGroup
 {
     public var holdingLight:Bool = false;
     
-    var holderBack:FlxSprite;
-    var holderFront:FlxSprite;
+    var holderBack:KbSprite;
+    var holderFront:KbSprite;
     
     public function new():Void{
         super();
         
-        holderBack = new FlxSprite(900, 150).makeGraphic(80, 150, 0xFF353535);
+        holderBack = new KbSprite(900, 150).createColorBlock(80, 150, 0xFF353535);
         add(holderBack);
         
-        holderFront = new FlxSprite(890, 150);
+        holderFront = new KbSprite(890, 150);
         add(holderFront);
         
         updateHolderSprite();
@@ -35,9 +35,9 @@ class FlashlightHolder extends FlxSpriteGroup
     
     function updateHolderSprite():Void{
         if(holdingLight){
-			holderFront.loadGraphic('assets/images/night/rooms/main/flashHolderFull.png');
+			holderFront.createFromImage('assets/images/night/rooms/main/flashHolderFull.png');
         } else {
-			holderFront.loadGraphic('assets/images/night/rooms/main/flashHolderEmpty.png');
+			holderFront.createFromImage('assets/images/night/rooms/main/flashHolderEmpty.png');
         }
     }
 }
