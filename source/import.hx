@@ -1,3 +1,4 @@
+import UnicodeString;
 import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.FlxGame;
@@ -18,6 +19,7 @@ import flixel.ui.FlxBar;
 import flixel.util.FlxColor;
 import flixel.util.FlxSignal;
 import flixel.util.FlxTimer;
+import haxe.iterators.StringIteratorUnicode;
 import killbox.*;
 import killbox.game.*;
 import killbox.game.boxes.*;

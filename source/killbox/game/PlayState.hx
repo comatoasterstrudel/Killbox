@@ -107,7 +107,7 @@ class PlayState extends FlxState
 		
 		updateMaterialTimer(elapsed);
 		
-		boxQuotaDisplay.updateBar(boxesProduced, GAME_RULES.boxQuota, elapsed);
+		boxQuotaDisplay.updateSprites(boxesProduced, GAME_RULES.boxQuota, elapsed);
 
 		super.update(elapsed);
 	}

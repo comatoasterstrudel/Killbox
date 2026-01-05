@@ -46,4 +46,15 @@ class Utilities{
 		}
 	}
 
+	public static function stringToArray(text:String):Array<String> {
+		var thing = new StringIteratorUnicode(text);
+
+		var returnthis:Array<String> = [];
+
+		for (i in thing) {
+			returnthis.push(String.fromCharCode(i));
+		}
+
+		return returnthis;
+	}
 }
