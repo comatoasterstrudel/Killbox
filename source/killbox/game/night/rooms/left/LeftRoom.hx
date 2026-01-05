@@ -2,31 +2,51 @@ package killbox.game.night.rooms.left;
 
 class LeftRoom extends Room
 {
-	var bgBack:FlxSprite;
-	var bgFront:FlxSprite;
-	var bgTube:FlxSprite;
+	/**
+	 * sprites
+	 */
+	var bgBack:KbSprite;
+	var bgFront:KbSprite;
+	var bgTube:KbSprite;
 
+	/**
+	 * the box press that presses boxes
+	 */
 	var boxPress:BoxPress;
 	
+	/**
+	 * the pulley that activates the boxPress
+	 */
 	var chainPulley:ChainPulley;
 	
+	/**
+	 * the spring that sends boxes to the right room
+	 */
 	var boxSpring:BoxSpring;
 	
+	/**
+	 * front conveyor
+	 */
 	var boxFrontConveyorSprites:FlxSpriteGroup;
-	var boxBackConveyorSprites:FlxSpriteGroup;
-
-	var boxCounterBack:BoxCounter;
 	var boxCounterFront:BoxCounter;
 	
-	var bgCabinet:FlxSprite;
+	/**
+	 * back conveyor
+	 */
+	var boxBackConveyorSprites:FlxSpriteGroup;
+	var boxCounterBack:BoxCounter;
+
+	/**
+	 * cabinet
+	 */
+	var bgCabinet:KbSprite;
 	var insideCabinet:InsideCabinet;
 	var cabinetDoor:CabinetDoor;
-	var cabinetButton:FlxSprite;
-
+	var cabinetButton:KbSprite;
 	var cabinetStatus:CabinetStatus = CLOSED;
 	
     override function setupRoom():Void{        
-		bgBack = new FlxSprite().loadGraphic('assets/images/night/rooms/left/leftRoomBack.png');
+		bgBack = new KbSprite().createFromImage('assets/images/night/rooms/left/leftRoomBack.png');
 		bgBack.screenCenter();
 		bgBack.scrollFactor.set(0, 0);
 		add(bgBack);  
@@ -40,7 +60,7 @@ class LeftRoom extends Room
 		boxCounterBack = new BoxCounter(this, boxBackConveyorSprites, 60);
 		add(boxCounterBack);
 		
-		bgTube = new FlxSprite().loadGraphic('assets/images/night/rooms/left/leftRoomTube.png');
+		bgTube = new KbSprite().createFromImage('assets/images/night/rooms/left/leftRoomTube.png');
 		bgTube.screenCenter();
 		bgTube.scrollFactor.set(0, 0);
 		add(bgTube);  
@@ -51,14 +71,14 @@ class LeftRoom extends Room
 		cabinetDoor = new CabinetDoor();
 		add(cabinetDoor);
 
-		bgCabinet = new FlxSprite().loadGraphic('assets/images/night/rooms/left/leftRoomCabinet.png');
+		bgCabinet = new KbSprite().createFromImage('assets/images/night/rooms/left/leftRoomCabinet.png');
 		bgCabinet.screenCenter();
 		add(bgCabinet);
 
-		cabinetButton = new FlxSprite(480, 495).makeGraphic(100, 25, 0xFF9EBDAF);
+		cabinetButton = new KbSprite(480, 495).createColorBlock(100, 25, 0xFF9EBDAF);
 		add(cabinetButton);
 		
-		bgFront = new FlxSprite().loadGraphic('assets/images/night/rooms/left/leftRoomPlaceholder.png');
+		bgFront = new KbSprite().createFromImage('assets/images/night/rooms/left/leftRoomPlaceholder.png');
 		bgFront.screenCenter();
 		add(bgFront);  
 
@@ -156,10 +176,7 @@ class LeftRoom extends Room
 					}});
 				}
 			}
-			if (boxData.status != LEFT_PRESSED
-				&& boxData.status != LEFT_PRESSED_CONVEYOR
-				&& boxPress.blockBoxes
-				&& box.alpha == 1) // dont let boxes go through the conveyor while its down lol
+			if (boxData.status != LEFT_PRESSED && boxData.status != LEFT_PRESSED_CONVEYOR && boxPress.blockBoxes && box.alpha == 1) // dont let boxes go through the conveyor while its down lol
 			{
 				if ((box.x) <= (boxPress.pressBottom.x + boxPress.pressBottom.width))
 				{
@@ -201,12 +218,9 @@ class LeftRoom extends Room
 				if (box.x > 750) {
 					box.velocity.x = 0;
 					boxData.status = LEFT_BACK_SLIDING;
-					PlayState.tweenManager.tween(box, {x: 775}, 1, {
-						ease: FlxEase.quartOut,
-						onComplete: function(f):Void {
-							boxData.status = LEFT_BACK_WAITING;
-						}
-					});
+					PlayState.tweenManager.tween(box, {x: 775}, 1, { ease: FlxEase.quartOut, onComplete: function(f):Void {
+						boxData.status = LEFT_BACK_WAITING;
+					}});
 				}
 			} else if (boxData.status == LEFT_BACK_SPRINGING_BACKWARDS) {
 				if (box.y > 220) {
@@ -341,17 +355,17 @@ class LeftRoom extends Room
 		}
 	}
 
-	function addBoxToFront(id:Int):Void
-	{
-		var box = new FlxSprite(FlxG.width, 270).makeGraphic(100, 100, 0xFF424242);
+	function addBoxToFront(id:Int):Void{
+		var box = new KbSprite(FlxG.width, 270).createColorBlock(100, 100, 0xFF424242);
 		box.ID = id;
 		box.velocity.x = -GameValues.getConveyorSpeed();
 		boxFrontConveyorSprites.add(box);
 
 		playState.getBoxByID(id).status = LEFT_CONVEYOR;
 	}
+	
 	function addBoxToBack(id:Int):Void {
-		var box = new FlxSprite(-100, 220).makeGraphic(50, 25, 0xFF323232);
+		var box = new KbSprite(-100, 220).createColorBlock(50, 25, 0xFF323232);
 		box.ID = id;
 		box.velocity.x = GameValues.getConveyorSpeed();
 		boxBackConveyorSprites.add(box);

@@ -28,6 +28,7 @@ import killbox.game.night.data.*;
 import killbox.game.night.movement.*;
 import killbox.game.night.rooms.*;
 import killbox.game.night.rooms.left.*;
+import killbox.game.night.rooms.left.cabinet.*;
 import killbox.game.night.rooms.main.*;
 import killbox.game.night.rooms.main.materialmeter.*;
 import killbox.game.night.rooms.right.*;
