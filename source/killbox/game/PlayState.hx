@@ -24,6 +24,8 @@ class PlayState extends FlxState
 	
 	var flashlightChargeBar:FlashlightChargeBar;
 	
+	var boxQuotaDisplay:BoxQuotaDisplay;
+	
 	public var boxes:Array<Box> = [];
 	public var boxIdAssignment:Int = 0;
 	
@@ -86,6 +88,10 @@ class PlayState extends FlxState
 		flashlightChargeBar.camera = camUI;
 		add(flashlightChargeBar);
 
+		boxQuotaDisplay = new BoxQuotaDisplay();
+		boxQuotaDisplay.camera = camUI;
+		add(boxQuotaDisplay);
+		
 		add(movementUI);
 
 		updateFlashlight(FlxG.elapsed);
@@ -101,6 +107,8 @@ class PlayState extends FlxState
 		
 		updateMaterialTimer(elapsed);
 		
+		boxQuotaDisplay.updateBar(boxesProduced, GAME_RULES.boxQuota, elapsed);
+
 		super.update(elapsed);
 	}
 	
@@ -319,8 +327,9 @@ class PlayState extends FlxState
 		}
 	}
 	public static function createGame(boxQuota:Int = 3):GameRules {
-		return {
+		GAME_RULES = {
 			boxQuota: boxQuota
 		};
+		return GAME_RULES;
 	}
 }

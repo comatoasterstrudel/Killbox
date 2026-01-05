@@ -36,4 +36,8 @@ class Constants{
 	 * How long it will take for the flashlight charge bar to disappear
 	 */
 	public static final FLASHLIGHT_CHARGE_BAR_INACTIVITY_TIME:Float = 0.8;
+	/**
+	 * How long it will take for the box quota display to disappear
+	 */
+	public static final BOX_QUOTA_DISPLAY_INACTIVITY_TIME:Float = 1.3;
 }
