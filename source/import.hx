@@ -38,3 +38,4 @@ import openfl.display.BitmapData;
 import openfl.display.Sprite;
 import killbox.extensions.*;
 import killbox.game.night.ui.boxquota.*;
+import killbox.game.night.ui.boxcounter.*;

@@ -49,7 +49,7 @@ class TopRoom extends Room
 		topTube = new FlxSprite().loadGraphic('assets/images/night/rooms/top/topTube.png');
 		add(topTube);
 
-		boxCounter = new BoxCounter(this, boxSprites, 30);
+		boxCounter = new BoxCounter(this, boxSprites, 60);
 		add(boxCounter);
 		
 		wiresBack = new FlxSprite().loadGraphic('assets/images/night/rooms/top/tvRoomWiresBack.png');

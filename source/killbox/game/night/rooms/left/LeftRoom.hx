@@ -37,7 +37,7 @@ class LeftRoom extends Room
 		boxBackConveyorSprites = new FlxSpriteGroup();
 		add(boxBackConveyorSprites);
 
-		boxCounterBack = new BoxCounter(this, boxBackConveyorSprites, 30);
+		boxCounterBack = new BoxCounter(this, boxBackConveyorSprites, 60);
 		add(boxCounterBack);
 		
 		bgTube = new FlxSprite().loadGraphic('assets/images/night/rooms/left/leftRoomTube.png');
@@ -65,7 +65,7 @@ class LeftRoom extends Room
 		boxFrontConveyorSprites = new FlxSpriteGroup();
 		add(boxFrontConveyorSprites);
 		
-		boxCounterFront = new BoxCounter(this, boxFrontConveyorSprites, 70);
+		boxCounterFront = new BoxCounter(this, boxFrontConveyorSprites, 100);
 		add(boxCounterFront);
 		
 		boxPress = new BoxPress(pressBoxes);

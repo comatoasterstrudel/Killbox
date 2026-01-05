@@ -33,7 +33,7 @@ class RightRoom extends Room
 		boxSprites = new FlxSpriteGroup();
 		add(boxSprites);
 
-		boxCounter = new BoxCounter(this, boxSprites, 30);
+		boxCounter = new BoxCounter(this, boxSprites, 60);
 		add(boxCounter);
 		
 		boxVacuum = new BoxVacuum(this);

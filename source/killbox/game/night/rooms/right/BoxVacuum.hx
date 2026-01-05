@@ -20,7 +20,7 @@ class BoxVacuum extends FlxSpriteGroup
         boxGroup = new FlxSpriteGroup();
         add(boxGroup);
         
-        boxCounter = new BoxCounter(room, boxGroup, 30);
+        boxCounter = new BoxCounter(room, boxGroup, 60);
 		add(boxCounter);
         
         particleGroup1 = new FlxSpriteGroup();

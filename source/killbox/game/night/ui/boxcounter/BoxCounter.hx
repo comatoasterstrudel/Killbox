@@ -1,11 +1,20 @@
-package killbox.game.night.ui;
+package killbox.game.night.ui.boxcounter;
 
+/**
+ * a ui element to track boxes that are placed on top of eachother
+ */
 class BoxCounter extends FlxTypedSpriteGroup<BoxCounterLabel>
-{    
+{   
+    /**
+     * sprites
+     */
     var room:Room;
     var boxGroup:FlxSpriteGroup;
     
-	var yOffset:Float = 100;
+	/**
+	 * the amount that the label is moved from the boxes
+	 */
+	var yOffset:Float;
 
 	public function new(room:Room, boxGroup:FlxSpriteGroup, yOffset:Float = 100):Void {
         super();
@@ -20,6 +29,11 @@ class BoxCounter extends FlxTypedSpriteGroup<BoxCounterLabel>
         });
     }
 
+	/**
+	 * call this to update the groupings of boxes,
+     * this only gets updated every .5 seconds,
+     * since its pretty costly.
+	 */
 	function updateGroups():Void {
 		for (i in members) {
             i.kill();
@@ -59,13 +73,13 @@ class BoxCounter extends FlxTypedSpriteGroup<BoxCounterLabel>
                     var label = members[i];
                     label.revive();
                     label.boxes = groupedBoxes[i];
-					label.updateLabel(FlxG.elapsed);
                 }
             }
             
 			for (i in members) {
 				if (!i.alive)
-					i.alpha = 0;
+					i.bg.alpha = 0;
+                    i.text.alpha = 0;
 			}
             
             groupedBoxes = [];            
