@@ -77,9 +77,10 @@ class BoxCounter extends FlxTypedSpriteGroup<BoxCounterLabel>
             }
             
 			for (i in members) {
-				if (!i.alive)
+				if (!i.alive){
 					i.bg.alpha = 0;
                     i.text.alpha = 0;
+                }
 			}
             
             groupedBoxes = [];            

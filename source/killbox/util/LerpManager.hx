@@ -49,11 +49,11 @@ class LerpManager
 	 * @param elapsed time since last frame
 	 */
     public function updateLerps(elapsed:Float):Void{
-       	if (lerpAlpha) alpha = Utilities.lerpThing(alpha, targetAlpha, elapsed, lerpSpeed);
-		if (lerpX && targetPosition != null) x = Utilities.lerpThing(x, targetPosition.x, elapsed, lerpSpeed);
-		if (lerpY && targetPosition != null) y = Utilities.lerpThing(y, targetPosition.y, elapsed, lerpSpeed);
-		if (lerpScaleX && targetScale != null) scaleX = Utilities.lerpThing(scaleX, targetScale.x, elapsed, lerpSpeed);
-		if (lerpScaleY && targetScale != null) scaleY = Utilities.lerpThing(scaleY, targetScale.y, elapsed, lerpSpeed);		
+       	if (lerpAlpha) alpha = Utilities.lerpThing(sprite == null ? alpha : sprite.alpha, targetAlpha, elapsed, lerpSpeed);
+		if (lerpX && targetPosition != null) x = Utilities.lerpThing(sprite == null ? x : sprite.x, targetPosition.x, elapsed, lerpSpeed);
+		if (lerpY && targetPosition != null) y = Utilities.lerpThing(sprite == null ? y : sprite.y, targetPosition.y, elapsed, lerpSpeed);
+		if (lerpScaleX && targetScale != null) scaleX = Utilities.lerpThing(sprite == null ? scaleX : sprite.scale.x, targetScale.x, elapsed, lerpSpeed);
+		if (lerpScaleY && targetScale != null) scaleY = Utilities.lerpThing(sprite == null ? scaleY : sprite.scale.y, targetScale.y, elapsed, lerpSpeed);		
 		
 		updateSprite();
 	}

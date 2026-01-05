@@ -24,7 +24,7 @@ class MaterialMeterLight extends FlxSpriteGroup
 		lightSprite.setPosition((200 + (50 * (ID - 1))), 250);
         add(lightSprite);
         
-		whiteOverlay = new KbSprite(lightSprite.x, lightSprite.y).createColorBlock(25, 25, FlxColor.WHITE);
+		whiteOverlay = new KbSprite().createColorBlock(25, 25, FlxColor.WHITE);
         whiteOverlay.alpha = 0;
         whiteOverlay.lerpManager.lerpAlpha = true;
         whiteOverlay.lerpManager.targetAlpha = 0;
@@ -39,6 +39,7 @@ class MaterialMeterLight extends FlxSpriteGroup
      */
     public function updateMaterialMeter(availableMaterials:Int, timeUntilNextMaterial:Float):Void{
         if(availableMaterials >= ID){
+            if(whiteOverlay.alpha > 0) whiteOverlay.setPosition(lightSprite.x, lightSprite.y);
             lightSprite.color = FlxColor.LIME;
             if(status != ON) whiteOverlay.alpha = .7;
             status = ON;
@@ -50,6 +51,6 @@ class MaterialMeterLight extends FlxSpriteGroup
             lightSprite.color = FlxColor.GREEN.getDarkened(.8);
             status = OFF;
             whiteOverlay.alpha = 0;
-        }
+        }        
     }
 }
