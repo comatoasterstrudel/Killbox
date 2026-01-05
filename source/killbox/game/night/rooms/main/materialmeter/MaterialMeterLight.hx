@@ -52,5 +52,7 @@ class MaterialMeterLight extends FlxSpriteGroup
             status = OFF;
             whiteOverlay.alpha = 0;
         }        
+        
+        trace(whiteOverlay.alpha);
     }
 }

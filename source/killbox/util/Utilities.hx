@@ -1,9 +1,13 @@
 package killbox.util;
 
 class Utilities{
-    public static function lerpThing(initialnum:Float, target:Float, elapsed:Float, speed:Float = 15):Float
+    public static function lerpThing(initialnum:Float, target:Float, elapsed:Float, speed:Float = 15, ?roundNum:Float = 0.001):Float
 	{
-		return FlxMath.lerp(target, initialnum, FlxMath.bound(1 - (elapsed * speed), 0, 1));
+		var num = FlxMath.lerp(target, initialnum, FlxMath.bound(1 - (elapsed * speed), 0, 1));
+		
+		if(num + roundNum >= target && initialnum < target || num - roundNum <= target && initialnum > target) num = target;
+		 
+		return num;
 	}
 	public static function getAverage(data:Array<Float>):Float
 	{
