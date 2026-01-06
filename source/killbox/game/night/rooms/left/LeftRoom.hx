@@ -245,11 +245,11 @@ class LeftRoom extends Room
 		if (Cursor.mouseIsTouching(cabinetButton) && PlayState.curRoom == 'left') {
 			switch (cabinetStatus) {
 				case CLOSED | PLAYING:
-					cabinetButton.color = 0xFFD1F5E4;
+					cabinetButton.color = 0xFF7A9A8B;
 				case RECHARGING:
 					cabinetButton.color = 0xFF283C33;
 				default:
-					cabinetButton.color = 0xFF7A9A8B;
+					cabinetButton.color = 0xFFD1F5E4;
 			}
 
 			if (FlxG.mouse.justPressed) {
@@ -271,7 +271,7 @@ class LeftRoom extends Room
 				case RECHARGING:
 					cabinetButton.color = 0xFF283C33;
 				default:
-					cabinetButton.color = 0xFF9EBDAF;
+					cabinetButton.color = 0xFFD1F5E4;
 			}
 		}
 	}

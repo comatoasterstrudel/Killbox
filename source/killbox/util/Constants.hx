@@ -39,6 +39,9 @@ class Constants{
 	/**
 	 * How long it will take for the box quota display to disappear
 	 */
-	public static final BOX_QUOTA_DISPLAY_INACTIVITY_TIME:Float = 1.3;
+	public static final BOX_QUOTA_DISPLAY_INACTIVITY_TIME:Float = 2;
+	/**
+	 * How many digits the box quota text will be able to display
+	 */
 	public static final BOX_QUOTA_DISPLAY_DIGITS:Int = 5;
 }
