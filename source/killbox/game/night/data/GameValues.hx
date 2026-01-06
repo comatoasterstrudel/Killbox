@@ -26,7 +26,7 @@ class GameValues
 		return 6;
 	}
 	public static function getMaxFlashlightBattery():Int {
-		return 5;
+		return 12;
 	}
 	public static function getCabinetDoorOpenTime():Float {
 		return .4;
@@ -59,5 +59,8 @@ class GameValues
 	}
 	public static function getConfirmationTime():Float {
 		return 3.2;
+	}
+	public static function getFlashlightDamage():Float{
+		return 50;
 	}
 }

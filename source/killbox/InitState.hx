@@ -10,6 +10,10 @@ class InitState extends FlxState{
         // setup timers and tweens in playstate
         PlayState.setUpManagers();
                 
+        #if maxGhostAi
+        PlayState.createGame(3, new GhostAiList(['test' => 3]));
+        #end
+        
         // start the game !!
         FlxG.switchState(#if release Constants.INITIAL_STATE_RELEASE #end #if debug Constants.INITIAL_STATE_DEBUG #end);
     }

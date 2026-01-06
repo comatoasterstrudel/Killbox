@@ -34,7 +34,11 @@ class PlayState extends FlxState
 	/**
 	 * rooms
 	 */
-	var rooms:Map<String, Room> = [];
+	public var rooms:Map<String, Room> = [];
+	public var roomMain:MainRoom;
+	public var roomLeft:LeftRoom;
+	public var roomRight:RightRoom;
+	public var roomTop:TopRoom;
 	var roomList:Array<String> = [];
 	public static var curRoom:String = '';
 	var roomGroup:FlxTypedGroup<Room>;
@@ -50,8 +54,8 @@ class PlayState extends FlxState
 	 * flashlight
 	 */
 	public var flashlightBattery:Float = GameValues.getMaxFlashlightBattery();
-	var flashlightActive:Bool = false;
-	var flashlightSprite:KbSprite;
+	public var flashlightActive:Bool = false;
+	public var flashlightSprite:KbSprite;
 
 	/**
 	 * boxes
@@ -65,7 +69,12 @@ class PlayState extends FlxState
 	 */
 	public var availableMaterials:Int = GameValues.getMaxMaterials();
 	public var timeUntilNextMaterial:Float = 0;
-		
+	
+	/**
+	 * ghosts
+	 */
+	public var ghosts:Array<Ghost> = [];
+	
 	override public function create()
 	{		
 		clearManagers();
@@ -94,13 +103,7 @@ class PlayState extends FlxState
 		camUI.bgColor = 0x00000000;
 		FlxG.cameras.add(camUI, false);
 		
-		roomGroup = new FlxTypedGroup<Room>();
-		add(roomGroup);
-		
-		addRoom('main');
-		addRoom('left');
-		addRoom('right');
-		addRoom('top');
+		addRooms();
 		
 		movementUI = new MovementUI(changeRoom);
 		movementUI.camera = camUI;
@@ -126,6 +129,8 @@ class PlayState extends FlxState
 		add(movementUI);
 
 		updateFlashlight(FlxG.elapsed);
+		
+		createGhosts();
 		
 		super.create();
 	}
@@ -172,7 +177,7 @@ class PlayState extends FlxState
 	{
 		var flashlightInCharger:Bool = Reflect.field(Reflect.getProperty(rooms.get('main'), 'flashlightHolder'), 'holdingLight');
 
-		flashlightActive = (FlxG.mouse.pressedRight && (flashlightBattery > 0) && !flashlightInCharger);
+		flashlightActive = ((FlxG.mouse.pressedRight #if debug || FlxG.keys.pressed.F #end) && (flashlightBattery > 0) && !flashlightInCharger);
 
 		flashlightSprite.visible = flashlightActive;
 		flashlightSprite.x = FlxG.mouse.x - flashlightSprite.width / 2;
@@ -237,17 +242,36 @@ class PlayState extends FlxState
 		}
 	}
 	
-	function addRoom(name:String):Void{
-		if(rooms.exists(name)){
-			FlxG.log.error('Room ${name} already exists!!');
-			return;
-		}
+	function addRooms():Void{
+		roomGroup = new FlxTypedGroup<Room>();
+		add(roomGroup);
 		
-		var newRoom = Room.getRoomFromName(name, this);
-		roomGroup.add(newRoom);
+		roomMain = new MainRoom(this);
+		roomGroup.add(roomMain);
 		
-		rooms.set(name, newRoom);
-		roomList.push(name);
+		roomLeft = new LeftRoom(this);
+		roomGroup.add(roomLeft);
+		
+		roomRight = new RightRoom(this);
+		roomGroup.add(roomRight);
+		
+		roomTop = new TopRoom(this);
+		roomGroup.add(roomTop);
+		
+		roomList = [
+			'main',
+			'left',
+			'right',
+			'top'
+		];
+		
+		rooms = [
+			'main'=>roomMain,
+			'left'=>roomLeft,
+			'right'=>roomRight,
+			'top'=>roomTop,
+
+		];
 		
 		updateActiveRooms();
 	}
@@ -359,9 +383,20 @@ class PlayState extends FlxState
 			i.sendBox(id, boxSendType);
 		}
 	}
-	public static function createGame(boxQuota:Int = 3):GameRules {
+	
+	function createGhosts():Void{
+		ghosts = [];
+		
+		for(i in GhostUtil.ghostList){
+			var ghost = GhostUtil.makeNewGhost(i, this);
+			ghosts.push(ghost);
+		}
+	}
+	
+	public static function createGame(boxQuota:Int = 3, ?ghostAiList:GhostAiList):GameRules {
 		GAME_RULES = {
-			boxQuota: boxQuota
+			boxQuota: boxQuota,
+			ghostAiList: ghostAiList ?? new GhostAiList()
 		};
 		return GAME_RULES;
 	}
