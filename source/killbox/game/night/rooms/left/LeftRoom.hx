@@ -150,8 +150,8 @@ class LeftRoom extends Room
 					box.scale.y = .5;
 					box.updateHitbox();
 					box.y += box.height;
-					FlxTween.cancelTweensOf(box);
-					FlxTween.cancelTweensOf(box.velocity);
+					PlayState.tweenManager.cancelTweensOf(box);
+					PlayState.tweenManager.cancelTweensOf(box.velocity);
 					box.x = 150;
 					box.velocity.x = 0;
 					playState.getBoxByID(box.ID).status = LEFT_PRESSED;
@@ -225,7 +225,7 @@ class LeftRoom extends Room
 			} else if (boxData.status == LEFT_BACK_SPRINGING_BACKWARDS) {
 				if (box.y > 220) {
 					box.y = 220;
-					FlxTween.cancelTweensOf(box);
+					PlayState.tweenManager.cancelTweensOf(box);
 					box.velocity.y = 0;
 					box.velocity.x = GameValues.getConveyorSpeed();
 					boxData.status = LEFT_BACK_CONVEYOR;
@@ -287,8 +287,8 @@ class LeftRoom extends Room
 					|| playState.getBoxByID(box.ID).status == LEFT_BACK_SLIDING
 					|| playState.getBoxByID(box.ID).status == LEFT_BACK_WAITING)) { // fling that shit boy!
 				springThese.push(box);
-				FlxTween.cancelTweensOf(box);
-				FlxTween.cancelTweensOf(box.velocity);
+				PlayState.tweenManager.cancelTweensOf(box);
+				PlayState.tweenManager.cancelTweensOf(box.velocity);
 			}
 		}
 

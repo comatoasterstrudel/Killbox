@@ -1,8 +1,8 @@
-package killbox.game.night.rooms.right;
+package killbox.game.night.rooms.right.parts;
 
 class PartBox extends FlxSpriteGroup
 {
-    var box:FlxSprite;
+    var box:KbSprite;
     
     var interactable:Bool = true;
     
@@ -15,7 +15,7 @@ class PartBox extends FlxSpriteGroup
         
         this.partReceptor = partReceptor;
         
-        box = new FlxSprite(350, 450).makeGraphic(200,100,0xFF2F3940);
+        box = new KbSprite(350, 450).createColorBlock(200,100,0xFF2F3940);
         add(box);
     }
     
@@ -28,7 +28,7 @@ class PartBox extends FlxSpriteGroup
             if(Cursor.mouseIsTouching(box)){
                 if(FlxG.mouse.justPressed){
                     box.scale.set(1.2, .8);
-                    FlxTween.cancelTweensOf(box.scale);
+                    PlayState.tweenManager.cancelTweensOf(box.scale);
                     PlayState.tweenManager.tween(box.scale, {x: 1, y: 1}, 1, {ease: FlxEase.quartOut});
                     updateBoxPosition();
                     generatePart();

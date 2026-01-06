@@ -27,6 +27,13 @@ class KbBar extends FlxBar
         return this;
     }
     
+    public function createColorBar(emptyColor:FlxColor, fillColor:FlxColor, size:Float = 1):KbBar{
+        createColoredEmptyBar(emptyColor);
+        createColoredFilledBar(fillColor);
+        resize(size);
+        return this;
+    }
+    
     public function resize(size:Float):Void{
         setGraphicSize(Std.int(this.width * size));
         updateHitbox();

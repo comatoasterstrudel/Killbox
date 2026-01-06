@@ -51,7 +51,7 @@ class PlayState extends FlxState
 	 */
 	public var flashlightBattery:Float = GameValues.getMaxFlashlightBattery();
 	var flashlightActive:Bool = false;
-	var flashlightSprite:FlxSprite;
+	var flashlightSprite:KbSprite;
 
 	/**
 	 * boxes
@@ -109,7 +109,7 @@ class PlayState extends FlxState
 		updateActiveRooms();
 		movementUI.updateActiveButtons(rooms.get(curRoom).possibleMovements);
 
-		flashlightSprite = new FlxSprite().loadGraphic('assets/images/night/flashlight.png');
+		flashlightSprite = new KbSprite().createFromImage('assets/images/night/flashlight.png');
 		flashlightSprite.blend = SCREEN;
 		flashlightSprite.alpha = .5;
 		flashlightSprite.camera = camGame;
@@ -289,7 +289,7 @@ class PlayState extends FlxState
 
 	function doRoomTransitionAnim(time:Float, after:Void->Void):Void
 	{
-		var tranSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+		var tranSprite = new KbSprite().createColorBlock(FlxG.width, FlxG.height, FlxColor.BLACK);
 		tranSprite.camera = camTransition;
 		tranSprite.alpha = 0;
 		add(tranSprite);

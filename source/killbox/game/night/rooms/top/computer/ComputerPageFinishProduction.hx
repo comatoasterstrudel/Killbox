@@ -1,4 +1,4 @@
-package killbox.game.night.rooms.top;
+package killbox.game.night.rooms.top.computer;
 
 class ComputerPageFinishProduction extends ComputerPage{
 	var text1:ComputerText;
@@ -21,7 +21,7 @@ class ComputerPageFinishProduction extends ComputerPage{
 	];
 	var productionTextID:Int = 0;
 
-	var productionBar:FlxBar;
+	var productionBar:KbBar;
 
 	var lastActive:Bool = false;
 	
@@ -30,20 +30,20 @@ class ComputerPageFinishProduction extends ComputerPage{
 			changePage('main');
 		}); 
 		text1 = new ComputerText(this, 0, 0, '221212:');
-		add(text1);
 		text1.size = 12;
+		add(text1);
+
 		confirmButton = addButton(Std.int(screen.x + screen.width / 2 - 40), Std.int(screen.y + 100), 'Ship', function():Void {
 			confirmBoxes();			
 		});
 		onConfirm = new FlxSignal();
+		
 		text2 = new ComputerText(this, 0, 0, 'Shipping in progress');
-		add(text2);
 		text2.size = 12;
+		add(text2);
 
-		productionBar = new FlxBar(0, screen.y + 100, LEFT_TO_RIGHT, Std.int(screen.width / 1.4), 30, this, 'productionProgress', 0, 1);
+		productionBar = new KbBar(0, screen.y + 100, LEFT_TO_RIGHT, Std.int(screen.width / 1.4), 30, this, 'productionProgress', 0, 1).createColorBar(0xFF00AB01, FlxColor.GREEN);
 		productionBar.numDivisions = 40;
-		productionBar.createColoredEmptyBar(0xFF00AB01);
-		productionBar.createColoredFilledBar(FlxColor.GREEN);
 		productionBar.x = screen.x + screen.width / 2 - productionBar.width / 2;
 		add(productionBar);
 

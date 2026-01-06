@@ -1,12 +1,12 @@
-package killbox.game.night.rooms.right;
+package killbox.game.night.rooms.right.confirmationkeypad;
 
 class ConfirmationKeypadButton extends FlxSpriteGroup
 {
     var theColor:FlxColor;
     var onPressed:Void->Void;
     
-	var button:FlxSprite;
-	var label:FlxText;
+	var button:KbSprite;
+	var label:KbText;
 
 	public var enabled:Bool = true;
     
@@ -16,7 +16,7 @@ class ConfirmationKeypadButton extends FlxSpriteGroup
         this.theColor = theColor;
         this.onPressed = onPressed;
         
-		button = new FlxSprite().makeGraphic(25, 25, theColor);
+		button = new KbSprite().createColorBlock(25, 25, theColor);
 		button.setPosition(padBg.x + padBg.width / 2 - button.width / 2, (padBg.y + padBg.height / 2 - button.height / 2) - 20);
 		add(button);
         
@@ -38,7 +38,7 @@ class ConfirmationKeypadButton extends FlxSpriteGroup
         
 		button.color = theColor;
 
-		label = new FlxText(button.x + 3, button.y + 3, 0, name, 8);
+		label = new KbText(button.x + 3, button.y + 3, 0, name, 8);
 
 		while (label.width > (button.width - 4)) {
 			label.scale.x -= 0.1;

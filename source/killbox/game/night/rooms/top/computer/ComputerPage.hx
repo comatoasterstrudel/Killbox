@@ -1,4 +1,4 @@
-package killbox.game.night.rooms.top;
+package killbox.game.night.rooms.top.computer;
 
 class ComputerPage extends FlxSpriteGroup
 {
@@ -8,9 +8,9 @@ class ComputerPage extends FlxSpriteGroup
     
     var changePage:String->Void;
         
-    var screen:FlxSprite;
+    var screen:KbSprite;
     
-    public function new(name:String, changePage:String->Void, screen:FlxSprite):Void{
+    public function new(name:String, changePage:String->Void, screen:KbSprite):Void{
         super();
         
         this.name = name;

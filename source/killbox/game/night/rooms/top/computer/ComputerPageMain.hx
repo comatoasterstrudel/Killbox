@@ -1,4 +1,4 @@
-package killbox.game.night.rooms.top;
+package killbox.game.night.rooms.top.computer;
 
 class ComputerPageMain extends ComputerPage{
    	override function setupPage():Void{

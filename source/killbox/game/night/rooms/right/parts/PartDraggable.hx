@@ -1,6 +1,6 @@
-package killbox.game.night.rooms.right;
+package killbox.game.night.rooms.right.parts;
 
-class PartDraggable extends FlxSprite
+class PartDraggable extends KbSprite
 {
     var onDrop:PartDraggable->Void;
     
@@ -12,9 +12,14 @@ class PartDraggable extends FlxSprite
         
         this.onDrop = onDrop;
         
-        makeGraphic(20, 20, FlxColor.PINK);
+        createColorBlock(20, 20, FlxColor.PINK);
         
-        this.setPosition(FlxG.mouse.screenX - width / 2, FlxG.mouse.screenY - height / 2);
+        setPosition(FlxG.mouse.screenX - width / 2, FlxG.mouse.screenY - height / 2);
+        lerpManager.targetPosition.set(x, y);
+        
+        lerpManager.lerpX = true;
+        lerpManager.lerpY = true;
+        lerpManager.lerpSpeed = 12;
     }
     
     override function update(elapsed:Float):Void{
@@ -24,7 +29,7 @@ class PartDraggable extends FlxSprite
             holding = FlxG.mouse.pressed;
 
             if(holding){
-                this.setPosition(Utilities.lerpThing(this.x, FlxG.mouse.screenX - width / 2, elapsed, 15), Utilities.lerpThing(this.y, FlxG.mouse.screenY - height / 2, elapsed, 15));
+                lerpManager.targetPosition.set(FlxG.mouse.screenX - width / 2, FlxG.mouse.screenY - height / 2);
             } else {
                 finish();
             }   
@@ -40,6 +45,9 @@ class PartDraggable extends FlxSprite
     }
     
     public function doDropAnim():Void{
+        lerpManager.lerpX = false;
+        lerpManager.lerpY = false;
+        
         PlayState.tweenManager.tween(this, {alpha: 0}, 0.4, {onComplete: function(f):Void{
             this.destroy();
         }});

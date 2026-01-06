@@ -43,7 +43,7 @@ class BoxQuotaNumber extends KbText
 
 		if (lastNumber != number) {
 			yOffset = (lastNumber < number || lastNumber == 9 && number == 0) ? -15 : 15;
-			FlxTween.cancelTweensOf(this);
+			PlayState.tweenManager.cancelTweensOf(this);
 			PlayState.tweenManager.tween(this, {yOffset: 0}, .67, {ease: FlxEase.quartOut});
 		}
 

@@ -2,12 +2,12 @@ package killbox.game.night.rooms.right;
 
 class RightRoom extends Room
 {
-	var bgBack:FlxSprite;
-	var bgFront:FlxSprite;
+	var bgBack:KbSprite;
+	var bgFront:KbSprite;
     
 	var boxSprites:FlxSpriteGroup;
 
-	var doorButton:FlxSprite;
+	var doorButton:KbSprite;
 	var doorButtonPressed:Bool = false;
 	
 	var conveyorDoor:ConveyorDoor;
@@ -23,7 +23,7 @@ class RightRoom extends Room
 	var boxVacuum:BoxVacuum;
 	
     override function setupRoom():Void{        
-		bgBack = new FlxSprite().loadGraphic('assets/images/night/rooms/right/rightRoomBg.png');
+		bgBack = new KbSprite().createFromImage('assets/images/night/rooms/right/rightRoomBg.png');
 		bgBack.screenCenter();
 		add(bgBack);
 
@@ -42,11 +42,11 @@ class RightRoom extends Room
 		partReceptor = new PartReceptor(onSpikeHit);
 		add(partReceptor);
 
-		bgFront = new FlxSprite().loadGraphic('assets/images/night/rooms/right/rightRoomFrontDesk.png');
+		bgFront = new KbSprite().createFromImage('assets/images/night/rooms/right/rightRoomFrontDesk.png');
 		bgFront.screenCenter();
 		add(bgFront);   
 		
-		doorButton = new FlxSprite(158, 400).makeGraphic(70, 50, 0xFFB5F3CE);
+		doorButton = new KbSprite(158, 400).createColorBlock(70, 50, 0xFFB5F3CE);
 		add(doorButton);
 
 		confirmationKeypad = new ConfirmationKeypad(partReceptor);
@@ -134,7 +134,7 @@ class RightRoom extends Room
 			if (playState.getBoxByID(box.ID).status == RIGHT_LEFT_CONVEYOR_FALLING) {
 				if (box.y > 320) {
 					box.y = 320;
-					FlxTween.cancelTweensOf(box.velocity);
+					PlayState.tweenManager.cancelTweensOf(box.velocity);
 					box.velocity.x = GameValues.getConveyorSpeed();
 					box.velocity.y = 0;
 					box.acceleration.y = 0;
@@ -211,8 +211,8 @@ class RightRoom extends Room
 				i.velocity.x = 0;
 				i.y -= 25;
 				i.x = 860;
-				FlxTween.cancelTweensOf(i.velocity);
-				FlxTween.cancelTweensOf(i);
+				PlayState.tweenManager.cancelTweensOf(i.velocity);
+				PlayState.tweenManager.cancelTweensOf(i);
 
 				var scaleMult = FlxG.random.float(1.3, 1.6);
 
@@ -247,7 +247,7 @@ class RightRoom extends Room
 	}
 
 	function spawnBox(id:Int):Void {
-		var boxSprite = new FlxSprite(80, -50).makeGraphic(50, 25, 0xFF424242);
+		var boxSprite = new KbSprite(80, -50).createColorBlock(50, 25, 0xFF424242);
 		boxSprite.ID = id;
 		boxSprite.acceleration.y = 300;
 		boxSprites.add(boxSprite);

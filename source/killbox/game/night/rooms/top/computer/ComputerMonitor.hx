@@ -1,15 +1,15 @@
-package killbox.game.night.rooms.top;
+package killbox.game.night.rooms.top.computer;
 
 class ComputerMonitor extends FlxSpriteGroup
 {
     var timers:Array<FlxTimer> = [];
     
-    var screen:FlxSprite;
+    var screen:KbSprite;
     
-	var flashSprite:FlxSprite;
+	var flashSprite:KbSprite;
 
-	var textTopLeft:FlxText;
-	var textTopRight:FlxText;
+	var textTopLeft:KbText;
+	var textTopRight:KbText;
 
 	var curPage:String = '';
 	var pages:Array<ComputerPage> = [];
@@ -23,13 +23,14 @@ class ComputerMonitor extends FlxSpriteGroup
     public function new():Void{
         super();
         
-		screen = new FlxSprite(145, 83).makeGraphic(390, 200, FlxColor.LIME);
+		screen = new KbSprite(145, 83).createColorBlock(390, 200, FlxColor.LIME);
         add(screen);
-		textTopLeft = new FlxText(screen.x + 10, screen.y + 5, 0, '(c) COMPANY_NAME');
+		
+		textTopLeft = new KbText(screen.x + 10, screen.y + 5, 0, '(c) COMPANY_NAME');
 		textTopLeft.setFormat(15, FlxColor.GREEN);
 		add(textTopLeft);
 
-		textTopRight = new FlxText(screen.x + screen.width - 5, screen.y + 5, 0, '12/24/XX');
+		textTopRight = new KbText(screen.x + screen.width - 5, screen.y + 5, 0, '12/24/XX');
 		textTopRight.setFormat(15, FlxColor.GREEN);
 		textTopRight.x = screen.x + screen.width - textTopRight.width - 10;
 		add(textTopRight);
@@ -48,7 +49,7 @@ class ComputerMonitor extends FlxSpriteGroup
 		curPage = 'main';
 		updateActivePages();
 
-		flashSprite = new FlxSprite(screen.x, screen.y).makeGraphic(Std.int(screen.width), Std.int(screen.height), FlxColor.WHITE);
+		flashSprite = new KbSprite(screen.x, screen.y).createColorBlock(Std.int(screen.width), Std.int(screen.height), FlxColor.WHITE);
 		flashSprite.alpha = 0;
 		add(flashSprite);
 	}
@@ -71,7 +72,7 @@ class ComputerMonitor extends FlxSpriteGroup
     }
     
     public function tranIn():Void{
-		FlxTween.cancelTweensOf(flashSprite);
+		PlayState.tweenManager.cancelTweensOf(flashSprite);
 		flashSprite.alpha = 0;
 		for (i in [textTopLeft, textTopRight]) {
 			i.visible = false;
@@ -101,7 +102,7 @@ class ComputerMonitor extends FlxSpriteGroup
         resetTimers();
 		changeScreenVisibility(false);
 		flashSprite.alpha = 0;
-		FlxTween.cancelTweensOf(flashSprite);
+		PlayState.tweenManager.cancelTweensOf(flashSprite);
 		for (i in [textTopLeft, textTopRight]) {
 			i.visible = false;
 		}

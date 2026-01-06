@@ -1,11 +1,11 @@
-package killbox.game.night.rooms.right;
+package killbox.game.night.rooms.right.confirmationkeypad;
 
 class ConfirmationKeypad extends FlxSpriteGroup
 {
-    var padBg:FlxSprite;
-	var padStand:FlxSprite;
+    var padBg:KbSprite;
+	var padStand:KbSprite;
 	var buttons:Array<ConfirmationKeypadButton> = []; 
-	var label:FlxText;
+	var label:KbText;
 
 	var interactable:Bool = true;
 	var curCode:Array<Int> = [];
@@ -17,16 +17,17 @@ class ConfirmationKeypad extends FlxSpriteGroup
         
 		this.partReceptor = partReceptor;
 		
-        padBg = new FlxSprite(670, 340).makeGraphic(120, 160, 0xFFC4C4C4);
+        padBg = new KbSprite(670, 340).createColorBlock(120, 160, 0xFFC4C4C4);
         
-        padStand = new FlxSprite().makeGraphic(70, 30, 0xFF807C7C);
+        padStand = new KbSprite().createColorBlock(70, 30, 0xFF807C7C);
         padStand.setPosition(padBg.x + padBg.width / 2 - padStand.width / 2, padBg.y + padBg.height);
         add(padStand);
         
         add(padBg);
         
         addButtons();
-		label = new FlxText(0, 0, 0, '0201', 25);
+		
+		label = new KbText(0, 0, 0, '0201', 25);
 		add(label);
 	}
 
@@ -152,7 +153,7 @@ class ConfirmationKeypad extends FlxSpriteGroup
 	}
 
 	function cantDoAction():Void {
-		FlxTween.cancelTweensOf(label);
-		FlxTween.shake(label, 0.05, .1, X);
+		PlayState.tweenManager.cancelTweensOf(label);
+		PlayState.tweenManager.shake(label, 0.05, .1, X);
 	}
 }

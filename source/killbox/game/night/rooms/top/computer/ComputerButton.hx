@@ -1,6 +1,6 @@
-package killbox.game.night.rooms.top;
+package killbox.game.night.rooms.top.computer;
 
-class ComputerButton extends FlxText
+class ComputerButton extends KbText
 {
     var page:ComputerPage;
     

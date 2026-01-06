@@ -2,7 +2,7 @@ package killbox.game.night.rooms.right;
 
 class ConveyorDoor extends FlxSpriteGroup
 {
-    public var door:FlxSprite;
+    public var door:KbSprite;
     
     public var up:Bool = false;
     
@@ -13,7 +13,9 @@ class ConveyorDoor extends FlxSpriteGroup
     public function new():Void{
         super();
         
-        door = new FlxSprite(430, 0).makeGraphic(100, 320, FlxColor.GRAY);
+        door = new KbSprite(430, 0).createColorBlock(100, 320, FlxColor.GRAY);
+        door.lerpManager.lerpY = true;
+        door.lerpManager.lerpSpeed = 20;
         add(door);
     }
     
@@ -25,9 +27,9 @@ class ConveyorDoor extends FlxSpriteGroup
     
     function updateDoorPosition(elapsed:Float):Void{
         if(up){
-            door.y = Utilities.lerpThing(door.y, -270, elapsed, 15);
+            door.lerpManager.targetPosition.y = -270;
         } else {
-            door.y = Utilities.lerpThing(door.y, 0, elapsed, 15);
+            door.lerpManager.targetPosition.y = 0;
             
             if(blocked && door.y > -70){
                 door.y = -70;
@@ -43,6 +45,5 @@ class ConveyorDoor extends FlxSpriteGroup
     
     public function updateDoorStatus(up:Bool = true):Void{
         this.up = up;
-        
     }
 }

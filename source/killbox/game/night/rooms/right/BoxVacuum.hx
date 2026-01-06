@@ -2,7 +2,7 @@ package killbox.game.night.rooms.right;
 
 class BoxVacuum extends FlxSpriteGroup
 {
-    var pipe:FlxSprite;
+    var pipe:KbSprite;
     var particleGroup1:FlxSpriteGroup;
     public var boxGroup:FlxSpriteGroup;
     var particleGroup2:FlxSpriteGroup;
@@ -26,7 +26,7 @@ class BoxVacuum extends FlxSpriteGroup
         particleGroup1 = new FlxSpriteGroup();
         add(particleGroup1);
         
-        pipe = new FlxSprite().loadGraphic('assets/images/night/rooms/right/vaccuum.png');
+        pipe = new KbSprite().createFromImage('assets/images/night/rooms/right/vaccuum.png');
         add(pipe);
     }
     
@@ -60,11 +60,11 @@ class BoxVacuum extends FlxSpriteGroup
         var back:Bool = FlxG.random.bool(50);
         var time = FlxG.random.float(.2, .8);
         
-        var particle = new FlxSprite().loadGraphic('assets/images/night/rooms/right/vacuumParticle.png');
+        var particle = new KbSprite().createFromImage('assets/images/night/rooms/right/vacuumParticle.png');
         particle.alpha = 0;
         particle.scale.set(FlxG.random.float(.8, 1.2), FlxG.random.float(0.8, 1.2));
         particle.setPosition(FlxG.random.float(900,1050), FlxG.random.float(100, 300));
-        particle.angle = FlxAngle.angleBetween(particle, new FlxSprite(FlxG.width, 0), true);
+        particle.angle = FlxAngle.angleBetween(particle, new KbSprite(FlxG.width, 0), true);
         if(back) {
             particleGroup2.add(particle); 
             particle.color = FlxColor.GRAY;

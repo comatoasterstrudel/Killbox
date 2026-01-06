@@ -1,41 +1,39 @@
 package killbox.game.night.rooms.top;
 
-import haxe.macro.Expr.ComplexType;
-
 class TopRoom extends Room
 {
-	var bgBack:FlxSprite;
-	var bgFront:FlxSprite;
+	var bgBack:KbSprite;
+	var bgFront:KbSprite;
 
-	var wiresBack:FlxSprite;
-	var wiresFront:FlxSprite;
+	var wiresBack:KbSprite;
+	var wiresFront:KbSprite;
 
 	var computerMonitor:ComputerMonitor;
-	var monitorFront:FlxSprite;
+	var monitorFront:KbSprite;
 
-	var bottomTube:FlxSprite;
-	var topTube:FlxSprite;
+	var bottomTube:KbSprite;
+	var topTube:KbSprite;
 
 	var boxSprites:FlxSpriteGroup;
 
 	var boxCounter:BoxCounter;
 
 	var tubeShader:MaskAlphaShader;
-	var tubeGradient:FlxSprite;
+	var tubeGradient:KbSprite;
 	
     override function setupRoom():Void{        
-		bgBack = new FlxSprite().loadGraphic('assets/images/night/rooms/top/topRoomBack.png');
+		bgBack = new KbSprite().createFromImage('assets/images/night/rooms/top/topRoomBack.png');
 		bgBack.screenCenter();
 		add(bgBack);
 
-		bgFront = new FlxSprite().loadGraphic('assets/images/night/rooms/top/topRoomFront.png');
+		bgFront = new KbSprite().createFromImage('assets/images/night/rooms/top/topRoomFront.png');
 		bgFront.screenCenter();
 		add(bgFront);
 
-		bottomTube = new FlxSprite().loadGraphic('assets/images/night/rooms/top/topTube.png');
+		bottomTube = new KbSprite().createFromImage('assets/images/night/rooms/top/topTube.png');
 		add(bottomTube);
 
-		tubeGradient = new FlxSprite().loadGraphic('assets/images/night/rooms/top/tubeGradient.png');
+		tubeGradient = new KbSprite().createFromImage('assets/images/night/rooms/top/tubeGradient.png');
 		tubeGradient.alpha = 0;
 		add(tubeGradient);
 
@@ -46,24 +44,24 @@ class TopRoom extends Room
 		boxSprites = new FlxSpriteGroup();
 		add(boxSprites);
 
-		topTube = new FlxSprite().loadGraphic('assets/images/night/rooms/top/topTube.png');
+		topTube = new KbSprite().createFromImage('assets/images/night/rooms/top/topTube.png');
 		add(topTube);
 
 		boxCounter = new BoxCounter(this, boxSprites, 60);
 		add(boxCounter);
 		
-		wiresBack = new FlxSprite().loadGraphic('assets/images/night/rooms/top/tvRoomWiresBack.png');
+		wiresBack = new KbSprite().createFromImage('assets/images/night/rooms/top/tvRoomWiresBack.png');
 		wiresBack.screenCenter();
 		add(wiresBack);
 
-		wiresFront = new FlxSprite().loadGraphic('assets/images/night/rooms/top/tvRoomWiresFront.png');
+		wiresFront = new KbSprite().createFromImage('assets/images/night/rooms/top/tvRoomWiresFront.png');
 		wiresFront.screenCenter();
 		add(wiresFront);
 
 		computerMonitor = new ComputerMonitor();
 		add(computerMonitor);
         
-		monitorFront = new FlxSprite().loadGraphic('assets/images/night/rooms/top/topRoomMonitor.png');
+		monitorFront = new KbSprite().createFromImage('assets/images/night/rooms/top/topRoomMonitor.png');
 		monitorFront.screenCenter();
 		add(monitorFront); 
         
@@ -133,7 +131,7 @@ class TopRoom extends Room
 	}
 
 	function spawnBox(id:Int):Void {
-		var boxSprite = new FlxSprite(FlxG.width, FlxG.random.int(100, 110)).loadGraphic('assets/images/night/rooms/right/spikedBox.png');
+		var boxSprite = new KbSprite(FlxG.width, FlxG.random.int(100, 110)).createFromImage('assets/images/night/rooms/right/spikedBox.png');
 		boxSprite.ID = id;
 		boxSprite.velocity.x = -GameValues.getTubeSpeed();
 		boxSprite.angularVelocity = FlxG.random.float(-20, -200);
@@ -170,7 +168,7 @@ class TopRoom extends Room
 			if (boxesConfirmed >= GameValues.getMaxWorkload()) {
 				i.alpha = .5;
 			} else {
-				FlxTween.cancelTweensOf(i);
+				PlayState.tweenManager.cancelTweensOf(i);
 				playState.getBoxByID(i.ID).status = TOP_CONFIRMING;
 
 				i.loadGraphic('assets/images/night/rooms/top/finishedBox.png');
@@ -206,7 +204,7 @@ class TopRoom extends Room
 	}
 
 	function finishBox():Void {
-		FlxTween.cancelTweensOf(tubeGradient);
+		PlayState.tweenManager.cancelTweensOf(tubeGradient);
 		tubeGradient.alpha = FlxG.random.float(.7, 1);
 		tubeGradient.y = 0;
 		var time = FlxG.random.float(2, 2.5);

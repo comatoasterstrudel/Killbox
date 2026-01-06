@@ -1,11 +1,11 @@
-package killbox.game.night.rooms.right;
+package killbox.game.night.rooms.right.parts;
 
 class PartReceptor extends FlxSpriteGroup
 {
-    var topPart:FlxSprite;
-    public var bottomParts:Array<FlxSprite> = [];
+    var topPart:KbSprite;
+    public var bottomParts:Array<KbSprite> = [];
     
-    public var depositHere:FlxSprite;
+    public var depositHere:KbSprite;
     
     public var partCount:Int = 0;
     
@@ -24,10 +24,10 @@ class PartReceptor extends FlxSpriteGroup
         
         this.hitFunction = hitFunction;
         
-        topPart = new FlxSprite(825, -30).makeGraphic(150, 100, 0xFF3F2421);
+        topPart = new KbSprite(825, -30).createColorBlock(150, 100, 0xFF3F2421);
         
         for(i in 0...GameValues.getMaxSpikePartCount()){
-            var bottomPart:FlxSprite = new FlxSprite().makeGraphic(20, 20, FlxColor.PINK);
+            var bottomPart:KbSprite = new KbSprite().createColorBlock(20, 20, FlxColor.PINK);
             bottomPart.setPosition(topPart.x + ((topPart.width / GameValues.getMaxSpikePartCount()) * i) - bottomPart.width / 2 + ((topPart.width / GameValues.getMaxSpikePartCount()) / 2), topPart.y + topPart.height);
             bottomPart.ID = i;
             add(bottomPart);
@@ -36,7 +36,7 @@ class PartReceptor extends FlxSpriteGroup
         
         add(topPart);
 
-        depositHere = new FlxSprite().makeGraphic(200, Std.int(topPart.height + 60));
+        depositHere = new KbSprite().createColorBlock(200, Std.int(topPart.height + 60), FlxColor.RED);
         depositHere.alpha = 0;
         depositHere.x = topPart.x + topPart.width / 2 - depositHere.width / 2;
         add(depositHere);

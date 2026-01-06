@@ -31,7 +31,7 @@ class CabinetDoor extends KbSprite
 	 * @param onComplete function to run after the animation is complete
 	 */
 	public function openDoor(onComplete:Void->Void = null):Void {
-        FlxTween.cancelTweensOf(this);
+        PlayState.tweenManager.cancelTweensOf(this);
         y = 0;
         
 		PlayState.tweenManager.tween(this, {y: -300}, GameValues.getCabinetDoorOpenTime(), {ease: FlxEase.quartOut, onComplete: function(F):Void {
@@ -45,7 +45,7 @@ class CabinetDoor extends KbSprite
 	 * @param onComplete function to run after the animation is complete
 	 */
 	public function closeDoor(onComplete:Void->Void = null):Void {
-        FlxTween.cancelTweensOf(this);
+        PlayState.tweenManager.cancelTweensOf(this);
 		y = -300;
         PlayState.tweenManager.tween(this, {y: 0}, GameValues.getCabinetDoorOpenTime(), {ease: FlxEase.quartOut, onComplete: function(F):Void{
             if (onComplete != null)

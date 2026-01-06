@@ -1,17 +1,17 @@
-package killbox.game.night.rooms.top;
+package killbox.game.night.rooms.top.computer;
 
 class ComputerPageAcquireCode extends ComputerPage{
 	var codeText:ComputerText;
 	
    	override function setupPage():Void{		
 		var text = new ComputerText(this, 0, 0, 'CURRENT_CODE:');
-		add(text);
 		text.size = 12;
 		text.setPosition(screen.x + screen.width / 2 - text.width / 2, screen.y + 50);
-		
+		add(text);
+
 		codeText = new ComputerText(this, 0, 0, '221212:');
-		add(codeText);
 		codeText.size = 30;
+		add(codeText);
 		
 		addButton(Std.int(screen.x + 10), Std.int(screen.y + 165), 'BACK', function():Void{
 			changePage('main');
