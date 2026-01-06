@@ -1,6 +1,4 @@
-package killbox.game.night.movement;
-
-import cpp.abi.Abi;
+package killbox.game.night.ui.movement;
 
 class MovementUI extends FlxTypedGroup<MovementBar>
 {

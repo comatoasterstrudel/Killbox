@@ -1,4 +1,4 @@
-package killbox.game.night.movement;
+package killbox.game.night.ui.movement;
 
 enum MovementTypes
 {
