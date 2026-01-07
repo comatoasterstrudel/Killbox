@@ -408,7 +408,7 @@ class PlayState extends FlxState
 					//
 				}},
 				{name: "Exit Game", pressEscape: false, close: false, onClick: function():Void{
-					Sys.exit(1);
+					FlxG.switchState(new CustomGameState());
 				}}
 			]));
 		}
