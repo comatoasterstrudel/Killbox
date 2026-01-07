@@ -5,14 +5,14 @@ class Constants{
 	/**
 	 * The state to load when loading a debug build of the game
 	 */
-	public static final INITIAL_STATE_DEBUG:FlxState = new PlayState();
+	public static final INITIAL_STATE_DEBUG:FlxState = new CustomGameState();
 	#end
 
 	#if release
 	/**
 	 * The state to load when loading a release build of the game
 	 */
-	public static final INITIAL_STATE_RELEASE:FlxState = new PlayState();
+	public static final INITIAL_STATE_RELEASE:FlxState = new CustomGameState();
 	#end 
 	
 	/**
