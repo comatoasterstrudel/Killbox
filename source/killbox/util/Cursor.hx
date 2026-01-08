@@ -29,6 +29,6 @@ class Cursor extends FlxSprite
         
         thecursor.updateCursorPosition();
         
-        return pixelPerfect ? FlxG.pixelPerfectOverlap(sprite, thecursor, 10) : FlxG.overlap(sprite, thecursor);
+        return pixelPerfect ? FlxG.pixelPerfectOverlap(sprite, thecursor, 10) : FlxG.mouse.overlaps(sprite);
     }
 }

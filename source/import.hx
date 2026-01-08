@@ -55,3 +55,4 @@ import killbox.game.night.ghost.ghosttypes.sirius.*;
 import killbox.game.night.ghost.ghosttypes.gliese.*;
 import killbox.game.night.ghost.ghosttypes.makemake.*;
 import killbox.game.customgame.*;
+import killbox.game.customgame.panel.*;

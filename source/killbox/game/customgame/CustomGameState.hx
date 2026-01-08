@@ -34,7 +34,7 @@ class CustomGameState extends FlxState
     override function update(elapsed:Float):Void{
         super.update(elapsed);
         
-        if(Cursor.mouseIsTouching(startText)){
+        if(Cursor.mouseIsTouching(startText, false)){
             startText.alpha = .3;
             if(FlxG.mouse.justPressed){
                 startGame();
