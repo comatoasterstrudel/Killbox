@@ -17,6 +17,10 @@ class Ghost{
         });
     }
     
+    public function update(elapsed:Float):Void{
+        //    
+    }
+    
     public function movementOpportunity():Void{
         if(PlayState.GAME_RULES.ghostAiList.list.get(name) > FlxG.random.int(0,20)){
             move();

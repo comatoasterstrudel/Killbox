@@ -149,6 +149,8 @@ class PlayState extends FlxState
 		
 		managePauseMenu();
 		
+		updateGhosts(elapsed);
+		
 		super.update(elapsed);
 	}
 	
@@ -390,6 +392,12 @@ class PlayState extends FlxState
 		for(i in GhostUtil.ghostList){
 			var ghost = GhostUtil.makeNewGhost(i, this);
 			ghosts.push(ghost);
+		}
+	}
+	
+	function updateGhosts(elapsed:Float):Void{
+		for(i in ghosts){
+			i.update(elapsed);
 		}
 	}
 	

@@ -3,7 +3,7 @@ package killbox.game.night.rooms.main;
 class MainRoom extends Room
 {
 	var bgBack:KbSprite;
-	var boxSprites:FlxSpriteGroup;
+	public var boxSprites:FlxSpriteGroup;
 	var bgFront:KbSprite;
 
 	var addBoxButton:KbSprite;
@@ -14,6 +14,11 @@ class MainRoom extends Room
 
 	public var flashlightHolder:FlashlightHolder;
 	
+	/**
+     * ghosts
+     */
+	public var erisGhostGroup:FlxSpriteGroup;
+	
 	override function setupRoom():Void
 	{     
 		bgBack = new KbSprite().createFromImage('assets/images/night/rooms/main/mainRoomPlaceholderBack.png');
@@ -21,6 +26,9 @@ class MainRoom extends Room
 		bgBack.scrollFactor.set(0, 0);
 		add(bgBack);  
         
+		erisGhostGroup = new FlxSpriteGroup();
+		add(erisGhostGroup);
+		
 		boxSprites = new FlxSpriteGroup();
 		add(boxSprites);
 		
@@ -41,7 +49,7 @@ class MainRoom extends Room
 
         possibleMovements = [
             LEFT => 'left',
-		UP => 'top',
+			UP => 'top',
             RIGHT => 'right',
         ];
     }
@@ -49,7 +57,7 @@ class MainRoom extends Room
 	{
 		super.update(elapsed);
 
-		for (sprite in [bgBack, boxSprites, boxCounter]) {
+		for (sprite in [bgBack, boxSprites, boxCounter, erisGhostGroup]) {
 			sprite.scrollFactor.set(0.6, 0.6);
 		}
 		

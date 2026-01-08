@@ -27,13 +27,13 @@ class LeftRoom extends Room
 	/**
 	 * front conveyor
 	 */
-	var boxFrontConveyorSprites:FlxSpriteGroup;
+	public var boxFrontConveyorSprites:FlxSpriteGroup;
 	var boxCounterFront:BoxCounter;
 	
 	/**
 	 * back conveyor
 	 */
-	var boxBackConveyorSprites:FlxSpriteGroup;
+	public var boxBackConveyorSprites:FlxSpriteGroup;
 	var boxCounterBack:BoxCounter;
 
 	/**
@@ -45,6 +45,12 @@ class LeftRoom extends Room
 	var cabinetButton:KbSprite;
 	var cabinetStatus:CabinetStatus = CLOSED;
 	
+    /**
+     * ghosts
+     */
+	public var erisGhostGroupFront:FlxSpriteGroup;
+	public var erisGhostGroupBack:FlxSpriteGroup;
+
     override function setupRoom():Void{        
 		bgBack = new KbSprite().createFromImage('assets/images/night/rooms/left/leftRoomBack.png');
 		bgBack.screenCenter();
@@ -53,6 +59,9 @@ class LeftRoom extends Room
         
 		boxSpring = new BoxSpring();
 		add(boxSpring);
+		
+		erisGhostGroupBack = new FlxSpriteGroup();
+		add(erisGhostGroupBack);
 		
 		boxBackConveyorSprites = new FlxSpriteGroup();
 		add(boxBackConveyorSprites);
@@ -82,6 +91,9 @@ class LeftRoom extends Room
 		bgFront.screenCenter();
 		add(bgFront);  
 
+		erisGhostGroupFront = new FlxSpriteGroup();
+		add(erisGhostGroupFront);
+		
 		boxFrontConveyorSprites = new FlxSpriteGroup();
 		add(boxFrontConveyorSprites);
 		
@@ -102,7 +114,7 @@ class LeftRoom extends Room
 	{
 		super.update(elapsed);
 
-		for (sprite in [bgBack, boxBackConveyorSprites, boxCounterBack, boxSpring]) {
+		for (sprite in [bgBack, boxBackConveyorSprites, boxCounterBack, boxSpring, erisGhostGroupBack]) {
 			sprite.scrollFactor.set(0.6, 0.6);
 		}
 		

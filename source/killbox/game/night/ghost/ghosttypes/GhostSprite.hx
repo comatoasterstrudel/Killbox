@@ -6,11 +6,14 @@ class GhostSprite extends KbSprite
     public var hp:Float;
     
     public var playState:PlayState;
+    public var parent:FlxSpriteGroup;
     
-    public function new(playState:PlayState, maxHp:Int = 50):Void{
+    public function new(playState:PlayState, parent:FlxSpriteGroup, maxHp:Int = 50):Void{
         super();
         
         this.playState = playState;
+        this.parent = parent;
+        
         this.maxHp = maxHp;
         hp = maxHp; 
         
@@ -26,7 +29,7 @@ class GhostSprite extends KbSprite
     override function update(elapsed:Float):Void{
         super.update(elapsed);
         
-        if(FlxG.overlap(this, playState.flashlightSprite) && playState.flashlightActive){
+        if(visible && FlxG.overlap(this, playState.flashlightSprite) && playState.flashlightActive){
             var distanceMult:Float = (1.5 - (FlxMath.bound(FlxMath.distanceBetween(this, playState.flashlightSprite) / FlxG.width, 0, 1)));
             
             hp -= (elapsed * (GameValues.getFlashlightDamage() * distanceMult));
@@ -42,6 +45,7 @@ class GhostSprite extends KbSprite
     }
     
     public function die():Void{
+        parent.remove(this, true);
         destroy();
     }
 }
