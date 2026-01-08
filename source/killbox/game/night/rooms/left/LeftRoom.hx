@@ -207,7 +207,18 @@ class LeftRoom extends Room
 				box.kill();
 				removeThese.push(box);
 			}
-
+			if (boxData.status == LEFT_CONVEYOR_ERIS_FALLING)
+			{
+				if (box.y > 270)
+				{
+					playState.getBoxByID(box.ID).status = LEFT_CONVEYOR;
+					box.y = 270;
+					box.acceleration.y = 0;
+					box.velocity.y = 0;
+					box.velocity.x = -GameValues.getConveyorSpeed();
+				}
+			}
+			
 			if (box.alpha == .5 && !chainPulley.pressHandleDown && !chainPulley.pressHandleWindingBack) {
 				box.alpha = 1;
 			}
@@ -216,6 +227,7 @@ class LeftRoom extends Room
 			{
 				boxFrontConveyorSprites.remove(i, true);
 				i.destroy();
+				i = null;
 			}
 		}	
 	}
@@ -234,9 +246,10 @@ class LeftRoom extends Room
 						boxData.status = LEFT_BACK_WAITING;
 					}});
 				}
-			} else if (boxData.status == LEFT_BACK_SPRINGING_BACKWARDS) {
+			} else if (boxData.status == LEFT_BACK_SPRINGING_BACKWARDS || boxData.status == LEFT_BACK_CONVEYOR_ERIS_FALLING) {
 				if (box.y > 220) {
 					box.y = 220;
+					box.acceleration.y = 0;
 					PlayState.tweenManager.cancelTweensOf(box);
 					box.velocity.y = 0;
 					box.velocity.x = GameValues.getConveyorSpeed();
@@ -250,6 +263,7 @@ class LeftRoom extends Room
 			for (i in removeThese) {
 				boxBackConveyorSprites.remove(i, true);
 				i.destroy();
+				i = null;
 			}
 		}	
 	}
@@ -334,6 +348,7 @@ class LeftRoom extends Room
 							playState.sendBox(box.ID, LEFT_BACK_TO_RIGHT);
 							boxBackConveyorSprites.remove(box, true);
 							box.destroy();
+							box = null;
 						}
 					});
 				}

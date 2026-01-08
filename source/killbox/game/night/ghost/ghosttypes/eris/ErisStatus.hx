@@ -5,4 +5,5 @@ enum ErisStatus
     IDLE;
     CHASING;
     TAKING;
+    DEAD;
 }

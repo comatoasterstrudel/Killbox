@@ -97,7 +97,7 @@ class MainRoom extends Room
 		{
 			var boxData = playState.getBoxByID(box.ID);
 
-			if (boxData.status == MAIN_FALLING)
+			if (boxData.status == MAIN_FALLING || boxData.status == MAIN_CONVEYOR_ERIS_FALLING)
 			{
 				if (box.y > 180)
 				{
@@ -121,6 +121,7 @@ class MainRoom extends Room
 		{
 			boxSprites.remove(i, true);
 			i.destroy();
+			i = null;
 		}
 	}
 

@@ -185,6 +185,7 @@ class TopRoom extends Room
 				{
 					ease: FlxEase.quartIn,
 					onComplete: function(f):Void {
+						playState.getBoxByID(i.ID).status = GONE;
 						finishBox();
 						boxSprites.remove(i, true);
 						i.destroy();

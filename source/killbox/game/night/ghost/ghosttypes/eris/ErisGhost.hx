@@ -2,7 +2,7 @@ package killbox.game.night.ghost.ghosttypes.eris;
 
 class ErisGhost extends Ghost
 {
-    var maxEntities:Int = 7;
+    var maxEntities:Int = 5;
     
     public var ghosts:Array<ErisGhostSprite> = [];
     
@@ -21,10 +21,10 @@ class ErisGhost extends Ghost
         
         switch(target){
             case 1:
-                ghost = new ErisGhostSprite(this, playState, playState.roomMain.erisGhostGroup, playState.roomMain.boxSprites, [new FlxPoint(160, 100), new FlxPoint(400, 130)], .67);
+                ghost = new ErisGhostSprite(this, playState, playState.roomMain.erisGhostGroup, playState.roomMain.boxSprites, [new FlxPoint(160, 50), new FlxPoint(400, 90)], .67);
                 playState.roomMain.erisGhostGroup.add(ghost);
             case 2:
-                ghost = new ErisGhostSprite(this, playState, playState.roomLeft.erisGhostGroupFront, playState.roomLeft.boxFrontConveyorSprites, [new FlxPoint(50, 100), new FlxPoint(1000, 250)], 1);
+                ghost = new ErisGhostSprite(this, playState, playState.roomLeft.erisGhostGroupFront, playState.roomLeft.boxFrontConveyorSprites, [new FlxPoint(350, 100), new FlxPoint(1000, 250)], 1);
                 playState.roomLeft.erisGhostGroupFront.add(ghost);
             case 3:
                 ghost = new ErisGhostSprite(this, playState, playState.roomLeft.erisGhostGroupBack, playState.roomLeft.boxBackConveyorSprites, [new FlxPoint(50, 10), new FlxPoint(1000, 50)], .7);
