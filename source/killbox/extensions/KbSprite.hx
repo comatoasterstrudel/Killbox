@@ -6,7 +6,7 @@ package killbox.extensions;
 class KbSprite extends FlxSprite
 {
     public var lerpManager:LerpManager;
-    
+     
     public function new(?x:Float, ?y:Float, ?antialiasing = true):Void{
         super(x,y);
         
@@ -30,6 +30,12 @@ class KbSprite extends FlxSprite
     public function createColorBlock(width:Int, height:Int, color:FlxColor):KbSprite{
         makeGraphic(width, height, color);
         return this;
+    }
+    
+    public function createFromSparrow(imgKey:String, xmlKey:String, size:Float = 1):KbSprite{
+        frames = FlxAtlasFrames.fromSparrow(imgKey, xmlKey);
+        resize(size);
+        return this;    
     }
     
     public function resize(size:Float):Void{

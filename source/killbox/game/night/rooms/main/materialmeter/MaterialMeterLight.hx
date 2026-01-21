@@ -20,11 +20,15 @@ class MaterialMeterLight extends FlxSpriteGroup
         super();
         this.ID = ID;
         
-        lightSprite = new KbSprite().createColorBlock(25, 25, FlxColor.LIME);
-		lightSprite.setPosition((200 + (50 * (ID - 1))), 250);
+        lightSprite = new KbSprite().createFromSparrow('assets/images/night/rooms/main/main_materiallight.png', 'assets/images/night/rooms/main/main_materiallight.xml');
+        lightSprite.animation.addByIndices('active', 'materialmeter', [0], '');
+        lightSprite.animation.addByIndices('inactive', 'materialmeter', [1], '');
+		lightSprite.y = 320;
         add(lightSprite);
         
-		whiteOverlay = new KbSprite().createColorBlock(25, 25, FlxColor.WHITE);
+		whiteOverlay = new KbSprite().createFromSparrow('assets/images/night/rooms/main/main_materiallight.png', 'assets/images/night/rooms/main/main_materiallight.xml');
+        whiteOverlay.animation.addByIndices('active', 'materialmeter', [0], '');
+        whiteOverlay.animation.play('active');
         whiteOverlay.alpha = 0;
         whiteOverlay.lerpManager.lerpAlpha = true;
         whiteOverlay.lerpManager.targetAlpha = 0;
@@ -39,18 +43,21 @@ class MaterialMeterLight extends FlxSpriteGroup
      */
     public function updateMaterialMeter(availableMaterials:Int, timeUntilNextMaterial:Float):Void{
         if(availableMaterials >= ID){
-            if(whiteOverlay.alpha > 0) whiteOverlay.setPosition(lightSprite.x, lightSprite.y);
-            lightSprite.color = FlxColor.LIME;
+            lightSprite.color = 0xFFC5F9C4;
             if(status != ON) whiteOverlay.alpha = .7;
+            if(whiteOverlay.alpha > 0) whiteOverlay.setPosition(lightSprite.x, lightSprite.y);
             status = ON;
+            lightSprite.animation.play('active');
         } else if(ID == availableMaterials + 1){ //this one is charging
-            lightSprite.color = FlxColor.GREEN.getDarkened((.8) * 1 - (timeUntilNextMaterial / GameValues.getMaterialRefillTime()));
+            lightSprite.color = FlxColor.LIME.getDarkened((.8) * 1 - (timeUntilNextMaterial / GameValues.getMaterialRefillTime()));
             status = CHARGING;
             whiteOverlay.alpha = 0;
+            lightSprite.animation.play('inactive');
         } else {
-            lightSprite.color = FlxColor.GREEN.getDarkened(.8);
+            lightSprite.color = FlxColor.LIME.getDarkened(.8);
             status = OFF;
             whiteOverlay.alpha = 0;
+            lightSprite.animation.play('inactive');
         }                
     }
 }

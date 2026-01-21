@@ -17,7 +17,7 @@ class MaterialMeter extends FlxTypedSpriteGroup<MaterialMeterLight>
 		for (i in members) {
 			sprites.push(i.lightSprite);
 		}
-		Utilities.centerGroup(sprites, 40, button.x + button.width / 2);
+		Utilities.centerGroup(sprites, -30, 550);
     }
     
     /**
