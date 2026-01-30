@@ -44,4 +44,8 @@ class Constants{
 	 * How many digits the box quota text will be able to display
 	 */
 	public static final BOX_QUOTA_DISPLAY_DIGITS:Int = 5;
+	/**
+	 * the y value boxes fall to in the main room
+	 */
+	public static final ROOM_MAIN_CONVEYORY:Float = 275;
 }

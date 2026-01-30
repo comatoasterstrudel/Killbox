@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="boxparts.png">
+	<!-- Created with Adobe Animate version 21.0.6.41649 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="box sprites0000" x="5" y="5" width="58" height="32" frameX="0" frameY="-1" frameWidth="62" frameHeight="33"/>
+	<SubTexture name="box sprites0001" x="5" y="42" width="62" height="31" frameX="0" frameY="-2" frameWidth="62" frameHeight="33"/>
+	<SubTexture name="box sprites0002" x="5" y="78" width="53" height="33" frameX="-3" frameY="0" frameWidth="62" frameHeight="33"/>
+</TextureAtlas>

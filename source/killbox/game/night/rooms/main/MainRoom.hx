@@ -2,6 +2,10 @@ package killbox.game.night.rooms.main;
 
 class MainRoom extends Room
 {
+	var doorLeft:RoomDoor;
+	var doorTop:RoomDoor;
+	var doorRight:RoomDoor;
+	
 	var bgBack:KbSprite;
 	var bgDetails:KbSprite;
 	
@@ -13,10 +17,11 @@ class MainRoom extends Room
 	var bgConveyorFront:FlxBackdrop;
 	var bgPipeFront:KbSprite;
 	
-
 	var posterLeft:KbSprite;
 	var posterTop:KbSprite;
 	var posterRight:KbSprite;
+	
+	var clock:Clock;
 	
 	public var boxSprites:FlxSpriteGroup;
 	var bgFront:KbSprite;
@@ -79,10 +84,22 @@ class MainRoom extends Room
 		boxCounter = new BoxCounter(this, boxSprites, 80);
 		add(boxCounter);
 		
+		doorLeft = new RoomDoor(50, 266, 135, 430);
+		add(doorLeft);
+		
+		doorTop = new RoomDoor(690, 270, 222, 307);
+		add(doorTop);
+		
+		doorRight = new RoomDoor(1145, 242, 135, 478);
+		add(doorRight);
+		
 		bgFront = new KbSprite().createFromImage('assets/images/night/rooms/main/main_bg.png');
 		bgFront.screenCenter();
 		add(bgFront);  
 
+		clock = new Clock();
+		add(clock);
+		
 		posterLeft = new KbSprite(25, 15).createFromSparrow('assets/images/night/rooms/main/main_poster_left.png', 'assets/images/night/rooms/main/main_poster_left.xml');
 		posterLeft.animation.addByIndices('poster', 'L postyer', [FlxG.random.int(0, 0)], '');
 		posterLeft.animation.play('poster');
@@ -166,10 +183,10 @@ class MainRoom extends Room
 
 			if (boxData.status == MAIN_FALLING || boxData.status == MAIN_CONVEYOR_ERIS_FALLING)
 			{
-				if (box.y > 260)
+				if (box.y > Constants.ROOM_MAIN_CONVEYORY)
 				{
 					playState.getBoxByID(box.ID).status = MAIN_CONVEYOR;
-					box.y = 260;
+					box.y = Constants.ROOM_MAIN_CONVEYORY;
 					box.acceleration.y = 0;
 					box.velocity.y = 0;
 					box.velocity.x = -GameValues.getConveyorSpeed();
@@ -197,7 +214,9 @@ class MainRoom extends Room
 		var box = new Box(playState.getBoxID());
 		playState.boxes.push(box);
 
-		var boxSprite = new KbSprite(515, 100).createColorBlock(50, 50, 0xFF424242);
+		var boxSprite = new KbSprite(515, 100).createFromSparrow('assets/images/night/boxsprites/boxparts.png', 'assets/images/night/boxsprites/boxparts.xml');
+		boxSprite.animation.addByIndices('box', 'box sprites', [FlxG.random.int(0, 2)], '');
+		boxSprite.animation.play('box');
 		boxSprite.ID = box.ID;
 		boxSprite.acceleration.y = 300;
 		boxSprites.add(boxSprite);
