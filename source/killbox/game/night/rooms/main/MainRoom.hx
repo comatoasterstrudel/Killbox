@@ -21,7 +21,7 @@ class MainRoom extends Room
 	var posterTop:KbSprite;
 	var posterRight:KbSprite;
 	
-	var clock:Clock;
+	public var clock:Clock;
 	
 	public var boxSprites:FlxSpriteGroup;
 	var bgFront:KbSprite;

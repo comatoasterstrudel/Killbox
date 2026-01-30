@@ -29,6 +29,11 @@
       "name": "openfl",
       "type": "haxelib",
       "version": "9.4.1"
+    },
+    {
+      "name": "zerolib-flixel",
+      "type": "haxelib",
+      "version": null
     }
   ]
 }

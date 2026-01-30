@@ -47,5 +47,9 @@ class Constants{
 	/**
 	 * the y value boxes fall to in the main room
 	 */
-	public static final ROOM_MAIN_CONVEYORY:Float = 275;
+	public static final ROOM_MAIN_CONVEYORY:Float = 283;
+	/**
+	 * how much the clock hands get offset
+	 */
+	public static final ROOM_MAIN_CLOCKHANDOFFSET:FlxPoint = new FlxPoint(2, 10);
 }

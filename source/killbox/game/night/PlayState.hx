@@ -65,6 +65,13 @@ class PlayState extends FlxState
 	public var boxesProduced:Int = 0;
 	
 	/**
+	 * time
+	 */
+	public var curTime:Float = 0;
+	public var curMinutes:Float = 0;
+	public var curHours:Float = 0;
+	
+	/**
 	 * materials
 	 */
 	public var availableMaterials:Int = GameValues.getMaxMaterials();
@@ -150,6 +157,8 @@ class PlayState extends FlxState
 		managePauseMenu();
 		
 		updateGhosts(elapsed);
+		
+		updateTime(elapsed);
 		
 		super.update(elapsed);
 	}
@@ -401,10 +410,22 @@ class PlayState extends FlxState
 		}
 	}
 	
-	public static function createGame(boxQuota:Int = 3, ?ghostAiList:GhostAiList):GameRules {
+	function updateTime(elapsed:Float):Void{
+		curTime += elapsed;
+		
+		if(curTime >= GAME_RULES.nightLength) curTime = GAME_RULES.nightLength;
+		
+		curHours = curTime / (GAME_RULES.nightLength / 6);
+		curMinutes = curTime / ((GAME_RULES.nightLength / 6) / 60);	
+		
+		roomMain.clock.updateHands(curMinutes / 60, curHours / 6);
+	}
+	
+	public static function createGame(boxQuota:Int = 3, ?ghostAiList:GhostAiList, ?nightLength:Float = 120):GameRules {
 		GAME_RULES = {
 			boxQuota: boxQuota,
-			ghostAiList: ghostAiList ?? new GhostAiList()
+			ghostAiList: ghostAiList ?? new GhostAiList(),
+			nightLength: nightLength
 		};
 		return GAME_RULES;
 	}

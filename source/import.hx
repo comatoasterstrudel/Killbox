@@ -60,3 +60,4 @@ import killbox.game.customgame.panel.*;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.addons.display.FlxBackdrop;
 import killbox.game.night.door.*;
+using zero.flixel.extensions.FlxPointExt;
